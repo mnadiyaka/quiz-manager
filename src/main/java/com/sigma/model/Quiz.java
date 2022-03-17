@@ -27,7 +27,7 @@ public class Quiz {
 
     @OneToOne
     @Column(name = "address_id")
-    private Location address_id;
+    private Location addressId;
 
     public int getQuizId() {
         return quizId;
@@ -70,11 +70,11 @@ public class Quiz {
     }
 
     public Location getAddress_id() {
-        return address_id;
+        return addressId;
     }
 
     public void setAddress_id(Location address_id) {
-        this.address_id = address_id;
+        this.addressId = addressId;
     }
 
     @Override
@@ -82,11 +82,11 @@ public class Quiz {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quiz quiz = (Quiz) o;
-        return quizId == quiz.quizId && quizName.equals(quiz.quizName) && category == quiz.category && shortDescription.equals(quiz.shortDescription) && dateTime.equals(quiz.dateTime) && address_id.equals(quiz.address_id);
+        return quizId == quiz.quizId && quizName.equals(quiz.quizName) && category == quiz.category && shortDescription.equals(quiz.shortDescription) && dateTime.equals(quiz.dateTime) && addressId.equals(quiz.addressId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(quizId, quizName, category, shortDescription, dateTime, address_id);
+        return Objects.hash(quizId, quizName, category, shortDescription, dateTime, addressId);
     }
 }
