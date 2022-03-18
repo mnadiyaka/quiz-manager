@@ -1,6 +1,15 @@
 package com.sigma.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,18 +67,18 @@ public class Team {
     }
 
     public List<Quiz> getQuizId() {
-        return quizId;
+        return quizzes;
     }
 
-    public void setQuizId(List<Quiz> quizId) {
-        this.quizId = quizId;
+    public void setQuizId(List<Quiz> quizzes) {
+        this.quizzes = quizzes;
     }
 
-    public User getCaptainId() {
+    public List<User> getCaptainId() {
         return captainId;
     }
 
-    public void setCaptainId(User captainId) {
+    public void setCaptainId(List<User> captainId) {
         this.captainId = captainId;
     }
 
@@ -78,11 +87,11 @@ public class Team {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return teamId == team.teamId && confirmed == team.confirmed && teamName.equals(team.teamName) && Objects.equals(quizId, team.quizId) && captainId.equals(team.captainId);
+        return teamId == team.teamId && confirmed == team.confirmed && teamName.equals(team.teamName) && quizzes.equals(team.quizzes) && captainId.equals(team.captainId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(teamId, teamName, confirmed, quizId, captainId);
+        return Objects.hash(teamId, teamName, confirmed, quizzes, captainId);
     }
 }
