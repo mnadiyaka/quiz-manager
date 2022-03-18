@@ -1,6 +1,7 @@
 package com.sigma.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +23,11 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "captain_id")
     private Team team;
+
+    @ManyToMany
+    @JoinTable(name ="admin_location", joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "location_id"))
+    private List<Location> adminLocation;
 
     public int getUserid() {
         return userid;

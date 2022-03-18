@@ -26,8 +26,8 @@ public class Quiz {
     @Column(name = "datetime")
     private LocalDateTime dateTime;
 
-    @OneToOne
-    @Column(name = "address_id")
+    @ManyToOne
+    @JoinColumn(name = "address_id", referencedColumnName = "location_id")
     private Location addressId;
 
     @ManyToMany(mappedBy = "quizzes")

@@ -1,11 +1,7 @@
 package com.sigma.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -30,6 +26,12 @@ public class Location {
 
     @Column(name = "zip_code")
     private Role zipCode;
+
+    @OneToMany(mappedBy = "addressId")
+    private List<Quiz> quizzes_loc;
+
+    @ManyToMany(mappedBy = "adminLocation")
+    private List<User> admin_users;
 
     public int getLocationId() {
         return locationId;
