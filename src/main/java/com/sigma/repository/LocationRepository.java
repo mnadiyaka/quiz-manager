@@ -9,5 +9,7 @@ import java.util.List;
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
+    public List<Location> getAllLocations();
+
     public List<Location> getLocationsByCity(String city);
 }
