@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "quiz")
+@Table(name = "quizzes")
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,7 +21,6 @@ public class Quiz {
 
     @Column(name = "quiz_name")
     private String quizName;
-
 
     @Column(name = "category")
     private Category category;

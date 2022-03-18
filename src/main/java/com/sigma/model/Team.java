@@ -1,19 +1,13 @@
 package com.sigma.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "team")
+@Table(name = "teams")
 public class Team {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "team_id")
@@ -26,13 +20,16 @@ public class Team {
     @Column(name = "confirmed")
     private boolean confirmed;
 
-    @OneToMany
+    @OneToOne
     @Column(name = "quiz_id")
-    private List<Quiz> quizId;
+    private Quiz quizId;
 
     @OneToOne
     @Column(name = "captain_id")
     private User captainId;
+
+    @OneToMany(mappedBy = "teamId")
+    private List<Participant> participants;
 
     public int getTeamId() {
         return teamId;
