@@ -1,12 +1,6 @@
 package com.sigma.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -24,6 +18,10 @@ public class User {
 
     @Column(name = "role")
     private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "captain_id")
+    private Team team;
 
     public int getUserid() {
         return userid;

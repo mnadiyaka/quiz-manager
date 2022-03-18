@@ -16,17 +16,19 @@ public class Team {
     @Column(name = "team_name")
     private String teamName;
 
-
     @Column(name = "confirmed")
     private boolean confirmed;
 
-    @OneToOne
+    @ManyToMany
+    @JoinTable(name = "enrolled_quizzes",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "quiz_id"))
     @Column(name = "quiz_id")
-    private Quiz quizId;
+    private List<Quiz> quizzes;
 
-    @OneToOne
+    @OneToMany(mappedBy = "team")
     @Column(name = "captain_id")
-    private User captainId;
+    private List<User> captainId;
 
     @OneToMany(mappedBy = "teamId")
     private List<Participant> participants;

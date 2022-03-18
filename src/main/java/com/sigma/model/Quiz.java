@@ -1,14 +1,9 @@
 package com.sigma.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -34,6 +29,9 @@ public class Quiz {
     @OneToOne
     @Column(name = "address_id")
     private Location addressId;
+
+    @ManyToMany(mappedBy = "quizzes")
+    private List<Team> teams;
 
     public int getQuizId() {
         return quizId;
