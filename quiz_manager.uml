@@ -3,19 +3,25 @@
   <ID>DATABASE</ID>
   <OriginalElement>3122c3da-55a9-4d5f-a4da-ca57f49cfee8.SCHEMA:quiz_manager</OriginalElement>
   <nodes>
-    <node x="177.75" y="0.0">3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.locations</node>
     <node x="288.375" y="469.5">3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.admin_location</node>
+    <node x="177.75" y="0.0">3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.locations</node>
     <node x="107.375" y="436.0">3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.teams</node>
     <node x="187.25" y="631.0">3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.participants</node>
+    <node x="6.63225731537392" y="640.9500696702277">3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.enrolled_quizzes</node>
     <node x="241.25" y="239.0">3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.users</node>
-    <node x="27.25" y="653.5">3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.enrolled_quizzes</node>
     <node x="28.25" y="217.0">3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.quizzes</node>
   </nodes>
   <notes />
   <edges>
+    <edge source="3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.participants" target="3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.teams" relationship="REFERENCES">
+      <point x="0.0" y="-60.5" />
+      <point x="262.75" y="605.0" />
+      <point x="228.125" y="605.0" />
+      <point x="40.25" y="71.5" />
+    </edge>
     <edge source="3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.enrolled_quizzes" target="3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.quizzes" relationship="REFERENCES">
       <point x="-35.0" y="-38.0" />
-      <point x="62.25" y="605.0" />
+      <point x="41.63225731537392" y="605.0" />
       <point x="92.0" y="605.0" />
       <point x="92.0" y="409.0" />
       <point x="76.5" y="409.0" />
@@ -28,12 +34,6 @@
       <point x="407.75" y="191.0" />
       <point x="310.5" y="191.0" />
       <point x="44.25" y="82.5" />
-    </edge>
-    <edge source="3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.participants" target="3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.teams" relationship="REFERENCES">
-      <point x="0.0" y="-60.5" />
-      <point x="262.75" y="605.0" />
-      <point x="228.125" y="605.0" />
-      <point x="40.25" y="71.5" />
     </edge>
     <edge source="3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.teams" target="3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.quizzes" relationship="REFERENCES">
       <point x="-40.25" y="-71.5" />
@@ -61,13 +61,15 @@
     </edge>
     <edge source="3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.enrolled_quizzes" target="3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.teams" relationship="REFERENCES">
       <point x="35.0" y="-38.0" />
-      <point x="132.25" y="605.0" />
-      <point x="147.625" y="605.0" />
-      <point x="-40.25" y="71.5" />
+      <point x="111.63225731537392" y="605.0" />
+      <point x="154.3125870877845" y="605.0" />
+      <point x="-33.56241291221551" y="47.69414770088247" />
     </edge>
   </edges>
-  <settings layout="Hierarchic" zoom="0.5155440414507773" showDependencies="false" x="236.0" y="375.99999999999994" />
-  <SelectedNodes />
+  <settings layout="Hierarchic" zoom="1.1155440414507773" showDependencies="false" x="170.0" y="466.0" />
+  <SelectedNodes>
+    <node>3122c3da-55a9-4d5f-a4da-ca57f49cfee8.TABLE:quiz_manager.enrolled_quizzes</node>
+  </SelectedNodes>
   <Categories>
     <Category>Columns</Category>
     <Category>Comments</Category>

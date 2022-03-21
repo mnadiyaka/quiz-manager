@@ -33,7 +33,7 @@ public class User {
     private Role role;
 
     //@OneToMany(mappedBy = "captainId")
-    private int team;
+    private int teamId;
 
     @ManyToMany
     @JoinTable(name = "admin_location", joinColumns = @JoinColumn(name = "user_id"),
