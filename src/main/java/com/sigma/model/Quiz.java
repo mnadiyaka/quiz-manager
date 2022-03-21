@@ -46,7 +46,7 @@ public class Quiz {
 
     @ManyToOne
     @JoinColumn(name = "address_id", referencedColumnName = "location_id")
-    private Location addressId;
+    private Location address;
 
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "quizzes")

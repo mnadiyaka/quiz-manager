@@ -37,16 +37,16 @@ public class Location {
     private String city;
 
     @Column(name = "street")
-    private Role street;
+    private String street;
 
     @Column(name = "house_number")
-    private Role houseNumber;
+    private String houseNumber;
 
     @Column(name = "zip_code")
-    private Role zipCode;
+    private int zipCode;
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "addressId")
+    @OneToMany(mappedBy = "address")
     private List<Quiz> quizzes_loc;
 
     @EqualsAndHashCode.Exclude
