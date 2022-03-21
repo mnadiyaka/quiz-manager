@@ -1,5 +1,11 @@
 package com.sigma.model;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +22,11 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "teams")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Team {
 
     @Id
@@ -40,67 +51,7 @@ public class Team {
     @JoinColumn(name = "captain_id")
     private User captain;
 
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "teamId")
     private List<Participant> participants;
-
-    public int getTeamId() {
-        return teamId;
-    }
-
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
-    }
-
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public boolean isConfirmed() {
-        return confirmed;
-    }
-
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
-
-    public List<Quiz> getQuizzes() {
-        return quizzes;
-    }
-
-    public void setQuizzes(List<Quiz> quizzes) {
-        this.quizzes = quizzes;
-    }
-
-    public User getCaptain() {
-        return captain;
-    }
-
-    public void setCaptain(User captain) {
-        this.captain = captain;
-    }
-
-    public List<Participant> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(List<Participant> participants) {
-        this.participants = participants;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Team team = (Team) o;
-        return teamId == team.teamId && confirmed == team.confirmed && teamName.equals(team.teamName) && quizzes.equals(team.quizzes) && captain == team.captain;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(teamId, teamName, confirmed, quizzes, captain);
-    }
 }
