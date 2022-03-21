@@ -1,7 +1,6 @@
 package com.sigma.repository;
 
 import com.sigma.model.Quiz;
-import com.sigma.model.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
