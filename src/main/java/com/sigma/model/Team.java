@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -37,10 +36,9 @@ public class Team {
     @Column(name = "quiz_id")
     private List<Quiz> quizzes;
 
-//    @ManyToOne
-//    @JoinColumn(name = "captain_id", referencedColumnName = "user_id")
-    @Column(name = "captain_id")
-    private int captainId;
+    @OneToOne
+    @JoinColumn(name = "captain_id")
+    private User captain;
 
     @OneToMany(mappedBy = "teamId")
     private List<Participant> participants;
@@ -69,20 +67,28 @@ public class Team {
         this.confirmed = confirmed;
     }
 
-    public List<Quiz> getQuizId() {
+    public List<Quiz> getQuizzes() {
         return quizzes;
     }
 
-    public void setQuizId(List<Quiz> quizzes) {
+    public void setQuizzes(List<Quiz> quizzes) {
         this.quizzes = quizzes;
     }
 
-    public int getCaptainId() {
-        return captainId;
+    public User getCaptain() {
+        return captain;
     }
 
-    public void setCaptainId(int captainId) {
-        this.captainId = captainId;
+    public void setCaptain(User captain) {
+        this.captain = captain;
+    }
+
+    public List<Participant> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<Participant> participants) {
+        this.participants = participants;
     }
 
     @Override
@@ -90,11 +96,11 @@ public class Team {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return teamId == team.teamId && confirmed == team.confirmed && teamName.equals(team.teamName) && quizzes.equals(team.quizzes) && captainId == team.captainId;
+        return teamId == team.teamId && confirmed == team.confirmed && teamName.equals(team.teamName) && quizzes.equals(team.quizzes) && captain == team.captain;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(teamId, teamName, confirmed, quizzes, captainId);
+        return Objects.hash(teamId, teamName, confirmed, quizzes, captain);
     }
 }

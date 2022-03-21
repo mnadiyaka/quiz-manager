@@ -8,9 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -32,9 +29,6 @@ public class User {
     @Column(name = "role")
     private Role role;
 
-    //@OneToMany(mappedBy = "captainId")
-    private int teamId;
-
     @ManyToMany
     @JoinTable(name = "admin_location", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id"))
@@ -44,32 +38,41 @@ public class User {
         return userid;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
     public void setUserid(int userid) {
         this.userid = userid;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public void setRole(Role role) {
         this.role = role;
+    }
+
+
+    public List<Location> getAdminLocation() {
+        return adminLocation;
+    }
+
+    public void setAdminLocation(List<Location> adminLocation) {
+        this.adminLocation = adminLocation;
     }
 
     @Override
