@@ -9,7 +9,5 @@ import java.util.List;
 @Repository
 public interface QuizRepository extends JpaRepository <Quiz, Long> {
 
-    public List<Quiz> getAllQuizzes();
-
-    public List<Quiz> getQuizzesByTeamId(Integer teamId);
+    //public List<Quiz> findQuizzesByTeamId(Integer teamId);
 }

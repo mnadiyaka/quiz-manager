@@ -8,7 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
@@ -35,9 +37,10 @@ public class Team {
     @Column(name = "quiz_id")
     private List<Quiz> quizzes;
 
-    @OneToMany(mappedBy = "team")
+//    @ManyToOne
+//    @JoinColumn(name = "captain_id", referencedColumnName = "user_id")
     @Column(name = "captain_id")
-    private List<User> captainId;
+    private int captainId;
 
     @OneToMany(mappedBy = "teamId")
     private List<Participant> participants;
@@ -74,11 +77,11 @@ public class Team {
         this.quizzes = quizzes;
     }
 
-    public List<User> getCaptainId() {
+    public int getCaptainId() {
         return captainId;
     }
 
-    public void setCaptainId(List<User> captainId) {
+    public void setCaptainId(int captainId) {
         this.captainId = captainId;
     }
 
@@ -87,7 +90,7 @@ public class Team {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
-        return teamId == team.teamId && confirmed == team.confirmed && teamName.equals(team.teamName) && quizzes.equals(team.quizzes) && captainId.equals(team.captainId);
+        return teamId == team.teamId && confirmed == team.confirmed && teamName.equals(team.teamName) && quizzes.equals(team.quizzes) && captainId == team.captainId;
     }
 
     @Override

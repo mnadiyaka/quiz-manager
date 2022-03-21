@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -30,9 +32,8 @@ public class User {
     @Column(name = "role")
     private Role role;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "captain_id")
-    private Team team;
+    //@OneToMany(mappedBy = "captainId")
+    private int team;
 
     @ManyToMany
     @JoinTable(name = "admin_location", joinColumns = @JoinColumn(name = "user_id"),

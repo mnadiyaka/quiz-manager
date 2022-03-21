@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface TeamRepository extends JpaRepository <Team, Long> {
 
-    public List<Team> getTeamsByQuizId(Integer quizId);
+    //public List<Team> findTeamsByQuizId(Integer quizId);
 }
