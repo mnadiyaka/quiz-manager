@@ -1,5 +1,11 @@
 package com.sigma.model;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +19,11 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class User {
 
     @Id
@@ -29,71 +40,9 @@ public class User {
     @Column(name = "role")
     private Role role;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany
     @JoinTable(name = "admin_location", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id"))
     private List<Location> adminLocation;
-
-    public int getUserid() {
-        return userid;
-    }
-
-    public void setUserid(int userid) {
-        this.userid = userid;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-
-    public List<Location> getAdminLocation() {
-        return adminLocation;
-    }
-
-    public void setAdminLocation(List<Location> adminLocation) {
-        this.adminLocation = adminLocation;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (userid != user.userid) return false;
-        if (!username.equals(user.username)) return false;
-        if (!password.equals(user.password)) return false;
-        return role == user.role;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = userid;
-        result = 31 * result + username.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + role.hashCode();
-        return result;
-    }
 }
