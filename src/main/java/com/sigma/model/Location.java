@@ -1,5 +1,11 @@
 package com.sigma.model;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,10 +15,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "locations")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Location {
 
     @Id
@@ -27,78 +37,19 @@ public class Location {
     private String city;
 
     @Column(name = "street")
-    private Role street;
+    private String street;
 
     @Column(name = "house_number")
-    private Role houseNumber;
+    private String houseNumber;
 
     @Column(name = "zip_code")
-    private Role zipCode;
+    private int zipCode;
 
-    @OneToMany(mappedBy = "addressId")
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "address")
     private List<Quiz> quizzes_loc;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "adminLocation")
     private List<User> admin_users;
-
-    public int getLocationId() {
-        return locationId;
-    }
-
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
-    }
-
-    public String getLocationName() {
-        return locationName;
-    }
-
-    public void setLocationName(String locationName) {
-        this.locationName = locationName;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public Role getStreet() {
-        return street;
-    }
-
-    public void setStreet(Role street) {
-        this.street = street;
-    }
-
-    public Role getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(Role houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public Role getZipCode() {
-        return zipCode;
-    }
-
-    public void setZipCode(Role zipCode) {
-        this.zipCode = zipCode;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Location location = (Location) o;
-        return locationId == location.locationId && Objects.equals(locationName, location.locationName) && Objects.equals(city, location.city) && street == location.street && houseNumber == location.houseNumber && zipCode == location.zipCode;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(locationId, locationName, city, street, houseNumber, zipCode);
-    }
 }
