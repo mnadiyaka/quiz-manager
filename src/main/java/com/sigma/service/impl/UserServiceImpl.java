@@ -58,6 +58,6 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException();
         }
         log.info("Deleting user {}", userRepository.getById(userId).getUsername());
-        userRepository.deleteById(Long.valueOf(userId));
+        userRepository.deleteById(userId);
     }
 }
