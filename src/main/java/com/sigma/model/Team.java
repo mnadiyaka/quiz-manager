@@ -1,11 +1,7 @@
 package com.sigma.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +24,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "team_id")
-    private int teamId;
+    private int id;
 
     @Column(name = "team_name")
     private String teamName;
