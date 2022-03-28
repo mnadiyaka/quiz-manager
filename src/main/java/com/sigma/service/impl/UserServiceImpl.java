@@ -10,13 +10,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -48,7 +46,7 @@ public class UserServiceImpl implements UserService {
         User oldUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException());
         log.info("Updating user {}", oldUser.getUsername());
         oldUser.setUsername(updatedUser.getUsername());
-        oldUser.setPassword(updatedUser.getPassword());
+        oldUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         oldUser.setRole(updatedUser.getRole());
         oldUser.setAdminLocation(updatedUser.getAdminLocation());
         userRepository.save(oldUser);
