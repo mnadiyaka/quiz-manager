@@ -11,4 +11,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     public List<User> findUsersByRole(Role role);
+
+    public User findByUsername(String username);
 }

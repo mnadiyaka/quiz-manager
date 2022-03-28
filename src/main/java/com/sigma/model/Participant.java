@@ -20,10 +20,10 @@ public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "participant_id")
-    private int id;
+    private Long id;
 
     @Column(name = "firstname")
-    private int firstname;
+    private String firstname;
 
     @Column(name = "lastname")
     private String lastname;

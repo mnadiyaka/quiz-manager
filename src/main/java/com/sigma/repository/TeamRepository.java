@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TeamRepository extends JpaRepository <Team, Long> {
+public interface TeamRepository extends JpaRepository<Team, Long> {
 
     public List<Team> findTeamsByQuizzesContaining(Quiz quiz);
 }

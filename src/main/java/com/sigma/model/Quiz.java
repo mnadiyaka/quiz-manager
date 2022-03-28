@@ -23,7 +23,7 @@ public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "quiz_id")
-    private int id;
+    private Long id;
 
     @Column(name = "quiz_name")
     private String quizName;
