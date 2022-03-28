@@ -1,6 +1,7 @@
 package com.sigma.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,11 +19,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "locations")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
+@Data
 public class Location {
 
     @Id
@@ -47,9 +44,9 @@ public class Location {
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "address")
-    private List<Quiz> quizzes_loc;
+    private List<Quiz> quizzesLoc;
 
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "adminLocation")
-    private List<User> admin_users;
+    private List<User> adminUsers;
 }
