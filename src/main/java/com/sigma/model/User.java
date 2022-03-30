@@ -3,6 +3,7 @@ package com.sigma.model;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Column;
@@ -19,7 +20,6 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
-@Builder
 @RequiredArgsConstructor
 public class User {
 
@@ -42,4 +42,10 @@ public class User {
     @JoinTable(name = "admin_location", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id"))
     private List<Location> adminLocation;
+
+    public User(String username, String password, Role role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 }

@@ -1,5 +1,7 @@
 package com.sigma.service;
 
+import com.sigma.dto.SignUpUserDto;
+import com.sigma.dto.SignUpUserResponseDto;
 import com.sigma.model.User;
 
 import java.util.List;
@@ -9,7 +11,9 @@ public interface UserService {
 
     public User findUserById(Long userId);
 
-    public User createUser(User user);
+    public User findUserByUsername(String username);
+
+    public SignUpUserResponseDto createUser(SignUpUserDto signUpDto);
 
     public void updateUser(User updatedUser, Long userId);
 

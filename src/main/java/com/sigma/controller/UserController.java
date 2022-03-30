@@ -1,10 +1,17 @@
 package com.sigma.controller;
 
+import com.sigma.dto.SignInUserDto;
+import com.sigma.dto.SignInUserResponseDto;
+import com.sigma.dto.SignUpUserDto;
+import com.sigma.dto.SignUpUserResponseDto;
 import com.sigma.dto.UserDto;
 import com.sigma.model.User;
 import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.websocket.AuthenticationException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,7 +29,10 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
+
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/users")
     public List<UserDto> getUsers() {
@@ -35,44 +45,40 @@ public class UserController {
         return "Hello World";
     }
 
-    @PostMapping("/register")
-    public String doRegister(@ModelAttribute UserDto userDto) {
-
-        User user = new User();
-        user.setPassword(userDto.getPassword());
-        user.setUsername(userDto.getUsername());
-
-        userService.createUser(user);
-
-        return "register-success";
+    @PostMapping("/signUp")
+    public SignUpUserResponseDto signUp(@RequestBody SignUpUserDto signUpDto) {
+        return userService.createUser(signUpDto);
     }
 
-    @PostMapping("/users/login")
-    public String loginUser(@RequestBody User user) {
+    @PostMapping("/signIn")
+    public SignInUserResponseDto loginUser(@RequestBody SignInUserDto user) throws AuthenticationException {
+        User myUser = userService.findUserByUsername(user.getUsername());
         List<User> users = userService.getAllUsers();
 
-        for (User other : users) {
-            if (other.equals(user)) {
-                return "logged in";
-            }
-        }
+        if (myUser.getPassword().equals(passwordEncoder.encode(user.getPassword()))) {
+            log.info("success");
 
-        return "can't log in";
+            return new SignInUserResponseDto("success", ""/*, token*/); //TODO: token
+        }
+        log.info("failure");
+        throw new AuthenticationException("failure");
     }
 
-    @DeleteMapping("/users/{user_d}/delete")
+    @DeleteMapping("/users/{user_id}/delete")
     public String deleteUser(@PathVariable("user_id") Long userId) {
         userService.deleteUser(userId);
         return "deleted user";
     }
-//    @GetMapping("/admin")
-//    public String admin_in(){
-//        log.info("Quizzes....");
-//        return "quizzes";
-//    }
-//    @GetMapping("/captain")
-//    public String capt_in(){
-//        log.info("team management....");
-//        return "team";
-//    }
+
+    @GetMapping("/admin")
+    public String admin_in() {
+        log.info("Quizzes....");
+        return "quizzes";
+    }
+
+    @GetMapping("/captain")
+    public String capt_in() {
+        log.info("team management....");
+        return "team";
+    }
 }

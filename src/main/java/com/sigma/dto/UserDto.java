@@ -25,11 +25,11 @@ public class UserDto {
                 .setRole(user.getRole());
     }
 
-    public User toUser() {
-        return User.builder()
-                .id(id)
-                .username(username)
-                .password(password)
-                .role(role).build();
-    }
+//    public User toUser() {
+//        return User.builder()
+//                .id(id)
+//                .username(username)
+//                .password(password)
+//                .role(role).build();
+//    }
 }

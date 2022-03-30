@@ -1,5 +1,7 @@
 package com.sigma.service.impl;
 
+import com.sigma.dto.SignUpUserDto;
+import com.sigma.dto.SignUpUserResponseDto;
 import com.sigma.model.User;
 import com.sigma.repository.UserRepository;
 import com.sigma.service.UserService;
@@ -35,10 +37,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
-        log.info("Creating new user {}", user.getUsername());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+    public User findUserByUsername(String username) {
+        log.info("Searching for user with username {}", username);
+        if (userRepository.findByUsername(username) == null)
+            throw new EntityNotFoundException();
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public SignUpUserResponseDto createUser(SignUpUserDto signUpDto) {
+        log.info("Creating new user {}", signUpDto.getUsername());
+        if (userRepository.findByUsername(signUpDto.getUsername()) != null)
+            return new SignUpUserResponseDto("failure", "user already exists");
+
+        User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getRole());
+        userRepository.save(user);
+        return new SignUpUserResponseDto("success", "user created");
     }
 
     @Override

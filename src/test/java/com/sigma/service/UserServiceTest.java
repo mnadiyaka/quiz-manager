@@ -1,5 +1,6 @@
 package com.sigma.service;
 
+import com.sigma.dto.SignUpUserDto;
 import com.sigma.model.Role;
 import com.sigma.model.User;
 import com.sigma.repository.UserRepository;
@@ -30,14 +31,17 @@ public class UserServiceTest {
     @Test
     @Transactional
     public void createUserTest() {
-        User user = new User();
+        int expected = userService.getAllUsers().size();
+
+        SignUpUserDto user = new SignUpUserDto();
         user.setUsername("user1");
         user.setPassword("12345");
         user.setRole(Role.CAPTAIN);
 
         userService.createUser(user);
+        int actual = userService.getAllUsers().size();
 
-        Assertions.assertEquals(user, userService.findUserById(user.getId()));
+        Assertions.assertEquals(expected+1, actual);
     }
 
     @Test
@@ -64,7 +68,7 @@ public class UserServiceTest {
     public void getAllUsers() {
         int expected = userRepository.findAll().size();
 
-        User user = new User();
+        SignUpUserDto user = new SignUpUserDto();
         user.setUsername("user1");
         user.setPassword("12345");
         user.setRole(Role.CAPTAIN);
