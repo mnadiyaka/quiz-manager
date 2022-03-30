@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -21,12 +23,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/admin/*").hasRole("admin")
-                .antMatchers("/captain/*").hasAnyRole("admin", "captain")
+                .antMatchers("/admin/*").hasRole("ADMIN")
+                .antMatchers("/captain/*").hasAnyRole("ADMIN", "CAPTAIN")
                 .and()
                 .formLogin()
-                    .defaultSuccessUrl("/users")
-                    .permitAll()
+                .defaultSuccessUrl("/users")
+                .permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll()
                 .and()
@@ -36,6 +38,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         //http.addFilter(new AuthFilter(authenticationManagerBean()));
 
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(BCryptPasswordEncoder.BCryptVersion.$2B);
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("capt")
+                .password(passwordEncoder().encode("capt"))
+                .roles("CAPTAIN")
+                .and()
+                .withUser("admin")
+                .password(passwordEncoder().encode("admin"))
+                .roles("ADMIN", "CAPTAIN");
     }
 
 

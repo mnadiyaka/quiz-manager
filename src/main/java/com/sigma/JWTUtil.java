@@ -1,22 +1,18 @@
 package com.sigma;
 
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sigma.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.util.Base64;
 import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
-public class JWYUtil {
+public class JWTUtil {
 
     private final AuthenticationManager authenticationManager;
 

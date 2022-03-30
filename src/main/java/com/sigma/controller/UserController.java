@@ -1,5 +1,6 @@
 package com.sigma.controller;
 
+import com.sigma.JWTUtil;
 import com.sigma.dto.SignInUserDto;
 import com.sigma.dto.SignInUserResponseDto;
 import com.sigma.dto.SignUpUserDto;
@@ -57,7 +58,8 @@ public class UserController {
         if (myUser.getPassword().equals(passwordEncoder.encode(user.getPassword()))) {
             log.info("success");
 
-            return new SignInUserResponseDto("success", ""/*, token*/); //TODO: token
+            String token = JWTUtil.generateJWT(myUser, "Java"); //TODO: issuer?
+            return new SignInUserResponseDto("success", token);
         }
         log.info("failure");
         throw new AuthenticationException("failure");
