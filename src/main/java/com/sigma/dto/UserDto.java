@@ -8,22 +8,22 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class UserDto {
-//
-//    private Long id;
-//
-//    private String username;
-//
-//    private String password;
-//
-//    private Role role;
-//
-//    public static UserDto fromUser(User user) {
-//        return new UserDto()
-//                .setId(user.getId())
-//                .setUsername(user.getUsername())
-//                .setPassword(user.getPassword())
-//                .setRole(user.getRole());
-//    }
+
+    private Long id;
+
+    private String username;
+
+    private String password;
+
+    private Role role;
+
+    public static UserDto fromUser(User user) {
+        return new UserDto()
+                .setId(user.getId())
+                .setUsername(user.getUsername())
+                .setPassword(user.getPassword())
+                .setRole(user.getRole());
+    }
 
 //    public User toUser() {
 //        return User.builder()
