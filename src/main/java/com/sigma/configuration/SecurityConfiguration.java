@@ -18,25 +18,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin();
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.cors().and().csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/admin/*").hasRole("ADMIN")
-                .antMatchers("/captain/*").hasAnyRole("ADMIN", "CAPTAIN")
-                .and()
-                .formLogin()
-                .defaultSuccessUrl("/users")
-                .permitAll()
-                .and()
-                .logout().logoutSuccessUrl("/").permitAll()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        ;
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/captain").hasAnyRole("ADMIN", "CAPTAIN");
 
-        //http.addFilter(new AuthFilter(authenticationManagerBean()));
+       // http.addFilter(new AuthFilter(authenticationManagerBean()));
 
     }
 
@@ -56,6 +45,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .password(passwordEncoder().encode("admin"))
                 .roles("ADMIN", "CAPTAIN");
     }
-
-
 }

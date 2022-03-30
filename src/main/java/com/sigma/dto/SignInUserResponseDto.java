@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class SignInUserResponseDto {
 
-    private String status;
+    private String type;
 
     private String token;
 }

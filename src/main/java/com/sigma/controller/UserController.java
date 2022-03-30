@@ -50,16 +50,18 @@ public class UserController {
         return userService.createUser(signUpDto);
     }
 
-    @PostMapping("/signIn")
+    @PostMapping("/login")
     public SignInUserResponseDto loginUser(@RequestBody SignInUserDto user) throws AuthenticationException {
         User myUser = userService.findUserByUsername(user.getUsername());
         List<User> users = userService.getAllUsers();
+//        String test = myUser.getPassword();
+//        String test1 = passwordEncoder.encode(user.getPassword());
 
-        if (myUser.getPassword().equals(passwordEncoder.encode(user.getPassword()))) {
+        if (passwordEncoder.matches(user.getPassword(), myUser.getPassword())) {
             log.info("success");
 
-            String token = JWTUtil.generateJWT(myUser, "Java"); //TODO: issuer?
-            return new SignInUserResponseDto("success", token);
+            String token = JWTUtil.generateJWT(myUser); //TODO: issuer?
+            return new SignInUserResponseDto("bearer", token);
         }
         log.info("failure");
         throw new AuthenticationException("failure");

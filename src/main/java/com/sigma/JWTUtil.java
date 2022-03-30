@@ -16,13 +16,16 @@ public class JWTUtil {
 
     private final AuthenticationManager authenticationManager;
 
-    public static String generateJWT(User user, String issuer) {
+    public static String generateJWT(User user) {
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); //TODO: put in file
         String access_token = JWT.create()
-                .withSubject(user.getUsername())
+                .withSubject(user.getId().toString())
+                .withClaim("role", user.getRole().toString())
+                .withIssuer("http://localhost:8080/")
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 5 * 60 * 1000)) //TODO: change time
                 .sign(algorithm);
+
 
         return access_token;
     }
