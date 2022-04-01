@@ -39,16 +39,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         log.info("Searching for user with username {}", username);
-        if (userRepository.findByUsername(username) == null)
+        if (userRepository.findByUsername(username) == null) {
             throw new EntityNotFoundException();
+        }
         return userRepository.findByUsername(username);
     }
 
     @Override
     public SignUpUserResponseDto createUser(SignUpUserDto signUpDto) {
         log.info("Creating new user {}", signUpDto.getUsername());
-        if (userRepository.findByUsername(signUpDto.getUsername()) != null)
+        if (userRepository.findByUsername(signUpDto.getUsername()) != null) {
             return new SignUpUserResponseDto("failure", "user already exists");
+        }
 
         User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getRole());
         userRepository.save(user);

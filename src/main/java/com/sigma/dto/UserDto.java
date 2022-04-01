@@ -24,12 +24,4 @@ public class UserDto {
                 .setPassword(user.getPassword())
                 .setRole(user.getRole());
     }
-
-//    public User toUser() {
-//        return User.builder()
-//                .id(id)
-//                .username(username)
-//                .password(password)
-//                .role(role).build();
-//    }
 }

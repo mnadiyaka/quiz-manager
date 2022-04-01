@@ -10,22 +10,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import java.util.Base64;
 import java.util.Date;
 
-@Slf4j
-@RequiredArgsConstructor
 public class JWTUtil {
-
-    private final AuthenticationManager authenticationManager;
 
     public static String generateJWT(User user) {
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); //TODO: put in file
-        String access_token = JWT.create()
+        final String access_token = JWT.create()
                 .withSubject(user.getId().toString())
                 .withClaim("role", user.getRole().toString())
                 .withIssuer("http://localhost:8080/")
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + 5 * 60 * 1000)) //TODO: change time
                 .sign(algorithm);
-
 
         return access_token;
     }
@@ -39,6 +34,5 @@ public class JWTUtil {
         String header = new String(decoder.decode(chunks[0]));
         String payload = new String(decoder.decode(chunks[1]));
 
-        log.info("user {}, password {}", user.getUsername(), user.getPassword());
     }
 }

@@ -53,15 +53,12 @@ public class UserController {
     @PostMapping("/login")
     public SignInUserResponseDto loginUser(@RequestBody SignInUserDto user) throws AuthenticationException {
         User myUser = userService.findUserByUsername(user.getUsername());
-        List<User> users = userService.getAllUsers();
-//        String test = myUser.getPassword();
-//        String test1 = passwordEncoder.encode(user.getPassword());
 
         if (passwordEncoder.matches(user.getPassword(), myUser.getPassword())) {
             log.info("success");
 
             String token = JWTUtil.generateJWT(myUser); //TODO: issuer?
-            return new SignInUserResponseDto("bearer", token);
+            return new SignInUserResponseDto("Bearer", token);
         }
         log.info("failure");
         throw new AuthenticationException("failure");
@@ -74,13 +71,13 @@ public class UserController {
     }
 
     @GetMapping("/admin")
-    public String admin_in() {
+    public String admin() {
         log.info("Quizzes....");
         return "quizzes";
     }
 
     @GetMapping("/captain")
-    public String capt_in() {
+    public String captain() {
         log.info("team management....");
         return "team";
     }
