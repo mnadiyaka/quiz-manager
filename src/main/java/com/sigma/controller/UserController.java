@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,18 @@ public class UserController {
 
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    @Value("${jwt-settings.secret-key}")
+    private String secret;
+
+    @Autowired
+    @Value("${jwt-settings.timestamp}")
+    private int timestamp;
+
+    @Autowired
+    @Value("${jwt-settings.issuer}")
+    private String issuer;
+
     @GetMapping("/users")
     public List<UserDto> getUsers() {
         return userService.getAllUsers().stream().map(UserDto::fromUser).toList();
@@ -60,7 +73,7 @@ public class UserController {
         if (passwordEncoder.matches(user.getPassword(), myUser.getPassword())) {
             log.info(SUCCESS);
 
-            String token = JWTUtil.generateJWT(myUser); //TODO: issuer?
+            String token = JWTUtil.generateJWT(myUser, secret, timestamp, issuer); //TODO: issuer?
             return new SignInUserResponseDto("Bearer", token);
         }
         log.info(FAILURE);

@@ -26,3 +26,7 @@ logging:
       springframework:
         transaction:
           interceptor: TRACE
+jwt-settings:
+  secret-key: secretttt
+  timestamp: 86400000
+  issuer: http://localhost:8080/
