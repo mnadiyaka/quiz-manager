@@ -29,6 +29,9 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
+    private final String SUCCESS = "success";
+    private final String FAILURE = "failure";
+
     @Autowired
     private UserService userService;
 
@@ -55,13 +58,13 @@ public class UserController {
         User myUser = userService.findUserByUsername(user.getUsername());
 
         if (passwordEncoder.matches(user.getPassword(), myUser.getPassword())) {
-            log.info("success");
+            log.info(SUCCESS);
 
             String token = JWTUtil.generateJWT(myUser); //TODO: issuer?
             return new SignInUserResponseDto("Bearer", token);
         }
-        log.info("failure");
-        throw new AuthenticationException("failure");
+        log.info(FAILURE);
+        throw new AuthenticationException(FAILURE);
     }
 
     @DeleteMapping("/users/{user_id}/delete")

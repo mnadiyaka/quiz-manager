@@ -19,6 +19,9 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
+    private final String SUCCESS = "success";
+    private final String FAILURE = "failure";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -49,12 +52,12 @@ public class UserServiceImpl implements UserService {
     public SignUpUserResponseDto createUser(SignUpUserDto signUpDto) {
         log.info("Creating new user {}", signUpDto.getUsername());
         if (userRepository.findByUsername(signUpDto.getUsername()) != null) {
-            return new SignUpUserResponseDto("failure", "user already exists");
+            return new SignUpUserResponseDto(FAILURE, "user already exists");
         }
 
         User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getRole());
         userRepository.save(user);
-        return new SignUpUserResponseDto("success", "user created");
+        return new SignUpUserResponseDto(SUCCESS, "user created");
     }
 
     @Override
