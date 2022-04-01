@@ -21,6 +21,8 @@ public class UserServiceImpl implements UserService {
 
     private final String SUCCESS = "success";
     private final String FAILURE = "failure";
+    private final String CREATED = "user created";
+    private final String EXISTED = "user already exists";
 
     @Autowired
     private UserRepository userRepository;
@@ -52,12 +54,12 @@ public class UserServiceImpl implements UserService {
     public SignUpUserResponseDto createUser(SignUpUserDto signUpDto) {
         log.info("Creating new user {}", signUpDto.getUsername());
         if (userRepository.findByUsername(signUpDto.getUsername()) != null) {
-            return new SignUpUserResponseDto(FAILURE, "user already exists");
+            return new SignUpUserResponseDto(FAILURE, EXISTED);
         }
 
         User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getRole());
         userRepository.save(user);
-        return new SignUpUserResponseDto(SUCCESS, "user created");
+        return new SignUpUserResponseDto(SUCCESS, CREATED);
     }
 
     @Override
