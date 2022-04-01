@@ -1,0 +1,28 @@
+spring:
+  jpa:
+    generate-ddl: 'true'
+    database: MYSQL
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: 'true'
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: validate
+  sql:
+    init:
+      mode: always
+      platform: MYSQL
+  datasource:
+    username: Admin
+    url: jdbc:mysql://127.0.0.1:3306/quiz_manager
+    password: Admin
+server:
+  port: '8080'
+logging:
+  level:
+    org:
+      springframework:
+        transaction:
+          interceptor: TRACE
