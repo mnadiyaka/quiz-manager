@@ -4,10 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sigma.model.User;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
 
+@Slf4j
 public class JWTUtil {
 
     public static String generateJWT(User user, String secret, int timestamp, String issuer) {
@@ -29,6 +32,11 @@ public class JWTUtil {
         JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer("http://localhost:8080/")
                 .build();
+
+        DecodedJWT jwt = JWT.decode(token);
+        if( jwt.getExpiresAt().before(new Date())) {
+            log.error("Token expired");
+        }
 
         verifier.verify(token);
     }
