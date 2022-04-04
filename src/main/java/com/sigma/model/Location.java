@@ -1,7 +1,9 @@
 package com.sigma.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +18,8 @@ import java.util.List;
 @Entity
 @Table(name = "locations")
 @Data
+@Builder
+@RequiredArgsConstructor
 public class Location {
 
     @Id

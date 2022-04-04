@@ -1,18 +1,19 @@
 package com.sigma.service;
 
+import com.sigma.dto.LocationDto;
 import com.sigma.model.Location;
 
 import java.util.List;
 
 public interface LocationService {
 
-    public List<Location> getAllLocations();
+    public List<LocationDto> getAllLocations();
 
-    public Location findLocationById(Long locationId);
+    public LocationDto findLocationById(Long locationId);
 
-    public Location createLocation(Location location);
+    public Location createLocation(LocationDto location);
 
-    public void updateLocation(Location updatedLocation, Long locationId);
+    public void updateLocation(LocationDto updatedLocation, Long locationId);
 
     public void deleteLocation(Long locationId);
 }

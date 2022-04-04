@@ -73,7 +73,7 @@ public class UserController {
         if (passwordEncoder.matches(user.getPassword(), myUser.getPassword())) {
             log.info(SUCCESS);
 
-            String token = JWTUtil.generateJWT(myUser, secret, timestamp, issuer); //TODO: issuer?
+            String token = JWTUtil.generateJWT(myUser, secret, timestamp, issuer);
             return new SignInUserResponseDto("Bearer", token);
         }
         log.info(FAILURE);

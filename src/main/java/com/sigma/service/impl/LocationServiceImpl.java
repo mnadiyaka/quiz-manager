@@ -1,5 +1,6 @@
 package com.sigma.service.impl;
 
+import com.sigma.dto.LocationDto;
 import com.sigma.model.Location;
 import com.sigma.repository.LocationRepository;
 import com.sigma.service.LocationService;
@@ -20,26 +21,33 @@ public class LocationServiceImpl implements LocationService {
     private LocationRepository locationRepository;
 
     @Override
-    public List<Location> getAllLocations() {
+    public List<LocationDto> getAllLocations() {
         log.info("Getting list of location");
-        return locationRepository.findAll();
+        return locationRepository.findAll().stream().map(location -> LocationDto.fromLocation(location)).toList();
     }
 
     @Override
-    public Location findLocationById(Long locationId) {
+    public LocationDto findLocationById(Long locationId) {
         log.info("Searching for location with id {}", locationId);
-        return locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException());
+        LocationDto locationDto = LocationDto.fromLocation(locationRepository.findById(locationId).get());
+        if (locationDto != null) {
+            return locationDto;
+        }
+        throw new EntityNotFoundException();
     }
 
     @Override
-    public Location createLocation(Location location) {
+    public Location createLocation(LocationDto location) {
         log.info("Creating new location {}", location.toString());
-        return locationRepository.save(location);
+        return locationRepository.save(location.toLocation());
     }
 
     @Override
-    public void updateLocation(Location updatedLocation, Long locationId) {
-        Location oldLocation = locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException());
+    public void updateLocation(LocationDto updatedLocation, Long locationId) {
+        LocationDto oldLocation = LocationDto.fromLocation(locationRepository.findById(locationId).get());
+        if (oldLocation == null){
+            throw new EntityNotFoundException();
+        }
         log.info("Updating location {}", oldLocation.toString());
         oldLocation.setLocationName(updatedLocation.getLocationName());
         oldLocation.setCity(updatedLocation.getCity());
@@ -47,7 +55,7 @@ public class LocationServiceImpl implements LocationService {
         oldLocation.setHouseNumber(updatedLocation.getHouseNumber());
         oldLocation.setZipCode(updatedLocation.getZipCode());
 
-        locationRepository.save(oldLocation);
+        locationRepository.save(oldLocation.toLocation());
     }
 
     @Override
