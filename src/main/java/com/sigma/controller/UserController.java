@@ -30,7 +30,7 @@ public class UserController {
     private final String FAILURE = "failure";
 
     @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("/users")
     public List<UserDto> getUsers() {

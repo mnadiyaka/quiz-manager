@@ -19,7 +19,7 @@ import java.util.List;
 public class LocationServiceImpl implements LocationService {
 
     @Autowired
-    private LocationRepository locationRepository;
+    private final LocationRepository locationRepository;
 
     @Override
     public List<LocationDto> getAllLocations() {

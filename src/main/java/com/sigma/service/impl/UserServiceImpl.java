@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     private final String NOT_EXIST = "user doesn't exist";
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     private final PasswordEncoder passwordEncoder;
