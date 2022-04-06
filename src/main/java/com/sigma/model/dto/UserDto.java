@@ -13,7 +13,6 @@ public class UserDto {
 
     private String username;
 
-    //private String password;
 
     private Role role;
 
@@ -21,7 +20,6 @@ public class UserDto {
         return new UserDto()
                 .setId(user.getId())
                 .setUsername(user.getUsername())
-                //.setPassword(user.getPassword())
                 .setRole(user.getRole());
     }
 }

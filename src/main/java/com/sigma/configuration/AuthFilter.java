@@ -28,9 +28,11 @@ public class AuthFilter extends OncePerRequestFilter {
     @Value("${jwt-settings.issuer}")
     private String issuer;
 
+    private final String AUTH = "Authorization";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String jwt = ofNullable(request.getHeader("Authorization")).orElseThrow(() -> new NoSuchElementException());
+        final String jwt = ofNullable(request.getHeader(AUTH)).orElseThrow(() -> new NoSuchElementException());
         JWTUtil.verify(jwt, secret, issuer);
         filterChain.doFilter(request, response);
     }
@@ -44,7 +46,7 @@ public class AuthFilter extends OncePerRequestFilter {
     public FilterRegistrationBean<AuthFilter> someFilter() {
         final FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(this);
-        registrationBean.addUrlPatterns("/*");//("/(?!.*login).+");
+        registrationBean.addUrlPatterns("/*");
         registrationBean.setName("AuthFilter");
         registrationBean.setOrder(Integer.MAX_VALUE);
         return registrationBean;
