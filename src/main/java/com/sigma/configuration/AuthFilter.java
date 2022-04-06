@@ -35,11 +35,12 @@ public class AuthFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+
     @Bean
     public FilterRegistrationBean<AuthFilter> someFilter() {
         final FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(this);
-        registrationBean.addUrlPatterns("/", "/users");//("/(?!.*login).+");
+        registrationBean.addUrlPatterns("/users", "/");//("/(?!.*login).+");
         registrationBean.setName("AuthFilter");
         registrationBean.setOrder(Integer.MAX_VALUE);
         return registrationBean;
