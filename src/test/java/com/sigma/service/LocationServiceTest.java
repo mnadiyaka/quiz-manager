@@ -1,6 +1,6 @@
 package com.sigma.service;
 
-import com.sigma.model.Location;
+import com.sigma.model.entity.Location;
 import com.sigma.repository.LocationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

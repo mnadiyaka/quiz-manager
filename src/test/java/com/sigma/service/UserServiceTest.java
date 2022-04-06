@@ -1,8 +1,8 @@
 package com.sigma.service;
 
-import com.sigma.dto.SignUpUserDto;
-import com.sigma.model.Role;
-import com.sigma.model.User;
+import com.sigma.model.dto.SignUpUserDto;
+import com.sigma.model.entity.Role;
+import com.sigma.model.entity.User;
 import com.sigma.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

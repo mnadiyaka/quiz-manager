@@ -1,4 +1,4 @@
-package com.sigma.dto;
+package com.sigma.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

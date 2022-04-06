@@ -1,7 +1,7 @@
 package com.sigma.service.impl;
 
-import com.sigma.dto.LocationDto;
-import com.sigma.model.Location;
+import com.sigma.model.dto.LocationDto;
+import com.sigma.model.entity.Location;
 import com.sigma.repository.LocationRepository;
 import com.sigma.service.LocationService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -37,12 +38,14 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    @Transactional
     public Location createLocation(LocationDto location) {
         log.info("Creating new location {}", location.toString());
-        return locationRepository.save(location.toLocation());
+        return locationRepository.save(LocationDto.toLocation(location));
     }
 
     @Override
+    @Transactional
     public void updateLocation(LocationDto updatedLocation, Long locationId) {
         LocationDto oldLocation = LocationDto.fromLocation(locationRepository.findById(locationId).get());
         if (oldLocation == null){
@@ -55,10 +58,11 @@ public class LocationServiceImpl implements LocationService {
         oldLocation.setHouseNumber(updatedLocation.getHouseNumber());
         oldLocation.setZipCode(updatedLocation.getZipCode());
 
-        locationRepository.save(oldLocation.toLocation());
+        locationRepository.save(LocationDto.toLocation(oldLocation));
     }
 
     @Override
+    @Transactional
     public void deleteLocation(Long locationId) {
         if (!locationRepository.existsById(locationId)) {
             throw new EntityNotFoundException();

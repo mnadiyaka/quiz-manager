@@ -1,7 +1,7 @@
-package com.sigma.dto;
+package com.sigma.model.dto;
 
-import com.sigma.model.Role;
-import com.sigma.model.User;
+import com.sigma.model.entity.Role;
+import com.sigma.model.entity.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -13,7 +13,7 @@ public class UserDto {
 
     private String username;
 
-    private String password;
+    //private String password;
 
     private Role role;
 
@@ -21,7 +21,7 @@ public class UserDto {
         return new UserDto()
                 .setId(user.getId())
                 .setUsername(user.getUsername())
-                .setPassword(user.getPassword())
+                //.setPassword(user.getPassword())
                 .setRole(user.getRole());
     }
 }

@@ -1,7 +1,7 @@
 package com.sigma.service;
 
-import com.sigma.dto.LocationDto;
-import com.sigma.model.Location;
+import com.sigma.model.dto.LocationDto;
+import com.sigma.model.entity.Location;
 
 import java.util.List;
 

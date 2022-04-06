@@ -1,6 +1,6 @@
-package com.sigma.dto;
+package com.sigma.model.dto;
 
-import com.sigma.model.Location;
+import com.sigma.model.entity.Location;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -30,14 +30,13 @@ public class LocationDto {
                 .setZipCode(location.getZipCode());
     }
 
-    public Location toLocation() {
-        return Location.builder()
-                .id(id)
-                .locationName(locationName)
-                .street(street)
-                .city(city)
-                .houseNumber(houseNumber)
-                .zipCode(zipCode)
-                .build();
+    public static Location toLocation(LocationDto locationDto) {
+        return new Location()
+                .setId(locationDto.id)
+                .setLocationName(locationDto.locationName)
+                .setStreet(locationDto.street)
+                .setCity(locationDto.city)
+                .setHouseNumber(locationDto.houseNumber)
+                .setZipCode(locationDto.zipCode);
     }
 }

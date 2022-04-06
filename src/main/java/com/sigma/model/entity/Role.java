@@ -1,4 +1,4 @@
-package com.sigma.model;
+package com.sigma.model.entity;
 
 public enum Role {
     ADMIN, CAPTAIN;

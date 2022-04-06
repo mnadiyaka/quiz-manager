@@ -1,5 +1,7 @@
-package com.sigma.model;
+package com.sigma.model.entity;
 
+import com.sigma.model.entity.Location;
+import com.sigma.model.entity.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;

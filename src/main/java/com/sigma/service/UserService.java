@@ -1,8 +1,11 @@
 package com.sigma.service;
 
-import com.sigma.dto.SignUpUserDto;
-import com.sigma.dto.SignUpUserResponseDto;
-import com.sigma.model.User;
+import com.sigma.model.dto.SignInUserDto;
+import com.sigma.model.dto.SignInUserResponseDto;
+import com.sigma.model.dto.SignUpUserDto;
+import com.sigma.model.dto.SignUpUserResponseDto;
+import com.sigma.model.entity.User;
+import org.apache.tomcat.websocket.AuthenticationException;
 
 import java.util.List;
 
@@ -19,4 +22,5 @@ public interface UserService {
 
     public void deleteUser(Long userId);
 
+    public SignInUserResponseDto login(SignInUserDto signInUserDto) throws AuthenticationException;
 }

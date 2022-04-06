@@ -1,6 +1,6 @@
-package com.sigma.dto;
+package com.sigma.model.dto;
 
-import com.sigma.model.Role;
+import com.sigma.model.entity.Role;
 import lombok.Getter;
 import lombok.Setter;
 

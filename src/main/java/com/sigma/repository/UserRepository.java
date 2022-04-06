@@ -1,7 +1,7 @@
 package com.sigma.repository;
 
-import com.sigma.model.Role;
-import com.sigma.model.User;
+import com.sigma.model.entity.Role;
+import com.sigma.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
