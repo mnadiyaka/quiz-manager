@@ -29,7 +29,6 @@ public class UserController {
     private final String SUCCESS = "success";
     private final String FAILURE = "failure";
 
-    @Autowired
     private final UserService userService;
 
     @GetMapping("/users")

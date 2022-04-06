@@ -18,7 +18,6 @@ import java.util.List;
 @Slf4j
 public class LocationServiceImpl implements LocationService {
 
-    @Autowired
     private final LocationRepository locationRepository;
 
     @Override

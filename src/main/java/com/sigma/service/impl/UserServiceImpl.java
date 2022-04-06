@@ -30,10 +30,8 @@ public class UserServiceImpl implements UserService {
     private final String EXISTED = "user already exists";
     private final String NOT_EXIST = "user doesn't exist";
 
-    @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
     private final PasswordEncoder passwordEncoder;
 
     @Value("${jwt-settings.secret-key}")
