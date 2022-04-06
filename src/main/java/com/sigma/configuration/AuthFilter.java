@@ -14,9 +14,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 
@@ -32,7 +33,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private final String AUTH = "Authorization";
 
-    private String[] constUrls = {"/login", "/signUp"};
+    private List<String> publicUrls = Arrays.asList("login", "signUp");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -43,11 +44,7 @@ public class AuthFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        String  regex = "("+constUrls[0]+")";
-        for (int i = 1; i < constUrls.length;i++) {
-            regex+="|("+constUrls[i]+")";
-        }
-        return (request.getRequestURI()).matches(regex);
+        return (request.getRequestURI()).matches(publicUrls.stream().map(pu -> String.format("(/%s)", pu)).collect(Collectors.joining("|")));
     }
 
     @Bean
