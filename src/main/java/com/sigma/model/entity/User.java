@@ -1,7 +1,10 @@
-package com.sigma.model;
+package com.sigma.model.entity;
 
+import com.sigma.model.entity.Location;
+import com.sigma.model.entity.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Data
+@RequiredArgsConstructor
 public class User {
 
     @Id
@@ -38,4 +42,10 @@ public class User {
     @JoinTable(name = "admin_location", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id"))
     private List<Location> adminLocation;
+
+    public User(String username, String password, Role role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 }
