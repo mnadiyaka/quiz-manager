@@ -14,6 +14,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static java.util.Optional.ofNullable;
@@ -30,6 +32,8 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private final String AUTH = "Authorization";
 
+    private String[] constUrls = {"/login", "/signUp"};
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String jwt = ofNullable(request.getHeader(AUTH)).orElseThrow(() -> new NoSuchElementException());
@@ -39,7 +43,11 @@ public class AuthFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return (request.getRequestURI()).matches("(/login)|(/signUp)");
+        String  regex = "("+constUrls[0]+")";
+        for (int i = 1; i < constUrls.length;i++) {
+            regex+="|("+constUrls[i]+")";
+        }
+        return (request.getRequestURI()).matches(regex);
     }
 
     @Bean
