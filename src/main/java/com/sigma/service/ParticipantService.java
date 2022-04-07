@@ -2,6 +2,7 @@ package com.sigma.service;
 
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.entity.Participant;
+import com.sigma.model.entity.Team;
 
 import java.util.List;
 

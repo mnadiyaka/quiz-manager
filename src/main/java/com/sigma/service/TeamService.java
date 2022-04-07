@@ -1,5 +1,6 @@
 package com.sigma.service;
 
+import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Team;
 
@@ -16,4 +17,6 @@ public interface TeamService {
     public void updateTeam(TeamDto updatedTeam, Long teamId);
 
     public void deleteTeam(Long teamId);
+
+    public List<ParticipantDto> addParticipant(ParticipantDto participantDto);
 }
