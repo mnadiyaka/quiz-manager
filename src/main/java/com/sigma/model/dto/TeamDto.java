@@ -1,6 +1,7 @@
 package com.sigma.model.dto;
 
 import com.sigma.model.entity.Location;
+import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
@@ -21,7 +22,7 @@ public class TeamDto {
 
     private User captain;
 
-    private List<Quiz> quizzes;
+    private List<Participant> participants;
 
     public static TeamDto fromTeam(Team team) {
         return new TeamDto()
@@ -29,7 +30,7 @@ public class TeamDto {
                 .setTeamName(team.getTeamName())
                 //.setConfirmed(team.getConfirmed())
                 .setCaptain(team.getCaptain())
-                .setQuizzes(team.getQuizzes());
+                .setParticipants(team.getParticipants());
     }
 
     public static Team toTeam(TeamDto teamDto) {
@@ -38,6 +39,6 @@ public class TeamDto {
                 .setTeamName(teamDto.getTeamName())
                 //.setConfirmed(teamDto.getConfirmed())
                 .setCaptain(teamDto.getCaptain())
-                .setQuizzes(teamDto.getQuizzes());
+                .setParticipants(teamDto.getParticipants());
     }
 }

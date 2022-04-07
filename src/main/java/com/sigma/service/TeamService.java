@@ -18,5 +18,7 @@ public interface TeamService {
 
     public void deleteTeam(Long teamId);
 
-    public List<ParticipantDto> addParticipant(ParticipantDto participantDto);
+    public void addParticipant(TeamDto teamDto, ParticipantDto participantDto);
+
+    public Team teamConfirmation(Team team, boolean confirmation); //TODO: DTO????
 }
