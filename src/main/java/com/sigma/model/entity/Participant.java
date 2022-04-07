@@ -1,6 +1,7 @@
 package com.sigma.model.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "participants")
 @Data
+@Accessors(chain = true)
 public class Participant {
 
     @Id

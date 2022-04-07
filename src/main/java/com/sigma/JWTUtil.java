@@ -35,7 +35,6 @@ public class JWTUtil {
                 .withIssuer(issuer)
                 .build();
 
-
         verifier.verify(token.substring(7));
 
         DecodedJWT jwt = JWT.decode(token.substring(7));

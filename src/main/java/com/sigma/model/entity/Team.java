@@ -2,6 +2,7 @@ package com.sigma.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = "teams")
 @Data
+@Accessors(chain = true)
 public class Team {
 
     @Id
