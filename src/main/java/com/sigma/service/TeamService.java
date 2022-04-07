@@ -1,19 +1,19 @@
 package com.sigma.service;
 
-import com.sigma.model.dto.LocationDto;
-import com.sigma.model.entity.Location;
+import com.sigma.model.dto.TeamDto;
+import com.sigma.model.entity.Team;
 
 import java.util.List;
 
 public interface TeamService {
 
-    public List<LocationDto> getAllLocations();
+    public List<TeamDto> getAllTeams();
 
-    public LocationDto findLocationById(Long locationId);
+    public TeamDto findTeamById(Long teamId);
 
-    public Location createLocation(LocationDto location);
+    public Team createTeam(TeamDto teamDto);
 
-    public void updateLocation(LocationDto updatedLocation, Long locationId);
+    public void updateTeam(TeamDto updatedTeam, Long teamId);
 
-    public void deleteLocation(Long locationId);
+    public void deleteTeam(Long teamId);
 }

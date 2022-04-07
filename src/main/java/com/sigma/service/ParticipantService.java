@@ -1,19 +1,19 @@
 package com.sigma.service;
 
-import com.sigma.model.dto.LocationDto;
-import com.sigma.model.entity.Location;
+import com.sigma.model.dto.ParticipantDto;
+import com.sigma.model.entity.Participant;
 
 import java.util.List;
 
 public interface ParticipantService {
 
-    public List<LocationDto> getAllLocations();
+    public List<ParticipantDto> getAllParticipants();
 
-    public LocationDto findLocationById(Long locationId);
+    public ParticipantDto findParticipantById(Long participantId);
 
-    public Location createLocation(LocationDto location);
+    public Participant createParticipant(ParticipantDto participantDto);
 
-    public void updateLocation(LocationDto updatedLocation, Long locationId);
+    public void updateParticipant(ParticipantDto updatedParticipant, Long participantId);
 
-    public void deleteLocation(Long locationId);
+    public void deleteParticipant(Long participantId);
 }
