@@ -14,6 +14,7 @@ public class QuizDto {
     private Long id;
 
     private String quizName;
+
     private Category category;
 
     private String shortDescription;

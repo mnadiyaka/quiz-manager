@@ -28,10 +28,10 @@ public class ParticipantServiceImpl implements ParticipantService {
     public ParticipantDto findParticipantById(Long participantId) {
         log.info("Searching for participant with id {}", participantId);
         ParticipantDto participantDto = ParticipantDto.fromParticipant(participantRepository.findById(participantId).get());
-        if (participantDto != null) {
-            return participantDto;
+        if (participantDto == null) {
+            throw new EntityNotFoundException();
         }
-        throw new EntityNotFoundException();
+        return participantDto;
     }
 
     @Override

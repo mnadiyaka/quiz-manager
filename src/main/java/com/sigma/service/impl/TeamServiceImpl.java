@@ -31,10 +31,10 @@ public class TeamServiceImpl implements TeamService {
     public TeamDto findTeamById(Long teamId) {
         log.info("Searching for team with id {}", teamId);
         TeamDto teamDto = TeamDto.fromTeam(teamRepository.findById(teamId).get());
-        if (teamDto != null) {
-            return teamDto;
+        if (teamDto == null) {
+            throw new EntityNotFoundException();
         }
-        throw new EntityNotFoundException();
+        return teamDto;
     }
 
     @Override

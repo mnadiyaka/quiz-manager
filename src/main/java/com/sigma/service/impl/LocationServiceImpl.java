@@ -29,10 +29,10 @@ public class LocationServiceImpl implements LocationService {
     public LocationDto findLocationById(Long locationId) {
         log.info("Searching for location with id {}", locationId);
         LocationDto locationDto = LocationDto.fromLocation(locationRepository.findById(locationId).get());
-        if (locationDto != null) {
-            return locationDto;
+        if (locationDto == null) {
+            throw new EntityNotFoundException();
         }
-        throw new EntityNotFoundException();
+        return locationDto;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class LocationServiceImpl implements LocationService {
         if (oldLocation == null){
             throw new EntityNotFoundException();
         }
-        log.info("Updating location {}", oldLocation.toString());
+        log.info("Updating location {}", oldLocation);
         oldLocation.setLocationName(updatedLocation.getLocationName());
         oldLocation.setCity(updatedLocation.getCity());
         oldLocation.setStreet(updatedLocation.getStreet());
@@ -65,7 +65,7 @@ public class LocationServiceImpl implements LocationService {
         if (!locationRepository.existsById(locationId)) {
             throw new EntityNotFoundException();
         }
-        log.info("Deleting location {}", locationRepository.getById(locationId).toString());
+        log.info("Deleting location {}", locationRepository.getById(locationId));
         locationRepository.deleteById(locationId);
     }
 }
