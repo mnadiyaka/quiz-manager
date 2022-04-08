@@ -1,7 +1,6 @@
 package com.sigma.service.impl;
 
 import com.sigma.model.dto.ParticipantDto;
-import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
 import com.sigma.repository.ParticipantRepository;
 import com.sigma.service.ParticipantService;
