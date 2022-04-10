@@ -20,7 +20,7 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 @Accessors(chain = true)
-public class Location {
+public class LocationDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

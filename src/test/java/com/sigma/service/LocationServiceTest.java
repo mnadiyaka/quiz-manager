@@ -1,6 +1,6 @@
 package com.sigma.service;
 
-import com.sigma.model.entity.Location;
+import com.sigma.model.entity.LocationDto;
 import com.sigma.repository.LocationRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,14 +29,14 @@ public class LocationServiceTest {
     @Test
     @Transactional
     public void createLocationTest() {
-        Location location = new Location();
+        LocationDto location = new LocationDto();
         location.setLocationName("Kyiv");
         location.setCity("Kyiv");
         location.setZipCode(12345);
         location.setHouseNumber("4");
         location.setStreet("qwerty");
 
-//        locationService.createLocation(location);
+//        locationService.createLocation(LocationDto.location);
 //
 //        Assertions.assertEquals(location, locationService.findLocationById(location.getId()));
     }
@@ -65,7 +65,7 @@ public class LocationServiceTest {
     public void getAllLocation() {
         int expected = locationRepository.findAll().size();
 
-        Location location = new Location();
+        LocationDto location = new LocationDto();
         location.setLocationName("Kyiv");
         location.setCity("Kyiv");
         location.setZipCode(12345);

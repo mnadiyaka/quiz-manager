@@ -3,9 +3,12 @@ package com.sigma.service.impl;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
+import com.sigma.model.entity.Role;
 import com.sigma.model.entity.Team;
+import com.sigma.model.entity.User;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.TeamService;
+import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,8 @@ import java.util.List;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
+
+    private final UserService userService;
 
     @Override
     public List<TeamDto> getAllTeams() {
@@ -39,8 +44,18 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional
-    public Team createTeam(TeamDto teamDto) {
+    public Team createTeam(TeamDto teamDto, Long captainId) {
+        User user = userService.findUserById(captainId);
+        if (user == null) {
+            throw new EntityNotFoundException("User with id = " + captainId + " not found");
+        }
+
+        if (user.getRole().equals(Role.ADMIN)) {
+            throw new EntityNotFoundException("This user is admin, not captain");
+        }
         log.info("Creating new team {}", teamDto.toString());
+
+        teamDto.setCaptain(userService.findUserById(captainId));
         return teamRepository.save(TeamDto.toTeam(teamDto));
     }
 

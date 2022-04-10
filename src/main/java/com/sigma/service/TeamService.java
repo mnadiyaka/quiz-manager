@@ -12,7 +12,7 @@ public interface TeamService {
 
     public TeamDto findTeamById(Long teamId);
 
-    public Team createTeam(TeamDto teamDto);
+    public Team createTeam(TeamDto teamDto, Long captainId);
 
     public void updateTeam(TeamDto updatedTeam, Long teamId);
 

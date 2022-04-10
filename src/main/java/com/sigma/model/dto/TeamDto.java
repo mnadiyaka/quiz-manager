@@ -1,8 +1,6 @@
 package com.sigma.model.dto;
 
-import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Participant;
-import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
 import lombok.Data;
