@@ -1,7 +1,9 @@
 package com.sigma.controller;
 
+import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.dto.TeamDto;
+import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Team;
 import com.sigma.service.TeamService;
@@ -21,9 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeamController {
 
     private final TeamService teamService;
-    @PostMapping("/{userId}/createTeam")
 
+    @PostMapping("/{userId}/createTeam")
     public Team createTeam(@RequestBody TeamDto teamDto, @PathVariable Long userId){
         return teamService.createTeam(teamDto, userId);
+    }
+
+    @PostMapping("/{userId}/team/{teamId}/addPart")
+    public void addParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long userId, @PathVariable Long teamId){
+        teamService.addParticipant(participantDto, userId, teamId);
+        log.info("Participant added");
     }
 }
