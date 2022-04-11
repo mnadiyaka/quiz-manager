@@ -7,12 +7,14 @@ import com.sigma.model.entity.Role;
 import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
 import com.sigma.repository.TeamRepository;
+import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
 import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -25,6 +27,8 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
     private final UserService userService;
+
+    private final ParticipantService participantService;
 
     @Override
     public List<TeamDto> getAllTeams() {
@@ -53,6 +57,11 @@ public class TeamServiceImpl implements TeamService {
         if (user.getRole().equals(Role.ADMIN)) {
             throw new EntityNotFoundException("This user is admin, not captain");
         }
+
+        if (teamRepository.findByTeamName(teamDto.getTeamName())){
+            throw new EntityExistsException("Already exists");
+        }
+
         log.info("Creating new team {}", teamDto.toString());
 
         teamDto.setCaptain(userService.findUserById(captainId));
@@ -84,7 +93,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void addParticipant(ParticipantDto participantDto, Long userId, Long teamId) {
+    public TeamDto addParticipant(ParticipantDto participantDto, Long userId, Long teamId) {
         TeamDto team = TeamDto.fromTeam(teamRepository.getById(teamId));
         if (team == null){
             throw new EntityNotFoundException("Team doesnt exist");
@@ -92,10 +101,12 @@ public class TeamServiceImpl implements TeamService {
         if (team.getCaptain().getId() != userId){
             throw new EntityNotFoundException("Wrong account credentials");
         }
-        List<Participant> people = team.getParticipants();
-        people.add(ParticipantDto.toParticipant(participantDto));
+        List<ParticipantDto> people = team.getParticipants();
+        ParticipantDto newPlayer = ParticipantDto.fromParticipant(participantService.createParticipant(participantDto, team));
+        people.add(newPlayer);
         team.setParticipants(people);
         updateTeam(team, team.getId());
+        return team;
     }
 
     @Override

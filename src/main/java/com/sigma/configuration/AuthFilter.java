@@ -47,7 +47,7 @@ public class AuthFilter extends OncePerRequestFilter {
         return (request.getRequestURI()).matches(publicUrls.stream().map(pu -> String.format("(/%s)", pu)).collect(Collectors.joining("|")));
     }
 
-    @Bean
+    @Bean // TODO: move to Application.class?
     public FilterRegistrationBean<AuthFilter> someFilter() {
         final FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(this);

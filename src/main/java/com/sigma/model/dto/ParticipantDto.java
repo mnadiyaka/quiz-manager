@@ -1,5 +1,6 @@
 package com.sigma.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Team;
 import lombok.Data;
@@ -15,14 +16,15 @@ public class ParticipantDto {
 
     private String lastname;
 
-    private Team team;
+//    private Team team;
 
     public static ParticipantDto fromParticipant(Participant participant) {
         return new ParticipantDto()
                 .setId(participant.getId())
                 .setFirstname(participant.getFirstname())
                 .setLastname(participant.getLastname())
-                .setTeam(participant.getTeam());
+//                .setTeam(participant.getTeam());
+                ;
     }
 
     public static Participant toParticipant(ParticipantDto participantDto) {
@@ -30,6 +32,7 @@ public class ParticipantDto {
                 .setId(participantDto.id)
                 .setLastname(participantDto.lastname)
                 .setFirstname(participantDto.firstname)
-                .setTeam(participantDto.team);
+//                .setTeam(participantDto.team)
+                ;
     }
 }

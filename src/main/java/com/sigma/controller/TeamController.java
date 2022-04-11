@@ -30,8 +30,9 @@ public class TeamController {
     }
 
     @PostMapping("/{userId}/team/{teamId}/addPart")
-    public void addParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long userId, @PathVariable Long teamId){
+    public TeamDto addParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long userId, @PathVariable Long teamId){
         teamService.addParticipant(participantDto, userId, teamId);
         log.info("Participant added");
+        return teamService.findTeamById(teamId);
     }
 }

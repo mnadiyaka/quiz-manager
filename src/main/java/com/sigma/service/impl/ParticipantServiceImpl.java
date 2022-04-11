@@ -1,7 +1,9 @@
 package com.sigma.service.impl;
 
 import com.sigma.model.dto.ParticipantDto;
+import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
+import com.sigma.model.entity.Team;
 import com.sigma.repository.ParticipantRepository;
 import com.sigma.service.ParticipantService;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +37,12 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
-    public Participant createParticipant(ParticipantDto participantDto) {
+    public Participant createParticipant(ParticipantDto participantDto, TeamDto teamDto) {
+        //participantDto.setTeam(TeamDto.toTeam(teamDto));
+        Participant participant = ParticipantDto.toParticipant(participantDto);
+        participant.setTeam(TeamDto.toTeam(teamDto));
         log.info("Creating new participant {}", participantDto.toString());
-        return participantRepository.save(ParticipantDto.toParticipant(participantDto));
+        return participantRepository.save(participant);
     }
 
     @Override
@@ -49,7 +54,6 @@ public class ParticipantServiceImpl implements ParticipantService {
         log.info("Updating participant {}", oldParticipant);
         oldParticipant.setFirstname(updatedParticipant.getFirstname());
         oldParticipant.setLastname(updatedParticipant.getLastname());
-        oldParticipant.setTeam(updatedParticipant.getTeam());
         participantRepository.save(ParticipantDto.toParticipant(oldParticipant));
     }
 

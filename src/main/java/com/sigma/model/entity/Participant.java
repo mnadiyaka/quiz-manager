@@ -30,7 +30,7 @@ public class Participant {
     @Column(name = "lastname")
     private String lastname;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "team_id")
     private Team team;
 }
