@@ -2,7 +2,6 @@ package com.sigma.service.impl;
 
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
-import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Role;
 import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
@@ -58,7 +57,7 @@ public class TeamServiceImpl implements TeamService {
             throw new EntityNotFoundException("This user is admin, not captain");
         }
 
-        if (teamRepository.findByTeamName(teamDto.getTeamName())){
+        if (teamRepository.findByTeamName(teamDto.getTeamName())) {
             throw new EntityExistsException("Already exists");
         }
 
@@ -95,10 +94,10 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public TeamDto addParticipant(ParticipantDto participantDto, Long userId, Long teamId) {
         TeamDto team = TeamDto.fromTeam(teamRepository.getById(teamId));
-        if (team == null){
+        if (team == null) {
             throw new EntityNotFoundException("Team doesnt exist");
         }
-        if (team.getCaptain().getId() != userId){
+        if (team.getCaptain().getId() != userId) {
             throw new EntityNotFoundException("Wrong account credentials");
         }
         List<ParticipantDto> people = team.getParticipants();

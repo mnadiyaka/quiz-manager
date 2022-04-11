@@ -1,15 +1,11 @@
 package com.sigma.controller;
 
 import com.sigma.model.dto.ParticipantDto;
-import com.sigma.model.dto.QuizDto;
 import com.sigma.model.dto.TeamDto;
-import com.sigma.model.entity.Participant;
-import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Team;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
