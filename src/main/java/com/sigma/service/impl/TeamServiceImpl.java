@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -57,13 +58,14 @@ public class TeamServiceImpl implements TeamService {
             throw new EntityNotFoundException("This user is admin, not captain");
         }
 
-        if (teamRepository.findByTeamName(teamDto.getTeamName())) {
+        if (teamRepository.findByTeamName(teamDto.getTeamName())!=null) {
             throw new EntityExistsException("Already exists");
         }
 
-        log.info("Creating new team {}", teamDto.toString());
+        log.info("Creating new team {}", teamDto);
 
         teamDto.setCaptain(userService.findUserById(captainId));
+        teamDto.setParticipants(new ArrayList<>());
         return teamRepository.save(TeamDto.toTeam(teamDto));
     }
 
@@ -83,12 +85,16 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional
-    public void deleteTeam(Long teamId) {
-        if (!teamRepository.existsById(teamId)) {
-            throw new EntityNotFoundException();
+    public void deleteTeam(Long userId, Long teamId) {
+        TeamDto team = TeamDto.fromTeam(teamRepository.getById(teamId));
+        if (team == null) {
+            throw new EntityNotFoundException("Team doesnt exist");
         }
-        log.info("Deleting team {}", teamRepository.getById(teamId));
-        teamRepository.deleteById(teamId);
+        if (team.getCaptain().getId() != userId) {
+            throw new EntityNotFoundException("Wrong account credentials");
+        }
+        log.info("Deleting team {}", team);
+        teamRepository.delete(TeamDto.toTeam(team));
     }
 
     @Override

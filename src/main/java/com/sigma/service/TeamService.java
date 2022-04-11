@@ -16,7 +16,7 @@ public interface TeamService {
 
     public void updateTeam(TeamDto updatedTeam, Long teamId);
 
-    public void deleteTeam(Long teamId);
+    public void deleteTeam(Long userId, Long teamId);
 
     public TeamDto addParticipant(ParticipantDto participantDto, Long userId, Long teamId);
 

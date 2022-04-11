@@ -12,5 +12,5 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     public List<Team> findTeamsByQuizzesContaining(Quiz quiz);
 
-    public boolean findByTeamName(String name);
+    public Team findByTeamName(String name);
 }
