@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TeamService {
 
-    public List<TeamDto> getAllTeams();
+    public List<TeamDto> getAllTeams(Long userId);
 
     public TeamDto findTeamById(Long teamId);
 

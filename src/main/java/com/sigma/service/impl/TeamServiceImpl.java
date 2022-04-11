@@ -31,9 +31,10 @@ public class TeamServiceImpl implements TeamService {
     private final ParticipantService participantService;
 
     @Override
-    public List<TeamDto> getAllTeams() {
+    public List<TeamDto> getAllTeams(Long userId) {
         log.info("Getting list of teams");
-        return teamRepository.findAll().stream().map(team -> TeamDto.fromTeam(team)).toList();
+        return teamRepository.findAll().stream().filter(team -> team.getCaptain().getId() == userId)
+                .map(team -> TeamDto.fromTeam(team)).toList();
     }
 
     @Override
@@ -58,7 +59,7 @@ public class TeamServiceImpl implements TeamService {
             throw new EntityNotFoundException("This user is admin, not captain");
         }
 
-        if (teamRepository.findByTeamName(teamDto.getTeamName())!=null) {
+        if (teamRepository.findByTeamName(teamDto.getTeamName()) != null) {
             throw new EntityExistsException("Already exists");
         }
 
@@ -81,10 +82,10 @@ public class TeamServiceImpl implements TeamService {
         }
         log.info("Updating team {}", oldTeam);
         oldTeam.setTeamName(updatedTeam.getTeamName());
-        if (updatedTeam.getParticipants()!=null){
+        if (updatedTeam.getParticipants() != null) {
             oldTeam.setParticipants(updatedTeam.getParticipants());
         }
-        if (updatedTeam.getCaptain()!=null) {
+        if (updatedTeam.getCaptain() != null) {
             oldTeam.setCaptain(updatedTeam.getCaptain());
         }
         teamRepository.save(TeamDto.toTeam(oldTeam));
