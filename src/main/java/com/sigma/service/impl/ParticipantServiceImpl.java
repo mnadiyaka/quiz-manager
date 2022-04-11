@@ -5,6 +5,7 @@ import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
 import com.sigma.repository.ParticipantRepository;
 import com.sigma.service.ParticipantService;
+import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     public Participant createParticipant(ParticipantDto participantDto, TeamDto teamDto) {
         Participant participant = ParticipantDto.toParticipant(participantDto);
         participant.setTeam(TeamDto.toTeam(teamDto));
-        log.info("Creating new participant {}", participantDto.toString());
+        log.info("Creating new participant {}", participantDto);
         return participantRepository.save(participant);
     }
 
@@ -56,11 +57,19 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
-    public void deleteParticipant(Long participantId) {
+    public void deleteParticipant(Long userId, Long teamId, Long participantId) {
+        Participant participant = participantRepository.getById(participantId);
+        TeamDto team = TeamDto.fromTeam(participant.getTeam());
+        if (team == null) {
+            throw new EntityNotFoundException("Team doesnt exist");
+        }
+        if (team.getCaptain().getId() != userId) {
+            throw new EntityNotFoundException("Wrong account credentials");
+        }
         if (!participantRepository.existsById(participantId)) {
             throw new EntityNotFoundException();
         }
-        log.info("Deleting team {}", participantRepository.getById(participantId));
+        log.info("Deleting participant {}", participantRepository.getById(participantId));
         participantRepository.deleteById(participantId);
     }
 }

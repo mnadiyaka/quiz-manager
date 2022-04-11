@@ -12,6 +12,8 @@ import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
@@ -106,6 +108,15 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public Team teamConfirmation(Team team, boolean confirmation) { //TODO: change idea?
+        team.setConfirmed(confirmation);
+        return teamRepository.save(team);
+    }
+
+    //TODO: ----------------------------
+
+
+    @Override
     public TeamDto addParticipant(ParticipantDto participantDto, Long userId, Long teamId) {
         TeamDto team = TeamDto.fromTeam(teamRepository.getById(teamId));
         if (team == null) {
@@ -120,11 +131,5 @@ public class TeamServiceImpl implements TeamService {
         team.setParticipants(people);
         updateTeam(team, userId, team.getId());
         return team;
-    }
-
-    @Override
-    public Team teamConfirmation(Team team, boolean confirmation) { //TODO: change idea?
-        team.setConfirmed(confirmation);
-        return teamRepository.save(team);
     }
 }

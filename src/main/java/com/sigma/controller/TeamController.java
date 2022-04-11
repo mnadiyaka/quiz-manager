@@ -36,7 +36,7 @@ public class TeamController {
     }
 
     @PostMapping("/team/{teamId}/update")
-    public String updateUser(@RequestBody TeamDto teamDto, @PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId) {
+    public String updateTeam(@RequestBody TeamDto teamDto, @PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId) {
         teamService.updateTeam(teamDto, userId, teamId);
         return "team updated";
     }

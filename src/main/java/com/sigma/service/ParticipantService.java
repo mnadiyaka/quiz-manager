@@ -16,5 +16,5 @@ public interface ParticipantService {
 
     public void updateParticipant(ParticipantDto updatedParticipant, Long participantId);
 
-    public void deleteParticipant(Long participantId);
+    public void deleteParticipant(Long userId, Long teamId, Long participantId);
 }
