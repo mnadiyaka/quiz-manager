@@ -26,16 +26,22 @@ public class TeamController {
         return teamService.createTeam(teamDto, userId);
     }
 
-    @PostMapping("/team/{teamId}/addPart")
-    public TeamDto addParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long userId, @PathVariable Long teamId){
-        teamService.addParticipant(participantDto, userId, teamId);
-        log.info("Participant added");
-        return teamService.findTeamById(teamId);
+    @PostMapping("/team/{teamId}/update")
+    public String updateUser(@RequestBody TeamDto teamDto, @PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId) {
+        teamService.updateTeam(teamDto, userId, teamId);
+        return "team updated";
     }
 
     @DeleteMapping("/team/{teamId}/delete")
     public String deleteUser(@PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId) {
         teamService.deleteTeam(userId, teamId);
         return "deleted user";
+    }
+
+    @PostMapping("/team/{teamId}/addPart")
+    public TeamDto addParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long userId, @PathVariable Long teamId){
+        teamService.addParticipant(participantDto, userId, teamId);
+        log.info("Participant added");
+        return teamService.findTeamById(teamId);
     }
 }

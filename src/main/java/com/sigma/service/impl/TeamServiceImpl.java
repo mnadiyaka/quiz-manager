@@ -71,15 +71,22 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional
-    public void updateTeam(TeamDto updatedTeam, Long teamId) {
+    public void updateTeam(TeamDto updatedTeam, Long userId, Long teamId) {
         TeamDto oldTeam = TeamDto.fromTeam(teamRepository.findById(teamId).get());
         if (oldTeam == null) {
             throw new EntityNotFoundException();
         }
+        if (oldTeam.getCaptain().getId() != userId) {
+            throw new EntityNotFoundException("Wrong account credentials");
+        }
         log.info("Updating team {}", oldTeam);
         oldTeam.setTeamName(updatedTeam.getTeamName());
-        oldTeam.setParticipants(updatedTeam.getParticipants());
-        oldTeam.setCaptain(updatedTeam.getCaptain());
+        if (updatedTeam.getParticipants()!=null){
+            oldTeam.setParticipants(updatedTeam.getParticipants());
+        }
+        if (updatedTeam.getCaptain()!=null) {
+            oldTeam.setCaptain(updatedTeam.getCaptain());
+        }
         teamRepository.save(TeamDto.toTeam(oldTeam));
     }
 
@@ -110,7 +117,7 @@ public class TeamServiceImpl implements TeamService {
         ParticipantDto newPlayer = ParticipantDto.fromParticipant(participantService.createParticipant(participantDto, team));
         people.add(newPlayer);
         team.setParticipants(people);
-        updateTeam(team, team.getId());
+        updateTeam(team, userId, team.getId());
         return team;
     }
 
