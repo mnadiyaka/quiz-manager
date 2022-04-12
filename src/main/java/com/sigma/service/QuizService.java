@@ -11,9 +11,9 @@ public interface QuizService {
 
     public QuizDto findQuizById(Long quizId);
 
-    public Quiz createQuiz(QuizDto quiz);
+    public Quiz createQuiz(QuizDto quiz, Long userId);
 
-    public void updateQuiz(QuizDto updatedQuiz, Long quizId);
+    public Quiz updateQuiz(QuizDto updatedQuiz, Long quizId, Long userId);
 
-    public void deleteQuiz(Long quizId);
+    public void deleteQuiz(Long quizId, Long userId);
 }

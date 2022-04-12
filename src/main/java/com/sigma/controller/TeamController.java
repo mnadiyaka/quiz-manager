@@ -42,9 +42,9 @@ public class TeamController {
     }
 
     @DeleteMapping("/team/{teamId}/delete")
-    public String deleteUser(@PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId) {
+    public String deleteTeam(@PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId) {
         teamService.deleteTeam(userId, teamId);
-        return "deleted user";
+        return "deleted team";
     }
 
     @PostMapping("/team/{teamId}/addPart")
@@ -55,7 +55,7 @@ public class TeamController {
     }
 
     @PostMapping("/team/{teamId}/player/{playerId}/update")
-    public TeamDto apdParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long userId, @PathVariable Long teamId, @PathVariable Long playerId) {
+    public TeamDto updParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long userId, @PathVariable Long teamId, @PathVariable Long playerId) {
         teamService.updateParticipant(participantDto, playerId, userId, teamId);
         log.info("Participant updated");
         return teamService.findTeamById(teamId);
