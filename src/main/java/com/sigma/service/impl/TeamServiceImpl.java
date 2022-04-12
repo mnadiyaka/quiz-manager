@@ -30,8 +30,6 @@ public class TeamServiceImpl implements TeamService {
 
     private final UserService userService;
 
-    private final ParticipantService participantService;
-
     @Override
     public List<TeamDto> getAllTeams(Long userId) {
         log.info("Getting list of teams");
@@ -111,46 +109,5 @@ public class TeamServiceImpl implements TeamService {
     public Team teamConfirmation(Team team, boolean confirmation) { //TODO: change idea?
         team.setConfirmed(confirmation);
         return teamRepository.save(team);
-    }
-
-    //TODO: ----------------------------
-
-
-    @Override
-    public TeamDto addParticipant(ParticipantDto participantDto, Long userId, Long teamId) {
-        TeamDto team = TeamDto.fromTeam(teamRepository.getById(teamId));
-        if (team == null) {
-            throw new EntityNotFoundException("Team doesnt exist");
-        }
-        if (team.getCaptain().getId() != userId) {
-            throw new EntityNotFoundException("Wrong account credentials");
-        }
-        List<ParticipantDto> people = team.getParticipants();
-        ParticipantDto newPlayer = ParticipantDto.fromParticipant(participantService.createParticipant(participantDto, team));
-        people.add(newPlayer);
-        team.setParticipants(people);
-        updateTeam(team, userId, team.getId());
-        return team;
-    }
-
-    @Override
-    public TeamDto updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId) {
-        TeamDto team = TeamDto.fromTeam(teamRepository.getById(teamId));
-        if (team == null) {
-            throw new EntityNotFoundException("Team doesnt exist");
-        }
-        if (team.getCaptain().getId() != userId) {
-            throw new EntityNotFoundException("Wrong account credentials");
-        }
-        List<ParticipantDto> people = team.getParticipants();
-        ParticipantDto old = participantService.findParticipantById(participantId);
-        people.remove(old);
-        newParticipant.setId(old.getId());
-        //TODO: fix losing teamId
-        participantService.updateParticipant(newParticipant, participantId);
-        people.add(newParticipant);
-        team.setParticipants(people);
-        updateTeam(team, userId, team.getId());
-        return team;
     }
 }

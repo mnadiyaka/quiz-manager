@@ -20,6 +20,8 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     private final ParticipantRepository participantRepository;
 
+    private final TeamService teamService;
+
     @Override
     public List<ParticipantDto> getAllParticipants() {
         log.info("Getting list of participants");
@@ -37,23 +39,57 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
-    public Participant createParticipant(ParticipantDto participantDto, TeamDto teamDto) {
-        Participant participant = ParticipantDto.toParticipant(participantDto);
-        participant.setTeam(TeamDto.toTeam(teamDto));
-        log.info("Creating new participant {}", participantDto);
-        return participantRepository.save(participant);
+    public Participant createParticipant(ParticipantDto participantDto, Long userId, Long teamId) {
+        TeamDto team = teamService.findTeamById(teamId);
+        if (team == null) {
+            throw new EntityNotFoundException("Team doesnt exist");
+        }
+        if (team.getCaptain().getId() != userId) {
+            throw new EntityNotFoundException("Wrong account credentials");
+        }
+        List<ParticipantDto> people = team.getParticipants();
+        Participant newPlayer = ParticipantDto.toParticipant(participantDto);
+        newPlayer.setTeam(TeamDto.toTeam(team));
+        participantRepository.save(newPlayer);
+        people.add(ParticipantDto.fromParticipant(newPlayer));
+        team.setParticipants(people);
+        teamService.updateTeam(team, userId, team.getId());
+        return newPlayer;
     }
 
     @Override
-    public void updateParticipant(ParticipantDto updatedParticipant, Long participantId) {
-        ParticipantDto oldParticipant = ParticipantDto.fromParticipant(participantRepository.findById(participantId).get());
-        if (oldParticipant == null) {
-            throw new EntityNotFoundException();
+    public void updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId) {
+        TeamDto team = teamService.findTeamById(teamId);
+        if (team == null) {
+            throw new EntityNotFoundException("Team doesnt exist");
         }
-        log.info("Updating participant {}", oldParticipant);
-        oldParticipant.setFirstname(updatedParticipant.getFirstname());
-        oldParticipant.setLastname(updatedParticipant.getLastname());
-        participantRepository.save(ParticipantDto.toParticipant(oldParticipant));
+        if (team.getCaptain().getId() != userId) {
+            throw new EntityNotFoundException("Wrong account credentials");
+        }
+        List<ParticipantDto> people = team.getParticipants();
+        Participant old = ParticipantDto.toParticipant(findParticipantById(participantId));
+        people.remove(old);
+        old.setTeam(TeamDto.toTeam(team));
+        if (newParticipant.getFirstname()!=null) {
+            old.setFirstname(newParticipant.getFirstname());
+        }
+        if (newParticipant.getLastname()!=null) {
+            old.setLastname(newParticipant.getLastname());
+        }
+        participantRepository.save(old);
+        people.add(newParticipant);
+        team.setParticipants(people);
+        teamService.updateTeam(team, userId, team.getId());
+
+
+        //        ParticipantDto oldParticipant = ParticipantDto.fromParticipant(participantRepository.findById(participantId).get());
+//        if (oldParticipant == null) {
+//            throw new EntityNotFoundException();
+//        }
+//        log.info("Updating participant {}", oldParticipant);
+//        oldParticipant.setFirstname(updatedParticipant.getFirstname());
+//        oldParticipant.setLastname(updatedParticipant.getLastname());
+//        participantRepository.save(ParticipantDto.toParticipant(oldParticipant));
     }
 
     @Override

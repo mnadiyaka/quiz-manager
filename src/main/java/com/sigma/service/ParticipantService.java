@@ -12,9 +12,9 @@ public interface ParticipantService {
 
     public ParticipantDto findParticipantById(Long participantId);
 
-    public Participant createParticipant(ParticipantDto participantDto, TeamDto teamDto);
+    public Participant createParticipant(ParticipantDto participantDto, Long userId, Long teamId);
 
-    public void updateParticipant(ParticipantDto updatedParticipant, Long participantId);
+    public void updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId);
 
     public void deleteParticipant(Long userId, Long teamId, Long participantId);
 }
