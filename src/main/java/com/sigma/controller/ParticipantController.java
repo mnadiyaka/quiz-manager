@@ -1,16 +1,18 @@
 package com.sigma.controller;
 
 import com.sigma.model.dto.ParticipantDto;
-import com.sigma.model.dto.TeamDto;
 import com.sigma.service.ParticipantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,5 +40,10 @@ public class ParticipantController {
         participantService.updateParticipant(participantDto, playerId, userId, teamId);
         log.info("Participant updated");
         return "player updated";
+    }
+
+    @GetMapping("/players")
+    public List<ParticipantDto> getPlayers(@PathVariable Long userId, @PathVariable Long teamId) {
+        return participantService.getAllParticipants(userId, teamId);
     }
 }

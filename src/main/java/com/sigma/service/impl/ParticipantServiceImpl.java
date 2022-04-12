@@ -23,9 +23,16 @@ public class ParticipantServiceImpl implements ParticipantService {
     private final TeamService teamService;
 
     @Override
-    public List<ParticipantDto> getAllParticipants() {
+    public List<ParticipantDto> getAllParticipants(Long userId, Long teamId) {
+        TeamDto team = teamService.findTeamById(teamId);
+        if (team == null) {
+            throw new EntityNotFoundException("Team doesnt exist");
+        }
+        if (team.getCaptain().getId() != userId) {
+            throw new EntityNotFoundException("Wrong account credentials");
+        }
         log.info("Getting list of participants");
-        return participantRepository.findAll().stream().map(participant -> ParticipantDto.fromParticipant(participant)).toList();
+        return participantRepository.findAll().stream().filter(p -> p.getTeam().getId()==teamId).map(participant -> ParticipantDto.fromParticipant(participant)).toList();
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.sigma.controller;
 
-import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
-import com.sigma.model.dto.UserDto;
 import com.sigma.model.entity.Team;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;

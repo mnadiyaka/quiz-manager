@@ -1,14 +1,13 @@
 package com.sigma.service;
 
 import com.sigma.model.dto.ParticipantDto;
-import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
 
 import java.util.List;
 
 public interface ParticipantService {
 
-    public List<ParticipantDto> getAllParticipants();
+    public List<ParticipantDto> getAllParticipants(Long userId, Long teamId);
 
     public ParticipantDto findParticipantById(Long participantId);
 
