@@ -53,4 +53,11 @@ public class TeamController {
         log.info("Participant added");
         return teamService.findTeamById(teamId);
     }
+
+    @PostMapping("/team/{teamId}/player/{playerId}/update")
+    public TeamDto apdParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long userId, @PathVariable Long teamId, @PathVariable Long playerId) {
+        teamService.updateParticipant(participantDto, playerId, userId, teamId);
+        log.info("Participant updated");
+        return teamService.findTeamById(teamId);
+    }
 }

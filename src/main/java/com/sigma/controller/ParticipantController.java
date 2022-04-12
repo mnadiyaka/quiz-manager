@@ -16,12 +16,6 @@ public class ParticipantController {
 
     private final ParticipantService participantService;
 
-//    @PostMapping("/addPart")
-//    public Participant addParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long userId, @PathVariable Long teamId) {
-//        log.info("Participant added");
-//        return participantService.createParticipant(participantDto, userId, teamId);
-//    }
-
     @DeleteMapping("/player/{playerId}/delete")//TODO: has exception about toString()
     public String deleteUser(@PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId, @PathVariable("playerId") Long playerId) {
         participantService.deleteParticipant(userId, teamId, playerId);

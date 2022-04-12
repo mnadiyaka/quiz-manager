@@ -20,5 +20,7 @@ public interface TeamService {
 
     public TeamDto addParticipant(ParticipantDto participantDto, Long userId, Long teamId);
 
+    public TeamDto updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId);
+
     public Team teamConfirmation(Team team, boolean confirmation); //TODO: DTO????
 }

@@ -132,4 +132,25 @@ public class TeamServiceImpl implements TeamService {
         updateTeam(team, userId, team.getId());
         return team;
     }
+
+    @Override
+    public TeamDto updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId) {
+        TeamDto team = TeamDto.fromTeam(teamRepository.getById(teamId));
+        if (team == null) {
+            throw new EntityNotFoundException("Team doesnt exist");
+        }
+        if (team.getCaptain().getId() != userId) {
+            throw new EntityNotFoundException("Wrong account credentials");
+        }
+        List<ParticipantDto> people = team.getParticipants();
+        ParticipantDto old = participantService.findParticipantById(participantId);
+        people.remove(old);
+        newParticipant.setId(old.getId());
+        //TODO: fix losing teamId
+        participantService.updateParticipant(newParticipant, participantId);
+        people.add(newParticipant);
+        team.setParticipants(people);
+        updateTeam(team, userId, team.getId());
+        return team;
+    }
 }
