@@ -5,7 +5,6 @@ import com.sigma.model.entity.Role;
 import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
 import com.sigma.repository.TeamRepository;
-import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
 import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;

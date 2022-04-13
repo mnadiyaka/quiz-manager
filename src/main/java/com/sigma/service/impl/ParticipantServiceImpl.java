@@ -68,7 +68,7 @@ public class ParticipantServiceImpl implements ParticipantService {
         Participant participant = findParticipantById(participantId);
         TeamDto team = checkTeam(userId, participant.getTeam().getId());
 
-        log.info("Deleting participant {}", participantRepository.getById(participantId));
+        log.info("Deleting participant {}", participant);
         participantRepository.deleteById(participantId);
     }
 

@@ -33,25 +33,14 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public QuizDto findQuizById(Long quizId) {
         log.info("Searching for quiz with id {}", quizId);
-        QuizDto quizDto = QuizDto.fromQuiz(quizRepository.findById(quizId).get());
-        if (quizDto == null) {
-            throw new EntityNotFoundException();
-        }
+        return QuizDto.fromQuiz(quizRepository.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz with id = " + quizId + " not found")));
 
-        return quizDto;
     }
 
     @Override
     @Transactional
     public Quiz createQuiz(QuizDto quiz, Long userId) {
-        User user = userService.findUserById(userId);
-        if (user == null) {
-            throw new EntityNotFoundException("User with id = " + userId + " not found");
-        }
-
-        if (user.getRole().equals(Role.CAPTAIN)) {
-            throw new EntityNotFoundException("This user is captain, not admin");
-        }
+        User user = checkUser(userId);
 
         log.info("Creating new quiz {}", quiz.toString());
         return quizRepository.save(QuizDto.toQuiz(quiz));
@@ -60,19 +49,10 @@ public class QuizServiceImpl implements QuizService {
     @Override
     @Transactional
     public Quiz updateQuiz(QuizDto updatedQuiz, Long quizId, Long userId) {
-        User user = userService.findUserById(userId);
-        if (user == null) {
-            throw new EntityNotFoundException("User with id = " + userId + " not found");
-        }
+        User user = checkUser(userId);
 
-        if (user.getRole().equals(Role.CAPTAIN)) {
-            throw new EntityNotFoundException("This user is captain, not admin");
-        }
+        QuizDto oldQuiz = findQuizById(quizId);
 
-        QuizDto oldQuiz = QuizDto.fromQuiz(quizRepository.findById(quizId).get());
-        if (oldQuiz == null) {
-            throw new EntityNotFoundException();
-        }
         log.info("Updating quiz {}", oldQuiz);
         if (updatedQuiz.getQuizName() != null) {
             oldQuiz.setQuizName(updatedQuiz.getQuizName());
@@ -92,19 +72,18 @@ public class QuizServiceImpl implements QuizService {
     @Override
     @Transactional
     public void deleteQuiz(Long userId, Long quizId) {
+        User user = checkUser(userId);
+
+        log.info("Deleting quiz {}", findQuizById(quizId));
+        quizRepository.deleteById(quizId);
+    }
+
+    private User checkUser(Long userId) {
         User user = userService.findUserById(userId);
-        if (user == null) {
-            throw new EntityNotFoundException("User with id = " + userId + " not found");
-        }
 
         if (user.getRole().equals(Role.CAPTAIN)) {
             throw new EntityNotFoundException("This user is captain, not admin");
         }
-
-        if (!quizRepository.existsById(quizId)) {
-            throw new EntityNotFoundException("No quiz with this id");
-        }
-        log.info("Deleting quiz {}", quizRepository.getById(quizId));
-        quizRepository.deleteById(quizId);
+        return user;
     }
 }
