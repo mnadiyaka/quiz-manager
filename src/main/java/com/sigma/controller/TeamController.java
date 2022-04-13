@@ -1,7 +1,9 @@
 package com.sigma.controller;
 
+import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Team;
+import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ import java.util.List;
 public class TeamController {
 
     private final TeamService teamService;
+    private final ParticipantService participantService;
 
     @GetMapping("/teams")
     public List<TeamDto> getTeams(@PathVariable Long userId) {
@@ -41,6 +44,12 @@ public class TeamController {
 
     @DeleteMapping("/team/{teamId}/delete")
     public String deleteTeam(@PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId) {
+
+        List<ParticipantDto> people = participantService.getAllParticipants(userId, teamId);
+        for (ParticipantDto person: people){ //TODO: exception when deleting unresistant players
+            participantService.deleteParticipant(userId,teamId, person.getId());
+        }
+
         teamService.deleteTeam(userId, teamId);
         return "deleted team";
     }

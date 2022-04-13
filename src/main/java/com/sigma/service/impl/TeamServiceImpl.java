@@ -1,8 +1,6 @@
 package com.sigma.service.impl;
 
-import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
-import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Role;
 import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
@@ -29,8 +27,6 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
     private final UserService userService;
-
-    //private final ParticipantService participantService;
 
     @Override
     public TeamDto findTeamById(Long teamId) {
@@ -77,11 +73,7 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     public void deleteTeam(Long userId, Long teamId) {
         TeamDto team = checkTeam(userId, teamId);
-//
-//        List<ParticipantDto> people = participantService.getAllParticipants(userId, teamId);
-//        for (ParticipantDto person: people){
-//            participantService.deleteParticipant(userId,teamId, person.getId());
-//        }
+
         log.info("Deleting team {}", team);
         teamRepository.delete(TeamDto.toTeam(team));
     }
