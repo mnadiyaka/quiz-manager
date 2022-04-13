@@ -9,7 +9,7 @@ public interface ParticipantService {
 
     public List<ParticipantDto> getAllParticipants(Long userId, Long teamId);
 
-    public ParticipantDto findParticipantById(Long participantId);
+    public Participant findParticipantById(Long participantId);
 
     public Participant createParticipant(ParticipantDto participantDto, Long userId, Long teamId);
 

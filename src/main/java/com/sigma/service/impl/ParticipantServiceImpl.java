@@ -8,6 +8,7 @@ import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,20 +24,15 @@ public class ParticipantServiceImpl implements ParticipantService {
     private final TeamService teamService;
 
     @Override
-    public ParticipantDto findParticipantById(Long participantId) {
+    public Participant findParticipantById(Long participantId) {
         log.info("Searching for participant with id {}", participantId);
-        return ParticipantDto.fromParticipant(participantRepository.findById(participantId).orElseThrow(() -> new EntityNotFoundException()));
+        return participantRepository.findById(participantId).orElseThrow(() -> new EntityNotFoundException());
     }
 
     @Override
     public Participant createParticipant(ParticipantDto participantDto, Long userId, Long teamId) {
-        TeamDto team = teamService.findTeamById(teamId);
-        if (team == null) {
-            throw new EntityNotFoundException("Team doesnt exist");
-        }
-        if (team.getCaptain().getId() != userId) {
-            throw new EntityNotFoundException("Wrong account credentials");
-        }
+        TeamDto team = checkTeam(userId, teamId);
+
         List<ParticipantDto> people = team.getParticipants();
         Participant newPlayer = ParticipantDto.toParticipant(participantDto);
         newPlayer.setTeam(TeamDto.toTeam(team));
@@ -49,15 +45,10 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public void updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId) {
-        TeamDto team = teamService.findTeamById(teamId);
-        if (team == null) {
-            throw new EntityNotFoundException("Team doesnt exist");
-        }
-        if (team.getCaptain().getId() != userId) {
-            throw new EntityNotFoundException("Wrong account credentials");
-        }
+        TeamDto team = checkTeam(userId, teamId);
+
         List<ParticipantDto> people = team.getParticipants();
-        Participant old = ParticipantDto.toParticipant(findParticipantById(participantId));
+        Participant old = findParticipantById(participantId);
         people.remove(old);
         old.setTeam(TeamDto.toTeam(team));
         if (newParticipant.getFirstname() != null) {
@@ -74,31 +65,25 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public void deleteParticipant(Long userId, Long teamId, Long participantId) {
-        Participant participant = participantRepository.getById(participantId);
-        TeamDto team = TeamDto.fromTeam(participant.getTeam());
-        if (team == null) {
-            throw new EntityNotFoundException("Team doesnt exist");
-        }
-        if (team.getCaptain().getId() != userId) {
-            throw new EntityNotFoundException("Wrong account credentials");
-        }
-        if (!participantRepository.existsById(participantId)) {
-            throw new EntityNotFoundException();
-        }
+        Participant participant = findParticipantById(participantId);
+        TeamDto team = checkTeam(userId, participant.getTeam().getId());
+
         log.info("Deleting participant {}", participantRepository.getById(participantId));
         participantRepository.deleteById(participantId);
     }
 
     @Override
     public List<ParticipantDto> getAllParticipants(Long userId, Long teamId) {
-        TeamDto team = teamService.findTeamById(teamId);
-        if (team == null) {
-            throw new EntityNotFoundException("Team doesnt exist");
-        }
-        if (team.getCaptain().getId() != userId) {
-            throw new EntityNotFoundException("Wrong account credentials");
-        }
+        TeamDto team = checkTeam(userId, teamId);
         log.info("Getting list of participants");
         return participantRepository.findAll().stream().filter(p -> p.getTeam().getId() == teamId).map(participant -> ParticipantDto.fromParticipant(participant)).toList();
+    }
+
+    private TeamDto checkTeam(Long userId, Long teamId) {
+        TeamDto team = teamService.findTeamById(teamId);
+        if (team.getCaptain().getId() != userId) {
+            throw new AuthorizationServiceException("Wrong account credentials");
+        }
+        return team;
     }
 }
