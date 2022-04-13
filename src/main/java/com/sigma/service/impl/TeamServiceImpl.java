@@ -27,20 +27,9 @@ public class TeamServiceImpl implements TeamService {
     private final UserService userService;
 
     @Override
-    public List<TeamDto> getAllTeams(Long userId) {
-        log.info("Getting list of teams");
-        return teamRepository.findAll().stream().filter(team -> team.getCaptain().getId() == userId)
-                .map(team -> TeamDto.fromTeam(team)).toList();
-    }
-
-    @Override
     public TeamDto findTeamById(Long teamId) {
         log.info("Searching for team with id {}", teamId);
-        TeamDto teamDto = TeamDto.fromTeam(teamRepository.findById(teamId).get());
-        if (teamDto == null) {
-            throw new EntityNotFoundException();
-        }
-        return teamDto;
+        return TeamDto.fromTeam(teamRepository.findById(teamId).orElseThrow(() -> new EntityNotFoundException()));
     }
 
     @Override
@@ -105,5 +94,12 @@ public class TeamServiceImpl implements TeamService {
     public Team teamConfirmation(Team team, boolean confirmation) { //TODO: change idea?
         team.setConfirmed(confirmation);
         return teamRepository.save(team);
+    }
+
+    @Override
+    public List<TeamDto> getAllTeams(Long userId) {
+        log.info("Getting list of teams");
+        return teamRepository.findAll().stream().filter(team -> team.getCaptain().getId() == userId)
+                .map(team -> TeamDto.fromTeam(team)).toList();
     }
 }

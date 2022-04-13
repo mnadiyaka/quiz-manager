@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void updateUser(User updatedUser, Long userId) {
-        User oldUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException());
+        User oldUser = findUserById(userId);
         log.info("Updating user {}", oldUser.getUsername());
         oldUser.setUsername(updatedUser.getUsername());
         oldUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
