@@ -9,6 +9,7 @@ import com.sigma.service.TeamService;
 import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -36,21 +37,18 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     public Team createTeam(TeamDto teamDto, Long captainId) {
         User user = userService.findUserById(captainId);
-        if (user == null) {
-            throw new EntityNotFoundException("User with id = " + captainId + " not found");
-        }
-
         if (user.getRole().equals(Role.ADMIN)) {
-            throw new EntityNotFoundException("This user is admin, not captain");
+            throw new AuthorizationServiceException("This user is admin, not captain");
         }
 
         if (teamRepository.findByTeamName(teamDto.getTeamName()) != null) {
             throw new EntityExistsException("Already exists");
         }
 
+        teamDto.setCaptain(user);
+
         log.info("Creating new team {}", teamDto);
 
-        teamDto.setCaptain(userService.findUserById(captainId));
         teamDto.setParticipants(new ArrayList<>());
         return teamRepository.save(TeamDto.toTeam(teamDto));
     }
@@ -58,13 +56,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     @Transactional
     public void updateTeam(TeamDto updatedTeam, Long userId, Long teamId) {
-        TeamDto oldTeam = TeamDto.fromTeam(teamRepository.findById(teamId).get());
-        if (oldTeam == null) {
-            throw new EntityNotFoundException();
-        }
-        if (oldTeam.getCaptain().getId() != userId) {
-            throw new EntityNotFoundException("Wrong account credentials");
-        }
+        TeamDto oldTeam = checkTeam(userId, teamId);
         log.info("Updating team {}", oldTeam);
         oldTeam.setTeamName(updatedTeam.getTeamName());
         if (updatedTeam.getParticipants() != null) {
@@ -79,13 +71,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     @Transactional
     public void deleteTeam(Long userId, Long teamId) {
-        TeamDto team = TeamDto.fromTeam(teamRepository.getById(teamId));
-        if (team == null) {
-            throw new EntityNotFoundException("Team doesnt exist");
-        }
-        if (team.getCaptain().getId() != userId) {
-            throw new EntityNotFoundException("Wrong account credentials");
-        }
+        TeamDto team = checkTeam(userId, teamId);
         log.info("Deleting team {}", team);
         teamRepository.delete(TeamDto.toTeam(team));
     }
@@ -101,5 +87,13 @@ public class TeamServiceImpl implements TeamService {
         log.info("Getting list of teams");
         return teamRepository.findAll().stream().filter(team -> team.getCaptain().getId() == userId)
                 .map(team -> TeamDto.fromTeam(team)).toList();
+    }
+
+    private TeamDto checkTeam(Long userId, Long teamId) {
+        TeamDto team = findTeamById(teamId);
+        if (team.getCaptain().getId() != userId) {
+            throw new AuthorizationServiceException("Wrong account credentials");
+        }
+        return team;
     }
 }
