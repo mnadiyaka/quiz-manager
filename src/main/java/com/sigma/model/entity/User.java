@@ -39,7 +39,7 @@ public class User {
     @ManyToMany
     @JoinTable(name = "admin_location", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id"))
-    private List<LocationDto> adminLocation;
+    private List<Location> adminLocation;
 
     public User(String username, String password, Role role) {
         this.username = username;

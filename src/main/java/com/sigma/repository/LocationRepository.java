@@ -1,13 +1,13 @@
 package com.sigma.repository;
 
-import com.sigma.model.entity.LocationDto;
+import com.sigma.model.entity.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface LocationRepository extends JpaRepository<LocationDto, Long> {
+public interface LocationRepository extends JpaRepository<Location, Long> {
 
-    public List<LocationDto> findLocationsByCity(String city);
+    public List<Location> findLocationsByCity(String city);
 }
