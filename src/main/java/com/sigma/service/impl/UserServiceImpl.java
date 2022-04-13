@@ -5,6 +5,7 @@ import com.sigma.model.dto.SignInUserDto;
 import com.sigma.model.dto.SignInUserResponseDto;
 import com.sigma.model.dto.SignUpUserDto;
 import com.sigma.model.dto.SignUpUserResponseDto;
+import com.sigma.model.dto.UserDto;
 import com.sigma.model.entity.User;
 import com.sigma.repository.UserRepository;
 import com.sigma.service.UserService;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,9 +46,9 @@ public class UserServiceImpl implements UserService {
     private String issuer;
 
     @Override
-    public List<User> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         log.info("Getting list of users");
-        return userRepository.findAll();
+        return userRepository.findAll().stream().map(UserDto::fromUser).toList();
     }
 
     @Override
@@ -57,17 +60,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         log.info("Searching for user with username {}", username);
-        if (userRepository.findByUsername(username) == null) {
-            throw new EntityNotFoundException();
-        }
-        return userRepository.findByUsername(username);
+        return Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(() -> new EntityNotFoundException());
     }
 
     @Override
     @Transactional
     public SignUpUserResponseDto createUser(SignUpUserDto signUpDto) {
         log.info("Creating new user {}", signUpDto.getUsername());
-        if (userRepository.findByUsername(signUpDto.getUsername()) != null) {
+        if (!Objects.equals(userRepository.findByUsername(signUpDto.getUsername()),null)) {
             return new SignUpUserResponseDto(FAILURE, EXISTED);
         }
 
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public SignInUserResponseDto login(SignInUserDto signInUserDto) {
         User myUser = userRepository.findByUsername(signInUserDto.getUsername());
-        if (myUser == null) {
+        if (Objects.equals(myUser, null)) {
             return new SignInUserResponseDto(FAILURE, NOT_EXIST);
         }
 

@@ -17,6 +17,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +43,7 @@ public class TeamServiceImpl implements TeamService {
             throw new AuthorizationServiceException("This user is admin, not captain");
         }
 
-        if (teamRepository.findByTeamName(teamDto.getTeamName()) != null) {
+        if (!Objects.equals(teamRepository.findByTeamName(teamDto.getTeamName()), null)) {
             throw new EntityExistsException("Already exists");
         }
 
@@ -58,13 +60,11 @@ public class TeamServiceImpl implements TeamService {
     public void updateTeam(TeamDto updatedTeam, Long userId, Long teamId) {
         TeamDto oldTeam = checkTeam(userId, teamId);
         log.info("Updating team {}", oldTeam);
-        oldTeam.setTeamName(updatedTeam.getTeamName());
-        if (updatedTeam.getParticipants() != null) {
-            oldTeam.setParticipants(updatedTeam.getParticipants());
-        }
-        if (updatedTeam.getCaptain() != null) {
-            oldTeam.setCaptain(updatedTeam.getCaptain());
-        }
+
+        Optional.ofNullable(updatedTeam.getTeamName()).ifPresent(oldTeam::setTeamName);
+        Optional.ofNullable(updatedTeam.getParticipants()).ifPresent(oldTeam::setParticipants);
+        Optional.ofNullable(updatedTeam.getCaptain()).ifPresent(oldTeam::setCaptain);
+
         teamRepository.save(TeamDto.toTeam(oldTeam));
     }
 
@@ -86,13 +86,13 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<TeamDto> getAllTeams(Long userId) {
         log.info("Getting list of teams");
-        return teamRepository.findAll().stream().filter(team -> team.getCaptain().getId() == userId)
-                .map(team -> TeamDto.fromTeam(team)).toList();
+        return teamRepository.findAll().stream().filter(team -> Objects.equals(team.getCaptain().getId(), userId))
+                .map(TeamDto::fromTeam).toList();
     }
 
     private TeamDto checkTeam(Long userId, Long teamId) {
         TeamDto team = findTeamById(teamId);
-        if (team.getCaptain().getId() != userId) {
+        if (!Objects.equals(team.getCaptain().getId(), userId)) {
             throw new AuthorizationServiceException("Wrong account credentials");
         }
         return team;

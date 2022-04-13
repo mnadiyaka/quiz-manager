@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<LocationDto> getAllLocations() {
         log.info("Getting list of location");
-        return locationRepository.findAll().stream().map(location -> LocationDto.fromLocation(location)).toList();
+        return locationRepository.findAll().stream().map(LocationDto::fromLocation).toList();
     }
 
     @Override
@@ -46,21 +47,13 @@ public class LocationServiceImpl implements LocationService {
         Location oldLocation = findLocationById(locationId);
 
         log.info("Updating location {}", oldLocation);
-        if (updatedLocation.getLocationName()!=null) {
-            oldLocation.setLocationName(updatedLocation.getLocationName());
-        }
-        if (updatedLocation.getCity()!=null) {
-            oldLocation.setCity(updatedLocation.getCity());
-        }
-        if (updatedLocation.getStreet()!=null) {
-            oldLocation.setStreet(updatedLocation.getStreet());
-        }
-        if (updatedLocation.getHouseNumber()!=null) {
-            oldLocation.setHouseNumber(updatedLocation.getHouseNumber());
-        }
-        if (updatedLocation.getZipCode()!=0) {
-            oldLocation.setZipCode(updatedLocation.getZipCode());
-        }
+
+        Optional.ofNullable(updatedLocation.getLocationName()).ifPresent(oldLocation::setLocationName);
+        Optional.ofNullable(updatedLocation.getCity()).ifPresent(oldLocation::setCity);
+        Optional.ofNullable(updatedLocation.getStreet()).ifPresent(oldLocation::setStreet);
+        Optional.ofNullable(updatedLocation.getHouseNumber()).ifPresent(oldLocation::setHouseNumber);
+        Optional.ofNullable(updatedLocation.getZipCode()).ifPresent(oldLocation::setZipCode);
+
         locationRepository.save(oldLocation);
     }
 

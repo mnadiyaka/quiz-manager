@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,14 +28,13 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public List<QuizDto> getAllQuizzes() {
         log.info("Getting list of quiz");
-        return quizRepository.findAll().stream().map(quiz -> QuizDto.fromQuiz(quiz)).toList();
+        return quizRepository.findAll().stream().map(QuizDto::fromQuiz).toList();
     }
 
     @Override
     public QuizDto findQuizById(Long quizId) {
         log.info("Searching for quiz with id {}", quizId);
         return QuizDto.fromQuiz(quizRepository.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz with id = " + quizId + " not found")));
-
     }
 
     @Override
@@ -54,18 +54,11 @@ public class QuizServiceImpl implements QuizService {
         QuizDto oldQuiz = findQuizById(quizId);
 
         log.info("Updating quiz {}", oldQuiz);
-        if (updatedQuiz.getQuizName() != null) {
-            oldQuiz.setQuizName(updatedQuiz.getQuizName());
-        }
-        if (updatedQuiz.getCategory() != null) {
-            oldQuiz.setCategory(updatedQuiz.getCategory());
-        }
-        if (updatedQuiz.getDateTime() != null) {
-            oldQuiz.setDateTime(updatedQuiz.getDateTime());
-        }
-        if (updatedQuiz.getShortDescription() != null) {
-            oldQuiz.setShortDescription(updatedQuiz.getShortDescription());
-        }
+        Optional.ofNullable(updatedQuiz.getQuizName()).ifPresent(oldQuiz::setQuizName);
+        Optional.ofNullable(updatedQuiz.getCategory()).ifPresent(oldQuiz::setCategory);
+        Optional.ofNullable(updatedQuiz.getDateTime()).ifPresent(oldQuiz::setDateTime);
+        Optional.ofNullable(updatedQuiz.getShortDescription()).ifPresent(oldQuiz::setShortDescription);
+
         return quizRepository.save(QuizDto.toQuiz(oldQuiz));
     }
 

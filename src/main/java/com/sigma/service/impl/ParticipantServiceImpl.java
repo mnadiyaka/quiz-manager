@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,13 +52,11 @@ public class ParticipantServiceImpl implements ParticipantService {
         List<ParticipantDto> people = team.getParticipants();
         Participant old = findParticipantById(participantId);
         people.remove(old);
+        Optional.ofNullable(newParticipant.getFirstname()).ifPresent(old::setFirstname);
+        Optional.ofNullable(newParticipant.getLastname()).ifPresent(old::setLastname);
+
         old.setTeam(TeamDto.toTeam(team));
-        if (newParticipant.getFirstname() != null) {
-            old.setFirstname(newParticipant.getFirstname());
-        }
-        if (newParticipant.getLastname() != null) {
-            old.setLastname(newParticipant.getLastname());
-        }
+
         participantRepository.save(old);
         people.add(newParticipant);
         team.setParticipants(people);
@@ -76,12 +76,12 @@ public class ParticipantServiceImpl implements ParticipantService {
     public List<ParticipantDto> getAllParticipants(Long userId, Long teamId) {
         TeamDto team = checkTeam(userId, teamId);
         log.info("Getting list of participants");
-        return participantRepository.findAll().stream().filter(p -> p.getTeam().getId() == teamId).map(participant -> ParticipantDto.fromParticipant(participant)).toList();
+        return participantRepository.findAll().stream().filter(p -> Objects.equals(p.getTeam().getId(), teamId)).map(ParticipantDto::fromParticipant).toList();
     }
 
     private TeamDto checkTeam(Long userId, Long teamId) {
         TeamDto team = teamService.findTeamById(teamId);
-        if (team.getCaptain().getId() != userId) {
+        if (!Objects.equals(team.getCaptain().getId(), userId)) {
             throw new AuthorizationServiceException("Wrong account credentials");
         }
         return team;
