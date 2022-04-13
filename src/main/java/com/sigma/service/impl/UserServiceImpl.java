@@ -60,14 +60,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByUsername(String username) {
         log.info("Searching for user with username {}", username);
-        return Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(() -> new EntityNotFoundException());
+
+        return Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(()->new EntityNotFoundException());
     }
 
     @Override
     @Transactional
     public SignUpUserResponseDto createUser(SignUpUserDto signUpDto) {
         log.info("Creating new user {}", signUpDto.getUsername());
-        if (!Objects.equals(userRepository.findByUsername(signUpDto.getUsername()),null)) {
+        if (!Objects.equals(userRepository.findByUsername(signUpDto.getUsername()),null)) {//might be without !
             return new SignUpUserResponseDto(FAILURE, EXISTED);
         }
 
@@ -101,7 +102,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public SignInUserResponseDto login(SignInUserDto signInUserDto) {
         User myUser = userRepository.findByUsername(signInUserDto.getUsername());
-        if (Objects.equals(myUser, null)) {
+        if (Objects.equals(myUser,null)) {
             return new SignInUserResponseDto(FAILURE, NOT_EXIST);
         }
 

@@ -12,6 +12,7 @@ import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
+    @Transactional
     public Participant createParticipant(ParticipantDto participantDto, Long userId, Long teamId) {
         TeamDto team = checkTeam(userId, teamId);
 
@@ -46,6 +48,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
+    @Transactional
     public void updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId) {
         TeamDto team = checkTeam(userId, teamId);
 
@@ -64,6 +67,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
+    @Transactional
     public void deleteParticipant(Long userId, Long teamId, Long participantId) {
         Participant participant = findParticipantById(participantId);
         TeamDto team = checkTeam(userId, participant.getTeam().getId());

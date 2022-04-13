@@ -21,19 +21,21 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("user")
+@RequestMapping("")
 @Slf4j
 public class UserController {
+
     private final String SUCCESS = "success";
     private final String FAILURE = "failure";
+
     private final UserService userService;
 
-    @GetMapping("/all")
+    @GetMapping("/users")
     public List<UserDto> getUsers() {
-        return userService.getAllUsers();
+        return userService.getAllUsers();//.stream().map(UserDto::fromUser).toList();
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/")
     public String index() {
         log.info("Hello world printing....");
         return "Hello World";
@@ -47,10 +49,11 @@ public class UserController {
     @PostMapping("/login")
     public SignInUserResponseDto loginUser(@RequestBody SignInUserDto user) throws AuthenticationException {
         return userService.login(user);
+
     }
 
-    @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable("userId") Long userId) {
+    @DeleteMapping("/users/{user_id}/delete")
+    public String deleteUser(@PathVariable("user_id") Long userId) {
         userService.deleteUser(userId);
         return "deleted user";
     }
