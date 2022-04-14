@@ -23,7 +23,7 @@ public class ParticipantController {
 
     private final ParticipantService participantService;
 
-    @DeleteMapping("/{playerId}")//TODO: has exception about toString()
+    @DeleteMapping("/{playerId}")
     public String deleteUser(@PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId, @PathVariable("playerId") Long playerId) {
         participantService.deleteParticipant(userId, teamId, playerId);
         return "deleted player";
