@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -26,12 +27,15 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @NotNull
     @Column(name = "user_name")
     private String username;
 
+    @NotNull
     @Column(name = "password")
     private String password;
 
+    @NotNull
     @Column(name = "role")
     private Role role;
 

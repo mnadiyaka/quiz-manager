@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "participants")
@@ -25,9 +26,11 @@ public class Participant {
     @Column(name = "participant_id")
     private Long id;
 
+    @NotNull
     @Column(name = "firstname")
     private String firstname;
 
+    @NotNull
     @Column(name = "lastname")
     private String lastname;
 

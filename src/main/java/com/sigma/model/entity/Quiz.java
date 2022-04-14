@@ -1,5 +1,6 @@
 package com.sigma.model.entity;
 
+import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,9 +29,11 @@ public class Quiz {
     @Column(name = "quiz_id")
     private Long id;
 
+    @NotNull
     @Column(name = "quiz_name")
     private String quizName;
 
+    @NotNull
     @Column(name = "category")
     private Category category;
 

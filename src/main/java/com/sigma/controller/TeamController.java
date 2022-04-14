@@ -25,7 +25,6 @@ import java.util.List;
 public class TeamController {
 
     private final TeamService teamService;
-    private final ParticipantService participantService;
 
     @GetMapping("/all")
     public List<TeamDto> getTeams(@PathVariable Long userId) {

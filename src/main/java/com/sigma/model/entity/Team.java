@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -28,6 +30,7 @@ public class Team {
     @Column(name = "team_id")
     private Long id;
 
+    @NotNull
     @Column(name = "team_name")
     private String teamName;
 
@@ -47,5 +50,6 @@ public class Team {
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "team", orphanRemoval = true)
+    @Size(max = 9, message = "only 9 people per team")//TODO: npt like this
     private List<Participant> participants;
 }
