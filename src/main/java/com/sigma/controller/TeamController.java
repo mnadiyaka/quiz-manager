@@ -45,12 +45,6 @@ public class TeamController {
 
     @DeleteMapping("/{teamId}")
     public String deleteTeam(@PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId) {
-
-        List<ParticipantDto> people = participantService.getAllParticipants(userId, teamId);
-        for (ParticipantDto person: people){ //TODO: exception when deleting nonexistent players (smth about toString)
-            participantService.deleteParticipant(userId,teamId, person.getId());
-        }
-
         teamService.deleteTeam(userId, teamId);
         return "deleted team";
     }

@@ -24,7 +24,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     private final ParticipantRepository participantRepository;
 
-    private final TeamService teamService;
+    private final TeamService teamService; //TODO: remove service
 
     @Override
     public Participant findParticipantById(Long participantId) {

@@ -46,6 +46,6 @@ public class Team {
     private User captain;
 
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", orphanRemoval = true)
     private List<Participant> participants;
 }
