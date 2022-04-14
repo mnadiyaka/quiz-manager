@@ -1,16 +1,16 @@
 package com.sigma.controller;
 
-import com.sigma.model.dto.SignInUserDto;
-import com.sigma.model.dto.SignInUserResponseDto;
-import com.sigma.model.dto.SignUpUserDto;
-import com.sigma.model.dto.SignUpUserResponseDto;
-import com.sigma.model.dto.UserDto;
-import com.sigma.service.UserService;
+import com.sigma.model.dto.LocationDto;
+import com.sigma.model.dto.QuizDto;
+import com.sigma.model.entity.Location;
+import com.sigma.model.entity.Quiz;
+import com.sigma.service.LocationService;
+import com.sigma.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,40 +21,31 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("")
+@RequestMapping("user/{userId}/location")
 @Slf4j
-public class UserController {
+public class LocationController {
 
-    private final String SUCCESS = "success";
-    private final String FAILURE = "failure";
+    private final LocationService locationService;
 
-    private final UserService userService;
-
-    @GetMapping("/users")
-    public List<UserDto> getUsers() {
-        return userService.getAllUsers().stream().map(UserDto::fromUser).toList();
+    @GetMapping("/all")
+    public List<LocationDto> getLocation(@PathVariable Long userId) {
+        return locationService.getAllLocations();
     }
 
-    @GetMapping("/")
-    public String index() {
-        log.info("Hello world printing....");
-        return "Hello World";
+    @PostMapping("")
+    public Location createQuiz(@RequestBody LocationDto locationDto, @PathVariable Long userId) {
+        return locationService.createLocation(locationDto, userId);
     }
 
-    @PostMapping("/signUp")
-    public SignUpUserResponseDto signUp(@RequestBody SignUpUserDto signUpDto) {
-        return userService.createUser(signUpDto);
+    @PatchMapping("/{locationId}")
+    public String updateQuiz(@RequestBody LocationDto locationDto, @PathVariable("userId") Long userId, @PathVariable("locationId") Long locationId) {
+        locationService.updateLocation(locationDto, userId, locationId);
+        return "team updated";
     }
 
-    @PostMapping("/login")
-    public SignInUserResponseDto loginUser(@RequestBody SignInUserDto user) throws AuthenticationException {
-        return userService.login(user);
-
-    }
-
-    @DeleteMapping("/users/{user_id}/delete")
-    public String deleteUser(@PathVariable("user_id") Long userId) {
-        userService.deleteUser(userId);
-        return "deleted user";
+    @DeleteMapping("/{locationId}")
+    public String deleteLocation(@PathVariable("userId") Long userId, @PathVariable("locationId") Long locationId) {
+        locationService.deleteLocation(userId, locationId);
+        return "deleted team";
     }
 }
