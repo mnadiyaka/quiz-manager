@@ -1,6 +1,7 @@
 package com.sigma.model.entity;
 
 import lombok.Data;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.CascadeType;
@@ -31,6 +32,7 @@ public class Participant {
     private String lastname;
 
     @ManyToOne(cascade = CascadeType.MERGE)
+    @ToString.Exclude
     @JoinColumn(name = "team_id")
     private Team team;
 }
