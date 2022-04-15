@@ -52,13 +52,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserById(Long userId) {
+    public User findUserById(final Long userId) {
         log.info("Searching for user with id {}", userId);
         return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with id = " + userId + " not found"));
     }
 
     @Override
-    public User findUserByUsername(String username) {
+    public User findUserByUsername(final String username) {
         log.info("Searching for user with username {}", username);
 
         return Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(() -> new EntityNotFoundException());
@@ -66,21 +66,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public SignUpUserResponseDto createUser(SignUpUserDto signUpDto) {
+    public SignUpUserResponseDto createUser(final SignUpUserDto signUpDto) {
         log.info("Creating new user {}", signUpDto.getUsername());
         if (!Objects.equals(userRepository.findByUsername(signUpDto.getUsername()), null)) {
             return new SignUpUserResponseDto(FAILURE, EXISTED);
         }
 
-        User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getRole());
+        final User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getRole());
         userRepository.save(user);
         return new SignUpUserResponseDto(SUCCESS, CREATED);
     }
 
     @Override
     @Transactional
-    public void updateUser(User updatedUser, Long userId) {
-        User oldUser = findUserById(userId);
+    public void updateUser(final User updatedUser, final Long userId) {
+        final User oldUser = findUserById(userId);
         log.info("Updating user {}", oldUser.getUsername());
         oldUser.setUsername(updatedUser.getUsername());
         oldUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(Long userId) {
+    public void deleteUser(final Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new EntityNotFoundException();
         }
@@ -100,8 +100,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SignInUserResponseDto login(SignInUserDto signInUserDto) {
-        User myUser = userRepository.findByUsername(signInUserDto.getUsername());
+    public SignInUserResponseDto login(final SignInUserDto signInUserDto) {
+        final User myUser = userRepository.findByUsername(signInUserDto.getUsername());
         if (Objects.equals(myUser, null)) {
             return new SignInUserResponseDto(FAILURE, NOT_EXIST);
         }

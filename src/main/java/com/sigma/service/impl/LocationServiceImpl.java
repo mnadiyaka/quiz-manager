@@ -27,24 +27,24 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public Location findLocationById(Long locationId) {
+    public Location findLocationById(final Long locationId) {
         log.info("Searching for location with id {}", locationId);
-        Location location = locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException());
+        final Location location = locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException());
 
         return location;
     }
 
     @Override
     @Transactional
-    public Location createLocation(LocationDto location) {
+    public Location createLocation(final LocationDto location) {
         log.info("Creating new location {}", location.toString());
         return locationRepository.save(LocationDto.toLocation(location));
     }
 
     @Override
     @Transactional
-    public void updateLocation(LocationDto updatedLocation, Long locationId) {
-        Location oldLocation = findLocationById(locationId);
+    public void updateLocation(final LocationDto updatedLocation, final Long locationId) {
+        final Location oldLocation = findLocationById(locationId);
 
         log.info("Updating location {}", oldLocation);
 
@@ -59,7 +59,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     @Transactional
-    public void deleteLocation(Long locationId) {
+    public void deleteLocation(final Long locationId) {
         log.info("Deleting location {}", findLocationById(locationId));
         locationRepository.deleteById(locationId);
     }

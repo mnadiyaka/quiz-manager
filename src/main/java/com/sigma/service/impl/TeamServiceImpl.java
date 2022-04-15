@@ -30,15 +30,15 @@ public class TeamServiceImpl implements TeamService {
     private final UserService userService;
 
     @Override
-    public TeamDto findTeamById(Long teamId) {
+    public TeamDto findTeamById(final Long teamId) {
         log.info("Searching for team with id {}", teamId);
         return TeamDto.fromTeam(teamRepository.findById(teamId).orElseThrow(() -> new EntityNotFoundException()));
     }
 
     @Override
     @Transactional
-    public Team createTeam(TeamDto teamDto, Long captainId) {
-        User user = userService.findUserById(captainId);
+    public Team createTeam(final TeamDto teamDto, final Long captainId) {
+        final User user = userService.findUserById(captainId);
         if (user.getRole().equals(Role.ADMIN)) {
             throw new AuthorizationServiceException("This user is admin, not captain");
         }
@@ -57,8 +57,8 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional
-    public void updateTeam(TeamDto updatedTeam, Long userId, Long teamId) {
-        TeamDto oldTeam = checkTeam(userId, teamId);
+    public void updateTeam(final TeamDto updatedTeam, final Long userId, final Long teamId) {
+        final TeamDto oldTeam = checkTeam(userId, teamId);
         log.info("Updating team {}", oldTeam);
 
         Optional.ofNullable(updatedTeam.getTeamName()).ifPresent(oldTeam::setTeamName);
@@ -70,28 +70,28 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional
-    public void deleteTeam(Long userId, Long teamId) {
-        TeamDto team = checkTeam(userId, teamId);
+    public void deleteTeam(final Long userId, final Long teamId) {
+        final TeamDto team = checkTeam(userId, teamId);
 
         log.info("Deleting team {}", team);
         teamRepository.delete(TeamDto.toTeam(team));
     }
 
     @Override
-    public Team teamConfirmation(Team team, boolean confirmation) { //TODO: change idea?
+    public Team teamConfirmation(final Team team, final boolean confirmation) { //TODO: change idea?
         team.setConfirmed(confirmation);
         return teamRepository.save(team);
     }
 
     @Override
-    public List<TeamDto> getAllTeams(Long userId) {
+    public List<TeamDto> getAllTeams(final Long userId) {
         log.info("Getting list of teams");
         return teamRepository.findAll().stream().filter(team -> Objects.equals(team.getCaptain().getId(), userId))
                 .map(TeamDto::fromTeam).toList();
     }
 
     private TeamDto checkTeam(Long userId, Long teamId) {
-        TeamDto team = findTeamById(teamId);
+        final TeamDto team = findTeamById(teamId);
         if (!Objects.equals(team.getCaptain().getId(), userId)) {
             throw new AuthorizationServiceException("Wrong account credentials");
         }

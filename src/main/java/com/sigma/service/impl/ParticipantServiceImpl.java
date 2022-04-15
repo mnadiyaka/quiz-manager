@@ -27,14 +27,14 @@ public class ParticipantServiceImpl implements ParticipantService {
     private final TeamService teamService; //TODO: remove service
 
     @Override
-    public Participant findParticipantById(Long participantId) {
+    public Participant findParticipantById(final Long participantId) {
         log.info("Searching for participant with id {}", participantId);
         return participantRepository.findById(participantId).orElseThrow(() -> new EntityNotFoundException());
     }
 
     @Override
     @Transactional
-    public Participant createParticipant(ParticipantDto participantDto, Long userId, Long teamId) {
+    public Participant createParticipant(final ParticipantDto participantDto, final Long userId, final Long teamId) {
         TeamDto team = checkTeam(userId, teamId);
 
         List<ParticipantDto> people = team.getParticipants();
@@ -49,11 +49,11 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     @Transactional
-    public void updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId) {
-        TeamDto team = checkTeam(userId, teamId);
+    public void updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long userId, final Long teamId) {
+        final TeamDto team = checkTeam(userId, teamId);
 
         List<ParticipantDto> people = team.getParticipants();
-        Participant old = findParticipantById(participantId);
+        final Participant old = findParticipantById(participantId);
         people.remove(old);
         Optional.ofNullable(newParticipant.getFirstname()).ifPresent(old::setFirstname);
         Optional.ofNullable(newParticipant.getLastname()).ifPresent(old::setLastname);
@@ -68,8 +68,8 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     @Transactional
-    public void deleteParticipant(Long userId, Long teamId, Long participantId) {
-        Participant participant = findParticipantById(participantId);
+    public void deleteParticipant(final Long userId, final Long teamId, final Long participantId) {
+        final Participant participant = findParticipantById(participantId);
         TeamDto team = checkTeam(userId, participant.getTeam().getId());
 
         log.info("Deleting participant {}", participant);
@@ -77,14 +77,14 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
-    public List<ParticipantDto> getAllParticipants(Long userId, Long teamId) {
-        TeamDto team = checkTeam(userId, teamId);
+    public List<ParticipantDto> getAllParticipants(final Long userId, final Long teamId) {
+        final TeamDto team = checkTeam(userId, teamId);
         log.info("Getting list of participants");
         return participantRepository.findAll().stream().filter(p -> Objects.equals(p.getTeam().getId(), teamId)).map(ParticipantDto::fromParticipant).toList();
     }
 
-    private TeamDto checkTeam(Long userId, Long teamId) {
-        TeamDto team = teamService.findTeamById(teamId);
+    private TeamDto checkTeam(final Long userId, final Long teamId) {
+        final TeamDto team = teamService.findTeamById(teamId);
         if (!Objects.equals(team.getCaptain().getId(), userId)) {
             throw new AuthorizationServiceException("Wrong account credentials");
         }

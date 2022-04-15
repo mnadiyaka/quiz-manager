@@ -32,15 +32,15 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public QuizDto findQuizById(Long quizId) {
+    public QuizDto findQuizById(final Long quizId) {
         log.info("Searching for quiz with id {}", quizId);
         return QuizDto.fromQuiz(quizRepository.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz with id = " + quizId + " not found")));
     }
 
     @Override
     @Transactional
-    public Quiz createQuiz(QuizDto quiz, Long userId) {
-        User user = checkUser(userId);
+    public Quiz createQuiz(final QuizDto quiz, final Long userId) {
+        final User user = checkUser(userId);
 
         log.info("Creating new quiz {}", quiz.toString());
         return quizRepository.save(QuizDto.toQuiz(quiz));
@@ -48,10 +48,10 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public Quiz updateQuiz(QuizDto updatedQuiz, Long quizId, Long userId) {
-        User user = checkUser(userId);
+    public Quiz updateQuiz(final QuizDto updatedQuiz, final Long quizId, final Long userId) {
+        final User user = checkUser(userId);
 
-        QuizDto oldQuiz = findQuizById(quizId);
+        final QuizDto oldQuiz = findQuizById(quizId);
 
         log.info("Updating quiz {}", oldQuiz);
         Optional.ofNullable(updatedQuiz.getQuizName()).ifPresent(oldQuiz::setQuizName);
@@ -64,15 +64,15 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public void deleteQuiz(Long userId, Long quizId) {
-        User user = checkUser(userId);
+    public void deleteQuiz(final Long userId, final Long quizId) {
+        final User user = checkUser(userId);
 
         log.info("Deleting quiz {}", findQuizById(quizId));
         quizRepository.deleteById(quizId);
     }
 
-    private User checkUser(Long userId) {
-        User user = userService.findUserById(userId);
+    private User checkUser(final Long userId) {
+        final User user = userService.findUserById(userId);
 
         if (user.getRole().equals(Role.CAPTAIN)) {
             throw new EntityNotFoundException("This user is captain, not admin");
