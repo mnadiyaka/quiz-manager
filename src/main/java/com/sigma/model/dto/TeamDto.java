@@ -5,6 +5,7 @@ import com.sigma.model.entity.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +15,7 @@ public class TeamDto {
 
     private Long id;
 
+    @NotNull
     private String teamName;
 
     private boolean confirmed;

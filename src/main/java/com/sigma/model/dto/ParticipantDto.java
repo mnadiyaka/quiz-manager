@@ -4,14 +4,18 @@ import com.sigma.model.entity.Participant;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @Accessors(chain = true)
 public class ParticipantDto {
 
     private Long id;
 
+    @NotNull
     private String firstname;
 
+    @NotNull
     private String lastname;
 
     public static ParticipantDto fromParticipant(Participant participant) {

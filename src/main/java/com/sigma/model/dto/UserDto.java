@@ -5,14 +5,16 @@ import com.sigma.model.entity.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @Accessors(chain = true)
 public class UserDto {
 
     private Long id;
 
+    @NotNull
     private String username;
-
 
     private Role role;
 

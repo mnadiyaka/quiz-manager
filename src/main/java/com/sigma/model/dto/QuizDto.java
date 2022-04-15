@@ -5,6 +5,7 @@ import com.sigma.model.entity.Quiz;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,6 +14,7 @@ public class QuizDto {
 
     private Long id;
 
+    @NotNull
     private String quizName;
 
     private Category category;

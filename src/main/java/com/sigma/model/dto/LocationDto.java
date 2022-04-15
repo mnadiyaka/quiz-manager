@@ -4,6 +4,8 @@ import com.sigma.model.entity.Location;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @Accessors(chain = true)
 public class LocationDto {
@@ -12,12 +14,16 @@ public class LocationDto {
 
     private String locationName;
 
+    @NotNull
     private String street;
 
+    @NotNull
     private String city;
 
+    @NotNull
     private String houseNumber;
 
+    @NotNull
     private int zipCode;
 
     public static LocationDto fromLocation(Location location) {
