@@ -28,7 +28,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationDto findLocationById(Long locationId) {
         log.info("Searching for location with id {}", locationId);
-        LocationDto locationDto = LocationDto.fromLocation(locationRepository.findById(locationId).get());
+        final LocationDto locationDto = LocationDto.fromLocation(locationRepository.findById(locationId).get());
         if (locationDto != null) {
             return locationDto;
         }
@@ -45,8 +45,8 @@ public class LocationServiceImpl implements LocationService {
     @Override
     @Transactional
     public void updateLocation(LocationDto updatedLocation, Long locationId) {
-        LocationDto oldLocation = LocationDto.fromLocation(locationRepository.findById(locationId).get());
-        if (oldLocation == null){
+        final LocationDto oldLocation = LocationDto.fromLocation(locationRepository.findById(locationId).get());
+        if (oldLocation == null) {
             throw new EntityNotFoundException();
         }
         log.info("Updating location {}", oldLocation.toString());
