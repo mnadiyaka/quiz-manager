@@ -1,11 +1,11 @@
 package com.sigma.controller;
 
 import com.sigma.model.dto.LocationDto;
-import com.sigma.model.dto.QuizDto;
+//import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Quiz;
 import com.sigma.service.LocationService;
-import com.sigma.service.QuizService;
+//import com.sigma.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,27 +25,27 @@ import java.util.List;
 @Slf4j
 public class LocationController {
 
-    private final LocationService locationService;
-
-    @GetMapping("/all")
-    public List<LocationDto> getLocation(@PathVariable Long userId) {
-        return locationService.getAllLocations();
-    }
-
-    @PostMapping("")
-    public Location createQuiz(@RequestBody LocationDto locationDto, @PathVariable Long userId) {
-        return locationService.createLocation(locationDto, userId);
-    }
-
-    @PatchMapping("/{locationId}")
-    public String updateQuiz(@RequestBody LocationDto locationDto, @PathVariable("userId") Long userId, @PathVariable("locationId") Long locationId) {
-        locationService.updateLocation(locationDto, userId, locationId);
-        return "team updated";
-    }
-
-    @DeleteMapping("/{locationId}")
-    public String deleteLocation(@PathVariable("userId") Long userId, @PathVariable("locationId") Long locationId) {
-        locationService.deleteLocation(userId, locationId);
-        return "deleted team";
-    }
+//    private final LocationService locationService;
+//
+//    @GetMapping("/all")
+//    public List<LocationDto> getLocation(@PathVariable Long userId) {
+//        return locationService.getAllLocations();
+//    }
+//
+//    @PostMapping("")
+//    public Location createQuiz(@RequestBody LocationDto locationDto, @PathVariable Long userId) {
+//        return locationService.createLocation(locationDto, userId);
+//    }
+//
+//    @PatchMapping("/{locationId}")
+//    public String updateQuiz(@RequestBody LocationDto locationDto, @PathVariable("userId") Long userId, @PathVariable("locationId") Long locationId) {
+//        locationService.updateLocation(locationDto, userId, locationId);
+//        return "team updated";
+//    }
+//
+//    @DeleteMapping("/{locationId}")
+//    public String deleteLocation(@PathVariable("userId") Long userId, @PathVariable("locationId") Long locationId) {
+//        locationService.deleteLocation(userId, locationId);
+//        return "deleted team";
+//    }
 }
