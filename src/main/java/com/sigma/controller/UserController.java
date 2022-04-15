@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("/users")
     public List<UserDto> getUsers() {
-        return userService.getAllUsers();//.stream().map(UserDto::fromUser).toList();
+        return userService.getAllUsers();
     }
 
     @GetMapping("/")
