@@ -17,5 +17,5 @@ public interface TeamService {
 
     public void deleteTeam(Long userId, Long teamId);
 
-    public Team teamConfirmation(Team team, boolean confirmation); //TODO: DTO????
+    public Team confirmTeam(Team team, boolean confirmation); //TODO: DTO????
 }

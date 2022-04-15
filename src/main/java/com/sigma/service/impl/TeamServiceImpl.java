@@ -78,7 +78,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team teamConfirmation(final Team team, final boolean confirmation) { //TODO: change idea?
+    public Team confirmTeam(final Team team, final boolean confirmation) { //TODO: change idea?
         team.setConfirmed(confirmation);
         return teamRepository.save(team);
     }
