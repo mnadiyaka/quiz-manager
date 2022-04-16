@@ -43,8 +43,11 @@ public class LocationServiceImpl implements LocationService {
     @Override
     @Transactional
     public void updateLocation(LocationDto updatedLocation, Long userId, Long locationId) {
-        final LocationDto oldLocation = LocationDto.fromLocation(findLocationById(locationId));
+        final Location oldLocation = findLocationById(locationId);
 
+        if(Objects.equals(oldLocation, null)){
+            createLocation(updatedLocation, userId);
+        }
         log.info("Updating location {}", oldLocation);
         Optional.ofNullable(oldLocation.getLocationName()).ifPresent(updatedLocation::setLocationName);
         Optional.ofNullable(oldLocation.getCity()).ifPresent(updatedLocation::setCity);
@@ -52,7 +55,7 @@ public class LocationServiceImpl implements LocationService {
         Optional.ofNullable(oldLocation.getHouseNumber()).ifPresent(updatedLocation::setHouseNumber);
         Optional.ofNullable(oldLocation.getZipCode()).ifPresent(updatedLocation::setZipCode);
 
-        locationRepository.save(LocationDto.toLocation(oldLocation));
+        locationRepository.save(oldLocation);
     }
 
     @Override

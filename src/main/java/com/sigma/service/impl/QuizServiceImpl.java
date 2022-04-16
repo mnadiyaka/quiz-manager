@@ -1,10 +1,13 @@
 package com.sigma.service.impl;
 
+import com.sigma.model.dto.LocationDto;
 import com.sigma.model.dto.QuizDto;
+import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Role;
 import com.sigma.model.entity.User;
 import com.sigma.repository.QuizRepository;
+import com.sigma.service.LocationService;
 import com.sigma.service.QuizService;
 import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,6 +28,8 @@ public class QuizServiceImpl implements QuizService {
     private final QuizRepository quizRepository;
 
     private final UserService userService;
+
+    private final LocationService locationService;
 
     @Override
     public List<QuizDto> getAllQuizzes() {
@@ -80,7 +86,16 @@ public class QuizServiceImpl implements QuizService {
         return user;
     }
 
-    public QuizDto assignLocation(Long id){
+    @Override
+    @Transactional
+    public Quiz assignLocation(final Long quizId, LocationDto locationDto){
+        Quiz quiz = QuizDto.toQuiz(findQuizById(quizId));
+        Location location = locationService.findLocationById(locationDto.getId());
+//        if (Objects.equals(location, null)){
+//            locationService.createLocation(locationDto,)//TODO: change logic with checking user every time
+//        }
+        quiz.setAddress(locationService.findLocationById(location.getId()));
 
+        return quizRepository.save(quiz);
     }
 }
