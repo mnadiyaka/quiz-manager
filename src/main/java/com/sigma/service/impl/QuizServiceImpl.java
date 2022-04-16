@@ -79,4 +79,8 @@ public class QuizServiceImpl implements QuizService {
         }
         return user;
     }
+
+    public QuizDto assignLocation(Long id){
+
+    }
 }
