@@ -43,6 +43,12 @@ public class Quiz {
     @Column(name = "datetime")
     private LocalDateTime dateTime;
 
+    @Column(name = "state")
+    private State state;
+
+    private final short teamNumberLimit = 20;
+    private final short participantInTeamNumberLimit = 10;
+
     @ManyToOne
     @JoinColumn(name = "address_id", referencedColumnName = "location_id")
     private Location address;
