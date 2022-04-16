@@ -55,7 +55,7 @@ public class LocationServiceTest {
     @Transactional
     public void deleteLocationTest() {
         int expected = locationService.getAllLocations().size();
-        locationService.deleteLocation(1L);
+        locationService.deleteLocation(1L, 1L);
         int actual = locationService.getAllLocations().size();
         Assertions.assertEquals(expected - 1, actual);
     }

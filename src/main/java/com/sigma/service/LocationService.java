@@ -11,9 +11,9 @@ public interface LocationService {
 
     public Location findLocationById(Long locationId);
 
-    public Location createLocation(LocationDto location);
+    public Location createLocation(LocationDto location, Long userId);
 
-    public void updateLocation(LocationDto updatedLocation, Long locationId);
+    public void updateLocation(LocationDto updatedLocation, Long userId, Long locationId);
 
-    public void deleteLocation(Long locationId);
+    public void deleteLocation(Long userId, Long locationId);
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,46 +28,37 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public LocationDto findLocationById(Long locationId) {
+    public Location findLocationById(Long locationId) {
         log.info("Searching for location with id {}", locationId);
-        final LocationDto locationDto = LocationDto.fromLocation(locationRepository.findById(locationId).get());
-        if (locationDto != null) {
-            return locationDto;
-        }
-        throw new EntityNotFoundException();
+        return locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException("Location with id = " + locationId + " not found"));
     }
 
     @Override
     @Transactional
-    public Location createLocation(LocationDto location) {
+    public Location createLocation(LocationDto location, Long userId) {
         log.info("Creating new location {}", location.toString());
         return locationRepository.save(LocationDto.toLocation(location));
     }
 
     @Override
     @Transactional
-    public void updateLocation(LocationDto updatedLocation, Long locationId) {
-        final LocationDto oldLocation = LocationDto.fromLocation(locationRepository.findById(locationId).get());
-        if (oldLocation == null) {
-            throw new EntityNotFoundException();
-        }
-        log.info("Updating location {}", oldLocation.toString());
-        oldLocation.setLocationName(updatedLocation.getLocationName());
-        oldLocation.setCity(updatedLocation.getCity());
-        oldLocation.setStreet(updatedLocation.getStreet());
-        oldLocation.setHouseNumber(updatedLocation.getHouseNumber());
-        oldLocation.setZipCode(updatedLocation.getZipCode());
+    public void updateLocation(LocationDto updatedLocation, Long userId, Long locationId) {
+        final LocationDto oldLocation = LocationDto.fromLocation(findLocationById(locationId));
+
+        log.info("Updating location {}", oldLocation);
+        Optional.ofNullable(oldLocation.getLocationName()).ifPresent(updatedLocation::setLocationName);
+        Optional.ofNullable(oldLocation.getCity()).ifPresent(updatedLocation::setCity);
+        Optional.ofNullable(oldLocation.getStreet()).ifPresent(updatedLocation::setStreet);
+        Optional.ofNullable(oldLocation.getHouseNumber()).ifPresent(updatedLocation::setHouseNumber);
+        Optional.ofNullable(oldLocation.getZipCode()).ifPresent(updatedLocation::setZipCode);
 
         locationRepository.save(LocationDto.toLocation(oldLocation));
     }
 
     @Override
     @Transactional
-    public void deleteLocation(Long locationId) {
-        if (!locationRepository.existsById(locationId)) {
-            throw new EntityNotFoundException();
-        }
-        log.info("Deleting location {}", locationRepository.getById(locationId).toString());
+    public void deleteLocation(Long userId, Long locationId) {
+        log.info("Deleting location {}", findLocationById(locationId));
         locationRepository.deleteById(locationId);
     }
 }
