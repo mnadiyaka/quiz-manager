@@ -17,5 +17,7 @@ public interface TeamService {
 
     public void deleteTeam(Long userId, Long teamId);
 
-    public Team confirmTeam(Team team, boolean confirmation); //TODO: DTO????
+    public Team confirmTeam(Long teamId, boolean confirmation); //TODO: DTO????
+
+    public Team applyForQuiz(final Long quizId, final Long teamId);
 }

@@ -1,10 +1,15 @@
 package com.sigma.service.impl;
 
+import com.sigma.exception.QuizStateException;
+import com.sigma.model.dto.QuizDto;
 import com.sigma.model.dto.TeamDto;
+import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Role;
+import com.sigma.model.entity.State;
 import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
 import com.sigma.repository.TeamRepository;
+import com.sigma.service.QuizService;
 import com.sigma.service.TeamService;
 import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +33,8 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
     private final UserService userService;
+
+    private final QuizService quizService;
 
     @Override
     public TeamDto findTeamById(final Long teamId) {
@@ -78,12 +85,6 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team confirmTeam(final Team team, final boolean confirmation) { //TODO: change idea?
-        team.setConfirmed(confirmation);
-        return teamRepository.save(team);
-    }
-
-    @Override
     public List<TeamDto> getAllTeams(final Long userId) {
         log.info("Getting list of teams");
         return teamRepository.findAll().stream().filter(team -> Objects.equals(team.getCaptain().getId(), userId))
@@ -96,5 +97,28 @@ public class TeamServiceImpl implements TeamService {
             throw new AuthorizationServiceException("Wrong account credentials");
         }
         return team;
+    }
+
+    @Override
+    @Transactional
+    public Team confirmTeam(final Long teamId, final boolean confirmation) { //TODO: change idea?
+        final Team team = TeamDto.toTeam(findTeamById(teamId));
+        team.setConfirmed(confirmation);
+        return teamRepository.save(team);
+    }
+
+    @Override
+    @Transactional
+    public Team applyForQuiz(final Long quizId, final Long teamId) {
+        final Quiz quiz = QuizDto.toQuiz(quizService.findQuizById(quizId));
+        if (!quiz.getState().equals(State.ANOUNCED)){
+            throw new QuizStateException("Quiz closed, try another one");
+        }
+        final Team team = TeamDto.toTeam(findTeamById(teamId));
+        final List<Quiz> teamsQ = team.getQuizzes();
+        teamsQ.add(quiz);
+        team.setQuizzes(teamsQ);
+
+        return teamRepository.save(team);
     }
 }
