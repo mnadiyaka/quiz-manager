@@ -6,11 +6,13 @@ import com.sigma.model.dto.QuizDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Quiz;
+import com.sigma.model.entity.QuizResults;
 import com.sigma.model.entity.Role;
 import com.sigma.model.entity.State;
 import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
 import com.sigma.repository.TeamRepository;
+import com.sigma.service.QuizResultService;
 import com.sigma.service.QuizService;
 import com.sigma.service.TeamService;
 import com.sigma.service.UserService;
@@ -38,6 +40,8 @@ public class TeamServiceImpl implements TeamService {
     private final UserService userService;
 
     private final QuizService quizService;
+
+    private final QuizResultService quizResultService;
 
     @Override
     public Team findTeamById(final Long teamId) {
@@ -122,6 +126,11 @@ public class TeamServiceImpl implements TeamService {
         final List<Quiz> teamsQ = team.getQuizzes();
         teamsQ.add(quiz);
         team.setQuizzes(teamsQ);
+
+        final QuizResults quizResults = new QuizResults();//TODO: Change idea or place?
+        quizResults.setQuiz(quiz);
+        quizResults.setTeam(team);
+        quizResultService.createRes(quizResults);
 
         return teamRepository.save(team);
     }

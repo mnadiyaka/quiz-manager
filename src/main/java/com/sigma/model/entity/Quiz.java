@@ -48,6 +48,7 @@ public class Quiz {
 
     private final short teamNumberLimit = 20;
     private final short participantInTeamNumberLimit = 10;
+    private final short participantInTeamNumberMin = 5;
 
     @ManyToOne
     @JoinColumn(name = "address_id", referencedColumnName = "location_id")

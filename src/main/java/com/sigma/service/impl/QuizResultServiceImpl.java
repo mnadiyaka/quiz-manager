@@ -1,5 +1,6 @@
 package com.sigma.service.impl;
 
+import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.repository.QuizResultsRepository;
 import com.sigma.service.QuizResultService;
@@ -32,11 +33,9 @@ public class QuizResultServiceImpl implements QuizResultService {
 
     @Override
     @Transactional
-    public QuizResults updateRes(QuizResults newQuizResults, Long quizResId) {
-        QuizResults quizResults = findResById(quizResId);
+    public QuizResults updateRes(QuizResultsDto newQuizResults) {
+        QuizResults quizResults = findResById(newQuizResults.getId());
 
-        Optional.ofNullable(newQuizResults.getTeam()).ifPresent(quizResults::setTeam);
-        Optional.ofNullable(newQuizResults.getQuiz()).ifPresent(quizResults::setQuiz);
         Optional.ofNullable(newQuizResults.getTotalScore()).ifPresent(quizResults::setTotalScore);
 
         return quizResultsRepository.save(quizResults);

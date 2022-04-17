@@ -1,5 +1,6 @@
 package com.sigma.service;
 
+import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.model.entity.Team;
@@ -10,7 +11,7 @@ public interface QuizResultService {
 
     public QuizResults createRes(QuizResults newQuizResults);
 
-    public QuizResults updateRes(QuizResults newQuizResults, Long quizResId);
+    public QuizResults updateRes(QuizResultsDto newQuizResults);
 
     public void deleteRes(Long id);
 
