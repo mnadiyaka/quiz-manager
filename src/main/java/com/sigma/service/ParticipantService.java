@@ -13,7 +13,7 @@ public interface ParticipantService {
 
     public Participant createParticipant(ParticipantDto participantDto, Long userId, Long teamId);
 
-    public void updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId);
+    public Participant updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId);
 
     public void deleteParticipant(Long userId, Long teamId, Long participantId);
 }

@@ -1,8 +1,10 @@
 package com.sigma.service.impl;
 
 import com.sigma.exception.QuizStateException;
+import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.dto.TeamDto;
+import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Role;
 import com.sigma.model.entity.State;
@@ -24,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,9 +40,9 @@ public class TeamServiceImpl implements TeamService {
     private final QuizService quizService;
 
     @Override
-    public TeamDto findTeamById(final Long teamId) {
+    public Team findTeamById(final Long teamId) {
         log.info("Searching for team with id {}", teamId);
-        return TeamDto.fromTeam(teamRepository.findById(teamId).orElseThrow(() -> new EntityNotFoundException()));
+        return teamRepository.findById(teamId).orElseThrow(() -> new EntityNotFoundException());
     }
 
     @Override
@@ -65,23 +68,24 @@ public class TeamServiceImpl implements TeamService {
     @Override
     @Transactional
     public void updateTeam(final TeamDto updatedTeam, final Long userId, final Long teamId) {
-        final TeamDto oldTeam = checkTeam(userId, teamId);
+        final Team oldTeam = checkTeam(userId, teamId);
         log.info("Updating team {}", oldTeam);
 
         Optional.ofNullable(updatedTeam.getTeamName()).ifPresent(oldTeam::setTeamName);
-        Optional.ofNullable(updatedTeam.getParticipants()).ifPresent(oldTeam::setParticipants);
+        final List<Participant> participants = updatedTeam.getParticipants().stream().map(ParticipantDto::toParticipant).collect(Collectors.toList());
+        Optional.ofNullable(participants).ifPresent(oldTeam::setParticipants);
         Optional.ofNullable(updatedTeam.getCaptain()).ifPresent(oldTeam::setCaptain);
 
-        teamRepository.save(TeamDto.toTeam(oldTeam));
+        teamRepository.save(oldTeam);
     }
 
     @Override
     @Transactional
     public void deleteTeam(final Long userId, final Long teamId) {
-        final TeamDto team = checkTeam(userId, teamId);
+        final Team team = checkTeam(userId, teamId);
 
         log.info("Deleting team {}", team);
-        teamRepository.delete(TeamDto.toTeam(team));
+        teamRepository.delete(team);
     }
 
     @Override
@@ -91,8 +95,8 @@ public class TeamServiceImpl implements TeamService {
                 .map(TeamDto::fromTeam).toList();
     }
 
-    private TeamDto checkTeam(Long userId, Long teamId) {
-        final TeamDto team = findTeamById(teamId);
+    private Team checkTeam(Long userId, Long teamId) {
+        final Team team = findTeamById(teamId);
         if (!Objects.equals(team.getCaptain().getId(), userId)) {
             throw new AuthorizationServiceException("Wrong account credentials");
         }
@@ -102,7 +106,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     @Transactional
     public Team confirmTeam(final Long teamId, final boolean confirmation) { //TODO: change idea?
-        final Team team = TeamDto.toTeam(findTeamById(teamId));
+        final Team team = findTeamById(teamId);
         team.setConfirmed(confirmation);
         return teamRepository.save(team);
     }
@@ -110,11 +114,11 @@ public class TeamServiceImpl implements TeamService {
     @Override
     @Transactional
     public Team applyForQuiz(final Long quizId, final Long teamId) {
-        final Quiz quiz = QuizDto.toQuiz(quizService.findQuizById(quizId));
-        if (!quiz.getState().equals(State.ANOUNCED)){
+        final Quiz quiz = quizService.findQuizById(quizId);
+        if (!quiz.getState().equals(State.ANOUNCED)) {
             throw new QuizStateException("Quiz closed, try another one");
         }
-        final Team team = TeamDto.toTeam(findTeamById(teamId));
+        final Team team = findTeamById(teamId);
         final List<Quiz> teamsQ = team.getQuizzes();
         teamsQ.add(quiz);
         team.setQuizzes(teamsQ);

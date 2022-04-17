@@ -10,7 +10,7 @@ public interface QuizService {
 
     public List<QuizDto> getAllQuizzes();
 
-    public QuizDto findQuizById(Long quizId);
+    public Quiz findQuizById(Long quizId);
 
     public Quiz createQuiz(QuizDto quiz, Long userId);
 

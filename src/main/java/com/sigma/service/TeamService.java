@@ -9,7 +9,7 @@ public interface TeamService {
 
     public List<TeamDto> getAllTeams(Long userId);
 
-    public TeamDto findTeamById(Long teamId);
+    public Team findTeamById(Long teamId);
 
     public Team createTeam(TeamDto teamDto, Long captainId);
 

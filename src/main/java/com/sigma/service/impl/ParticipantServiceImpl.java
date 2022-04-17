@@ -3,6 +3,7 @@ package com.sigma.service.impl;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
+import com.sigma.model.entity.Team;
 import com.sigma.repository.ParticipantRepository;
 import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
@@ -35,42 +36,43 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Override
     @Transactional
     public Participant createParticipant(final ParticipantDto participantDto, final Long userId, final Long teamId) {
-        TeamDto team = checkTeam(userId, teamId);
+        Team team = checkTeam(userId, teamId);
 
-        List<ParticipantDto> people = team.getParticipants();
+        List<Participant> people = team.getParticipants();
         Participant newPlayer = ParticipantDto.toParticipant(participantDto);
-        newPlayer.setTeam(TeamDto.toTeam(team));
+        newPlayer.setTeam(team);
         participantRepository.save(newPlayer);
-        people.add(ParticipantDto.fromParticipant(newPlayer));
+        people.add(newPlayer);
         team.setParticipants(people);
-        teamService.updateTeam(team, userId, team.getId());
+        teamService.updateTeam(TeamDto.fromTeam(team), userId, team.getId());
         return newPlayer;
     }
 
     @Override
     @Transactional
-    public void updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long userId, final Long teamId) {
-        final TeamDto team = checkTeam(userId, teamId);
+    public Participant updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long userId, final Long teamId) {
+        final Team team = checkTeam(userId, teamId);
 
-        List<ParticipantDto> people = team.getParticipants();
+        List<Participant> people = team.getParticipants();
         final Participant old = findParticipantById(participantId);
         people.remove(old);
         Optional.ofNullable(newParticipant.getFirstname()).ifPresent(old::setFirstname);
         Optional.ofNullable(newParticipant.getLastname()).ifPresent(old::setLastname);
 
-        old.setTeam(TeamDto.toTeam(team));
+        old.setTeam(team);
 
-        participantRepository.save(old);
-        people.add(newParticipant);
+        people.add(old);
         team.setParticipants(people);
-        teamService.updateTeam(team, userId, team.getId());
+        teamService.updateTeam(TeamDto.fromTeam(team), userId, team.getId());
+
+        return participantRepository.save(old);
     }
 
     @Override
     @Transactional
     public void deleteParticipant(final Long userId, final Long teamId, final Long participantId) {
         final Participant participant = findParticipantById(participantId);
-        TeamDto team = checkTeam(userId, participant.getTeam().getId());
+        Team team = checkTeam(userId, participant.getTeam().getId());
 
         log.info("Deleting participant {}", participant);
         participantRepository.deleteById(participantId);
@@ -78,13 +80,13 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     @Override
     public List<ParticipantDto> getAllParticipants(final Long userId, final Long teamId) {
-        final TeamDto team = checkTeam(userId, teamId);
+        final Team team = checkTeam(userId, teamId);
         log.info("Getting list of participants");
         return participantRepository.findAll().stream().filter(p -> Objects.equals(p.getTeam().getId(), teamId)).map(ParticipantDto::fromParticipant).toList();
     }
 
-    private TeamDto checkTeam(final Long userId, final Long teamId) {
-        final TeamDto team = teamService.findTeamById(teamId);
+    private Team checkTeam(final Long userId, final Long teamId) {
+        final Team team = teamService.findTeamById(teamId);
         if (!Objects.equals(team.getCaptain().getId(), userId)) {
             throw new AuthorizationServiceException("Wrong account credentials");
         }

@@ -38,9 +38,9 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public QuizDto findQuizById(final Long quizId) {
+    public Quiz findQuizById(final Long quizId) {
         log.info("Searching for quiz with id {}", quizId);
-        return QuizDto.fromQuiz(quizRepository.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz with id = " + quizId + " not found")));
+        return quizRepository.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz with id = " + quizId + " not found"));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class QuizServiceImpl implements QuizService {
     public Quiz updateQuiz(final QuizDto updatedQuiz, final Long quizId, final Long userId) {
         final User user = checkUser(userId);
 
-        final QuizDto oldQuiz = findQuizById(quizId);
+        final Quiz oldQuiz = findQuizById(quizId);
 
         log.info("Updating quiz {}", oldQuiz);
         Optional.ofNullable(updatedQuiz.getQuizName()).ifPresent(oldQuiz::setQuizName);
@@ -65,7 +65,7 @@ public class QuizServiceImpl implements QuizService {
         Optional.ofNullable(updatedQuiz.getDateTime()).ifPresent(oldQuiz::setDateTime);
         Optional.ofNullable(updatedQuiz.getShortDescription()).ifPresent(oldQuiz::setShortDescription);
 
-        return quizRepository.save(QuizDto.toQuiz(oldQuiz));
+        return quizRepository.save(oldQuiz);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class QuizServiceImpl implements QuizService {
     @Override
     @Transactional
     public Quiz assignLocation(final Long quizId, LocationDto locationDto){
-        Quiz quiz = QuizDto.toQuiz(findQuizById(quizId));
+        Quiz quiz = findQuizById(quizId);
         Location location = locationService.findLocationById(locationDto.getId());
 //        if (Objects.equals(location, null)){
 //            locationService.createLocation(locationDto,)//TODO: change logic with checking user every time
