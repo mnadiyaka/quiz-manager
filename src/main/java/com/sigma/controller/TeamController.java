@@ -47,4 +47,10 @@ public class TeamController {
         teamService.deleteTeam(userId, teamId);
         return "deleted team";
     }
+
+    @PatchMapping("/{teamId}")
+    public String chooseQuiz(@RequestBody Long quizId, @PathVariable("teamId") Long teamId) {
+        teamService.applyForQuiz(quizId, teamId);
+        return "applied";
+    }
 }

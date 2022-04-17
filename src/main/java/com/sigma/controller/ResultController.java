@@ -1,16 +1,12 @@
 package com.sigma.controller;
 
-import com.sigma.model.dto.QuizDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
-import com.sigma.repository.QuizResultsRepository;
 import com.sigma.service.QuizResultService;
-import com.sigma.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
