@@ -15,7 +15,9 @@ public interface QuizResultService {
 
     public void deleteRes(Long id);
 
-    public List<QuizResults> getAllRes();
+    public List<QuizResultsDto> getAllRes();
 
     public QuizResults findResById(Long id);
+
+    public List<QuizResultsDto> filterData(String id, String score);
 }

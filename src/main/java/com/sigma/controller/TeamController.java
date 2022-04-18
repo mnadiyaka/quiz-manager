@@ -48,8 +48,8 @@ public class TeamController {
         return "deleted team";
     }
 
-    @PatchMapping("/{teamId}")
-    public String chooseQuiz(@RequestBody Long quizId, @PathVariable("teamId") Long teamId) {
+    @PatchMapping("/{teamId}/quiz/{quizId}")
+    public String chooseQuiz(@PathVariable Long quizId, @PathVariable("teamId") Long teamId, @PathVariable("userId") Long userId) {
         teamService.applyForQuiz(quizId, teamId);
         return "applied";
     }

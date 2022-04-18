@@ -11,7 +11,7 @@ spring:
             non_contextual_creation: 'true'
     show-sql: 'true'
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
   sql:
     init:
       mode: always

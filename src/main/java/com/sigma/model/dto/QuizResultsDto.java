@@ -13,12 +13,17 @@ public class QuizResultsDto {
     @NotNull
     private Long id;
 
+    private String quizName;
+
+    private String teamName;
     @NotNull
     private int totalScore;
 
-    public static QuizResults toQuizResult(QuizResultsDto quizResultsDto) {
-        return new QuizResults()
-                .setId(quizResultsDto.getId())
-                .setTotalScore(quizResultsDto.getTotalScore());
+    public static QuizResultsDto fromQuizResult(QuizResults quizResults) {
+        return new QuizResultsDto()
+                .setId(quizResults.getId())
+                .setQuizName(quizResults.getQuiz().getQuizName())
+                .setTeamName(quizResults.getTeam().getTeamName())
+                .setTotalScore(quizResults.getTotalScore());
     }
 }

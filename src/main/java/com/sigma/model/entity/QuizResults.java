@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "quizzes")
+@Table(name = "results")
 @Data
 @Accessors(chain = true)
 public class QuizResults {
