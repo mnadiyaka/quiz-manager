@@ -58,7 +58,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     @Transactional
     public void updateTeam(final TeamDto updatedTeam, final Long userId, final Long teamId) {
-        final TeamDto oldTeam = checkTeam(userId, teamId);
+        final TeamDto oldTeam = findTeamById(teamId);
         log.info("Updating team {}", oldTeam);
 
         Optional.ofNullable(updatedTeam.getTeamName()).ifPresent(oldTeam::setTeamName);

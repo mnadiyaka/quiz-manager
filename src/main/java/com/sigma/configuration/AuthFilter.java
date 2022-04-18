@@ -4,8 +4,6 @@ import com.sigma.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -47,13 +45,4 @@ public class AuthFilter extends OncePerRequestFilter {
         return (request.getRequestURI()).matches(publicUrls.stream().map(pu -> String.format("(/%s)", pu)).collect(Collectors.joining("|")));
     }
 
-    @Bean // TODO: move to Application.class?
-    public FilterRegistrationBean<AuthFilter> someFilter() {
-        final FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(this);
-        registrationBean.addUrlPatterns("/*");
-        registrationBean.setName("AuthFilter");
-        registrationBean.setOrder(Integer.MAX_VALUE);
-        return registrationBean;
-    }
 }
