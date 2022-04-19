@@ -61,7 +61,6 @@ public class QuizResultServiceImpl implements QuizResultService {
 
     @Override
     public Set<QuizResultsDto> filterData(String id, String score) {
-
         String query = "SELECT * FROM results WHERE (results.team_id = :teamId OR results.total_score > :totalScore)";
         Query q = em.createNativeQuery(query, QuizResults.class);
         q.setParameter("teamId", id);
