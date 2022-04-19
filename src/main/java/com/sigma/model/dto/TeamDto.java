@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

@@ -3,18 +3,17 @@ package com.sigma.service;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.entity.Participant;
 
-import java.util.List;
 import java.util.Set;
 
 public interface ParticipantService {
 
-    public Set<ParticipantDto> getAllParticipants(Long userId, Long teamId);
+    Set<ParticipantDto> getAllParticipants(Long userId, Long teamId);
 
-    public Participant findParticipantById(Long participantId);
+    Participant findParticipantById(Long participantId);
 
-    public Participant createParticipant(ParticipantDto participantDto, Long userId, Long teamId);
+    Participant createParticipant(ParticipantDto participantDto, Long userId, Long teamId);
 
-    public Participant updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId);
+    Participant updateParticipant(ParticipantDto newParticipant, Long participantId, Long userId, Long teamId);
 
-    public void deleteParticipant(Long userId, Long teamId, Long participantId);
+    void deleteParticipant(Long userId, Long teamId, Long participantId);
 }
