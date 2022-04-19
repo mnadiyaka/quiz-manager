@@ -19,6 +19,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,9 +34,9 @@ public class QuizServiceImpl implements QuizService {
     private final LocationService locationService;
 
     @Override
-    public List<QuizDto> getAllQuizzes() {
+    public Set<QuizDto> getAllQuizzes() {
         log.info("Getting list of quiz");
-        return quizRepository.findAll().stream().map(QuizDto::fromQuiz).toList();
+        return quizRepository.findAll().stream().map(QuizDto::fromQuiz).collect(Collectors.toSet());
     }
 
     @Override
@@ -63,6 +65,7 @@ public class QuizServiceImpl implements QuizService {
         Optional.ofNullable(updatedQuiz.getQuizName()).ifPresent(oldQuiz::setQuizName);
         Optional.ofNullable(updatedQuiz.getCategory()).ifPresent(oldQuiz::setCategory);
         Optional.ofNullable(updatedQuiz.getDateTime()).ifPresent(oldQuiz::setDateTime);
+        Optional.ofNullable(updatedQuiz.getState()).ifPresent(oldQuiz::setState);
         Optional.ofNullable(updatedQuiz.getShortDescription()).ifPresent(oldQuiz::setShortDescription);
 
         return quizRepository.save(oldQuiz);

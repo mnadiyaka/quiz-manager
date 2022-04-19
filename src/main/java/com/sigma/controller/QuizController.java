@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class QuizController {
     private final QuizService quizService;
 
     @GetMapping("/all")
-    public List<QuizDto> getTeams(@PathVariable Long userId) {
+    public Set<QuizDto> getTeams(@PathVariable Long userId) {
         return quizService.getAllQuizzes();
     }
 

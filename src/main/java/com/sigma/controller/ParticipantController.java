@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +45,7 @@ public class ParticipantController {
     }
 
     @GetMapping("/all")
-    public List<ParticipantDto> getPlayers(@PathVariable Long userId, @PathVariable Long teamId) {
+    public Set<ParticipantDto> getPlayers(@PathVariable Long userId, @PathVariable Long teamId) {
         return participantService.getAllParticipants(userId, teamId);
     }
 }

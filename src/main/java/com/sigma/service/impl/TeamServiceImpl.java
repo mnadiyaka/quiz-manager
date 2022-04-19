@@ -1,6 +1,6 @@
 package com.sigma.service.impl;
 
-import com.sigma.exception.QuizStateException;
+import com.sigma.exception.QuizException;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.dto.TeamDto;
@@ -24,10 +24,11 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,7 +66,7 @@ public class TeamServiceImpl implements TeamService {
 
         log.info("Creating new team {}", teamDto);
 
-        teamDto.setParticipants(new ArrayList<>());
+        teamDto.setParticipants(new HashSet<>());
         return teamRepository.save(TeamDto.toTeam(teamDto));
     }
 
@@ -76,7 +77,7 @@ public class TeamServiceImpl implements TeamService {
         log.info("Updating team {}", oldTeam);
 
         Optional.ofNullable(updatedTeam.getTeamName()).ifPresent(oldTeam::setTeamName);
-        final List<Participant> participants = updatedTeam.getParticipants().stream().map(ParticipantDto::toParticipant).collect(Collectors.toList());
+        final Set<Participant> participants = updatedTeam.getParticipants().stream().map(ParticipantDto::toParticipant).collect(Collectors.toSet());
         Optional.ofNullable(participants).ifPresent(oldTeam::setParticipants);
         Optional.ofNullable(updatedTeam.getCaptain()).ifPresent(oldTeam::setCaptain);
 
@@ -93,10 +94,10 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<TeamDto> getAllTeams(final Long userId) {
+    public Set<TeamDto> getAllTeams(final Long userId) {
         log.info("Getting list of teams");
         return teamRepository.findAll().stream().filter(team -> Objects.equals(team.getCaptain().getId(), userId))
-                .map(TeamDto::fromTeam).toList();
+                .map(TeamDto::fromTeam).collect(Collectors.toSet());
     }
 
     private Team checkTeam(Long userId, Long teamId) {
@@ -120,10 +121,20 @@ public class TeamServiceImpl implements TeamService {
     public Team applyForQuiz(final Long quizId, final Long teamId) {
         final Quiz quiz = quizService.findQuizById(quizId);
         if (!quiz.getState().equals(State.ANOUNCED)) {
-            throw new QuizStateException("Quiz closed, try another one");
+            throw new QuizException("Quiz closed, try another one");
         }
+        if (quiz.getTeams().size()>quiz.getTeamNumberLimit()){
+            quiz.setState(State.CLOSED);
+            quizService.updateQuiz(QuizDto.fromQuiz(quiz),quizId,1L);
+            throw new QuizException("Quiz closed, try another one");
+        }
+
         final Team team = findTeamById(teamId);
-        final List<Quiz> teamsQ = team.getQuizzes();
+        if (team.getParticipants().size()>quiz.getParticipantInTeamNumberLimit() || team.getParticipants().size()<quiz.getParticipantInTeamNumberMin()){
+            throw new QuizException("Wrong size of the team");
+        }
+
+        final Set<Quiz> teamsQ = team.getQuizzes();
         teamsQ.add(quiz);
         team.setQuizzes(teamsQ);
 

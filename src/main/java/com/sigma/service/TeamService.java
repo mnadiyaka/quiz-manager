@@ -4,10 +4,11 @@ import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Team;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TeamService {
 
-    public List<TeamDto> getAllTeams(Long userId);
+    public Set<TeamDto> getAllTeams(Long userId);
 
     public Team findTeamById(Long teamId);
 

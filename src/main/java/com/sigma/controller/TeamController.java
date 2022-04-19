@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class TeamController {
     private final TeamService teamService;
 
     @GetMapping("/all")
-    public List<TeamDto> getTeams(@PathVariable Long userId) {
+    public Set<TeamDto> getTeams(@PathVariable Long userId) {
         return teamService.getAllTeams(userId);
     }
 

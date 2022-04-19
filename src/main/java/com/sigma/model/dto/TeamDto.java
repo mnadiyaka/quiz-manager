@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -22,7 +23,7 @@ public class TeamDto {
 
     private User captain;
 
-    private List<ParticipantDto> participants;
+    private Set<ParticipantDto> participants;
 
     public static TeamDto fromTeam(Team team) {
         return new TeamDto()
@@ -30,7 +31,7 @@ public class TeamDto {
                 .setTeamName(team.getTeamName())
                 //.setConfirmed(team.getConfirmed())
                 .setCaptain(team.getCaptain())
-                .setParticipants((team.getParticipants()).stream().map((player)->ParticipantDto.fromParticipant(player)).collect(Collectors.toList()));
+                .setParticipants((team.getParticipants()).stream().map((player)->ParticipantDto.fromParticipant(player)).collect(Collectors.toSet()));
     }
 
     public static Team toTeam(TeamDto teamDto) {
@@ -39,6 +40,6 @@ public class TeamDto {
                 .setTeamName(teamDto.getTeamName())
                 //.setConfirmed(teamDto.getConfirmed())
                 .setCaptain(teamDto.getCaptain())
-                .setParticipants(teamDto.getParticipants().stream().map((playerDto)->ParticipantDto.toParticipant(playerDto)).collect(Collectors.toList()));
+                .setParticipants(teamDto.getParticipants().stream().map((playerDto)->ParticipantDto.toParticipant(playerDto)).collect(Collectors.toSet()));
     }
 }

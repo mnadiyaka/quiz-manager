@@ -4,10 +4,11 @@ import com.sigma.model.dto.LocationDto;
 import com.sigma.model.entity.Location;
 
 import java.util.List;
+import java.util.Set;
 
 public interface LocationService {
 
-    public List<LocationDto> getAllLocations();
+    public Set<LocationDto> getAllLocations();
 
     public Location findLocationById(Long locationId);
 

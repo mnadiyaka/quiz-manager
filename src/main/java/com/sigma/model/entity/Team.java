@@ -2,6 +2,7 @@ package com.sigma.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "teams")
@@ -42,7 +44,8 @@ public class Team {
             joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns = @JoinColumn(name = "quiz_id"))
     @Column(name = "quiz_id")
-    private List<Quiz> quizzes;
+    @ToString.Exclude
+    private Set<Quiz> quizzes;
 
     @OneToOne
     @JoinColumn(name = "captain_id")
@@ -50,6 +53,5 @@ public class Team {
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "team", orphanRemoval = true)
-    @Size(max = 9, message = "only 9 people per team")//TODO: npt like this
-    private List<Participant> participants;
+    private Set<Participant> participants;
 }

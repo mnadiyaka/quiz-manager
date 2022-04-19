@@ -3,6 +3,7 @@ package com.sigma.model.entity;
 import com.sun.istack.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "quizzes")
@@ -46,9 +48,14 @@ public class Quiz {
     @Column(name = "state")
     private State state;
 
-    private final short teamNumberLimit = 20;
-    private final short participantInTeamNumberLimit = 10;
-    private final short participantInTeamNumberMin = 5;
+    @Column(name = "team_n_limit")
+    private short teamNumberLimit;
+
+    @Column(name = "part_n_limit")
+    private short participantInTeamNumberLimit;
+
+    @Column(name = "part_n_min")
+    private short participantInTeamNumberMin;
 
     @ManyToOne
     @JoinColumn(name = "address_id", referencedColumnName = "location_id")
@@ -56,5 +63,5 @@ public class Quiz {
 
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "quizzes")
-    private List<Team> teams;
+    private Set<Team> teams;
 }

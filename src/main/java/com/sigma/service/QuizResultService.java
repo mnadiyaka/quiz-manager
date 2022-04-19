@@ -6,6 +6,7 @@ import com.sigma.model.entity.QuizResults;
 import com.sigma.model.entity.Team;
 
 import java.util.List;
+import java.util.Set;
 
 public interface QuizResultService {
 
@@ -15,9 +16,9 @@ public interface QuizResultService {
 
     public void deleteRes(Long id);
 
-    public List<QuizResultsDto> getAllRes();
+    public Set<QuizResultsDto> getAllRes();
 
     public QuizResults findResById(Long id);
 
-    public List<QuizResultsDto> filterData(String id, String score);
+    public Set<QuizResultsDto> filterData(String id, String score);
 }

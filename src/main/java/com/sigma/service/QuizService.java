@@ -5,10 +5,11 @@ import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
 
 import java.util.List;
+import java.util.Set;
 
 public interface QuizService {
 
-    public List<QuizDto> getAllQuizzes();
+    public Set<QuizDto> getAllQuizzes();
 
     public Quiz findQuizById(Long quizId);
 

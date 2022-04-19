@@ -15,6 +15,7 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,12 +55,12 @@ public class QuizResultServiceImpl implements QuizResultService {
     }
 
     @Override
-    public List<QuizResultsDto> getAllRes() {
-        return quizResultsRepository.findAll().stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toList());
+    public Set<QuizResultsDto> getAllRes() {
+        return quizResultsRepository.findAll().stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toSet());
     }
 
     @Override
-    public List<QuizResultsDto> filterData(String id, String score) {
+    public Set<QuizResultsDto> filterData(String id, String score) {
 
         String query = "SELECT * FROM results WHERE (results.team_id = :teamId OR results.total_score > :totalScore)";
         Query q = em.createNativeQuery(query, QuizResults.class);
@@ -68,7 +69,7 @@ public class QuizResultServiceImpl implements QuizResultService {
 
         List<QuizResults> res = q.getResultList();
 
-        return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toList());
+        return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toSet());
     }
 
 }

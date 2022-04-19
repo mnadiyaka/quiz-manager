@@ -9,9 +9,10 @@ import com.sigma.model.entity.User;
 import org.apache.tomcat.websocket.AuthenticationException;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
-    public List<UserDto> getAllUsers();
+    public Set<UserDto> getAllUsers();
 
     public User findUserById(Long userId);
 

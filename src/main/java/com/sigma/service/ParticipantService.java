@@ -4,10 +4,11 @@ import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.entity.Participant;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ParticipantService {
 
-    public List<ParticipantDto> getAllParticipants(Long userId, Long teamId);
+    public Set<ParticipantDto> getAllParticipants(Long userId, Long teamId);
 
     public Participant findParticipantById(Long participantId);
 

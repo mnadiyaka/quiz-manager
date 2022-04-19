@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class ResultController {
     private final QuizResultService quizResultService;
 
     @GetMapping("/all")
-    public List<QuizResultsDto> getTeams() {
+    public Set<QuizResultsDto> getTeams() {
         return quizResultService.getAllRes();
     }
 
@@ -34,7 +35,7 @@ public class ResultController {
     }
 
     @RequestMapping(value = "team", method = RequestMethod.GET)
-    public @ResponseBody List<QuizResultsDto> filterRes(@RequestParam(value = "teamId", required = false) String teamId, @RequestParam(value = "totalScore", required = false) String score) {
+    public @ResponseBody Set<QuizResultsDto> filterRes(@RequestParam(value = "teamId", required = false) String teamId, @RequestParam(value = "totalScore", required = false) String score) {
         return quizResultService.filterData(teamId, score);
     }
 }

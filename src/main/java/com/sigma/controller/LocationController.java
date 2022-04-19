@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class LocationController {
     private final LocationService locationService;
 
     @GetMapping("/all")
-    public List<LocationDto> getLocation(@PathVariable Long userId) {
+    public Set<LocationDto> getLocation(@PathVariable Long userId) {
         return locationService.getAllLocations();
     }
 

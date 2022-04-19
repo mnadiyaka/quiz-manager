@@ -17,6 +17,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +40,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     public Participant createParticipant(final ParticipantDto participantDto, final Long userId, final Long teamId) {
         Team team = checkTeam(userId, teamId);
 
-        List<Participant> people = team.getParticipants();
+        Set<Participant> people = team.getParticipants();
         Participant newPlayer = ParticipantDto.toParticipant(participantDto);
         newPlayer.setTeam(team);
         participantRepository.save(newPlayer);
@@ -53,7 +55,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     public Participant updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long userId, final Long teamId) {
         final Team team = checkTeam(userId, teamId);
 
-        List<Participant> people = team.getParticipants();
+        Set<Participant> people = team.getParticipants();
         final Participant old = findParticipantById(participantId);
         people.remove(old);
         Optional.ofNullable(newParticipant.getFirstname()).ifPresent(old::setFirstname);
@@ -79,10 +81,10 @@ public class ParticipantServiceImpl implements ParticipantService {
     }
 
     @Override
-    public List<ParticipantDto> getAllParticipants(final Long userId, final Long teamId) {
+    public Set<ParticipantDto> getAllParticipants(final Long userId, final Long teamId) {
         final Team team = checkTeam(userId, teamId);
         log.info("Getting list of participants");
-        return participantRepository.findAll().stream().filter(p -> Objects.equals(p.getTeam().getId(), teamId)).map(ParticipantDto::fromParticipant).toList();
+        return participantRepository.findAll().stream().filter(p -> Objects.equals(p.getTeam().getId(), teamId)).map(ParticipantDto::fromParticipant).collect(Collectors.toSet());
     }
 
     private Team checkTeam(final Long userId, final Long teamId) {

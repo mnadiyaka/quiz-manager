@@ -13,6 +13,8 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +24,9 @@ public class LocationServiceImpl implements LocationService {
     private final LocationRepository locationRepository;
 
     @Override
-    public List<LocationDto> getAllLocations() {
+    public Set<LocationDto> getAllLocations() {
         log.info("Getting list of location");
-        return locationRepository.findAll().stream().map(location -> LocationDto.fromLocation(location)).toList();
+        return locationRepository.findAll().stream().map(location -> LocationDto.fromLocation(location)).collect(Collectors.toSet());
     }
 
     @Override
