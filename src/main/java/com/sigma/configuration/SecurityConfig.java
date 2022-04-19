@@ -60,7 +60,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and();
 
         http.authorizeRequests()
-                .anyRequest().permitAll();
+//                .antMatchers("/login").permitAll() //doesn't do anything
+//                .antMatchers("/signIn").permitAll()
+//                .anyRequest().authenticated();
+                .anyRequest().permitAll(); // does everything
+
 
         http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
     }
