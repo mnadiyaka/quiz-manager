@@ -29,9 +29,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public Location findLocationById(final Long locationId) {
         log.info("Searching for location with id {}", locationId);
-        final Location location = locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException());
-
-        return location;
+        return locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException());
     }
 
     @Override

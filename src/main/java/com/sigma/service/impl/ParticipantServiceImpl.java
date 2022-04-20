@@ -35,10 +35,10 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Override
     @Transactional
     public Participant createParticipant(final ParticipantDto participantDto, final Long userId, final Long teamId) {
-        TeamDto team = checkTeam(userId, teamId);
+        final TeamDto team = checkTeam(userId, teamId);
 
-        List<ParticipantDto> people = team.getParticipants();
-        Participant newPlayer = ParticipantDto.toParticipant(participantDto);
+        final List<ParticipantDto> people = team.getParticipants();
+        final Participant newPlayer = ParticipantDto.toParticipant(participantDto);
         newPlayer.setTeam(TeamDto.toTeam(team));
         participantRepository.save(newPlayer);
         people.add(ParticipantDto.fromParticipant(newPlayer));
@@ -52,7 +52,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     public void updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long userId, final Long teamId) {
         final TeamDto team = checkTeam(userId, teamId);
 
-        List<ParticipantDto> people = team.getParticipants();
+        final List<ParticipantDto> people = team.getParticipants();
         final Participant old = findParticipantById(participantId);
         people.remove(old);
         Optional.ofNullable(newParticipant.getFirstname()).ifPresent(old::setFirstname);
@@ -70,7 +70,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Transactional
     public void deleteParticipant(final Long userId, final Long teamId, final Long participantId) {
         final Participant participant = findParticipantById(participantId);
-        TeamDto team = checkTeam(userId, participant.getTeam().getId());
+        final TeamDto team = checkTeam(userId, participant.getTeam().getId());
 
         log.info("Deleting participant {}", participant);
         participantRepository.deleteById(participantId);
