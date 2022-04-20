@@ -13,7 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -27,15 +28,17 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "Enter username")
+    @Size(min = 3, max = 20)
     @Column(name = "user_name")
     private String username;
 
-    @NotNull
+    @NotBlank(message = "Enter password")
     @Column(name = "password")
+    @Size(min = 5, max = 20)
     private String password;
 
-    @NotNull
+    @NotBlank(message = "Enter role")
     @Column(name = "role")
     private Role role;
 

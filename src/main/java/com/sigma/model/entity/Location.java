@@ -13,10 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -34,23 +32,25 @@ public class Location {
     @Column(name = "location_name")
     private String locationName;
 
-    @NotNull
+    @NotBlank(message = "Enter city")
+    @Size(min = 3, max = 30)
     @Column(name = "city")
     private String city;
 
-    @NotNull
+    @NotBlank(message = "Enter street")
+    @Size(min = 3, max = 30)
     @Column(name = "street")
     private String street;
 
-    @NotNull
+    @NotBlank(message = "Enter number")
+    @Size(min = 1, max = 12)
     @Column(name = "house_number")
     private String houseNumber;
 
-    @NotNull
-    @Min(value = 10000)
-    @Max(value = 99999)
+    @NotBlank(message = "Enter code")
+    @Size(min = 3, max = 10)
     @Column(name = "zip_code")
-    private int zipCode;
+    private String zipCode;
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "address")

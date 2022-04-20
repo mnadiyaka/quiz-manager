@@ -13,7 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "participants")
@@ -26,11 +27,13 @@ public class Participant {
     @Column(name = "participant_id")
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "Enter firstname")
+    @Size(min = 3, max = 20)
     @Column(name = "firstname")
     private String firstname;
 
-    @NotNull
+    @NotBlank(message = "Enter firstname")
+    @Size(min = 3, max = 20)
     @Column(name = "lastname")
     private String lastname;
 

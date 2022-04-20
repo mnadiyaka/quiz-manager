@@ -5,7 +5,9 @@ import com.sigma.model.entity.Quiz;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Data
@@ -14,9 +16,12 @@ public class QuizDto {
 
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "Enter name")
+    @Size(min = 3, max = 20)
+    @Column(name = "quiz_name")
     private String quizName;
 
+    @Column(name = "category")
     private Category category;
 
     private String shortDescription;

@@ -5,7 +5,8 @@ import com.sigma.model.entity.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,8 @@ public class TeamDto {
 
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "Enter name")
+    @Size(min = 3, max = 20)
     private String teamName;
 
     private boolean confirmed;

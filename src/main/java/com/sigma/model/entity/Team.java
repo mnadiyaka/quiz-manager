@@ -15,7 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -30,7 +30,8 @@ public class Team {
     @Column(name = "team_id")
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "Enter name")
+    @Size(min = 3, max = 20)
     @Column(name = "team_name")
     private String teamName;
 

@@ -4,7 +4,8 @@ import com.sigma.model.entity.Participant;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
 @Accessors(chain = true)
@@ -12,10 +13,12 @@ public class ParticipantDto {
 
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "Enter firstname")
+    @Size(min = 3, max = 20)
     private String firstname;
 
-    @NotNull
+    @NotBlank(message = "Enter firstname")
+    @Size(min = 3, max = 20)
     private String lastname;
 
     public static ParticipantDto fromParticipant(Participant participant) {
