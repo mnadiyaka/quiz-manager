@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/quiz")
 @Slf4j
-//@RolesAllowed(Role.ADMIN)
+//@RolesAllowed(value = new String[]{Role.ADMIN.toString()})
 public class QuizController {
 
     private final QuizService quizService;
