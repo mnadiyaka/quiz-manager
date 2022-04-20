@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/{userId}/quiz")
+@RequestMapping("/quiz")
 @Slf4j
 //@RolesAllowed(Role.ADMIN)
 public class QuizController {
@@ -28,23 +28,23 @@ public class QuizController {
     private final QuizService quizService;
 
     @GetMapping("/all")
-    public List<QuizDto> getTeams(@PathVariable Long userId) {
+    public List<QuizDto> getQuizzes() {
         return quizService.getAllQuizzes();
     }
 
     @PostMapping("")
-    public Quiz createQuiz(@RequestBody QuizDto quizDto, @PathVariable Long userId) {
-        return quizService.createQuiz(quizDto, userId);
+    public Quiz createQuiz(@RequestBody QuizDto quizDto) {
+        return quizService.createQuiz(quizDto);
     }
 
     @PatchMapping("/{quizId}")
-    public Quiz updateQuiz(@RequestBody QuizDto quizDto, @PathVariable Long userId, @PathVariable Long quizId) {
-        return quizService.updateQuiz(quizDto, quizId, userId);
+    public Quiz updateQuiz(@RequestBody QuizDto quizDto, @PathVariable Long quizId) {
+        return quizService.updateQuiz(quizDto, quizId);
     }
 
     @DeleteMapping("/{quizId}")
-    public String deleteQuiz(@PathVariable("userId") Long userId, @PathVariable("quizId") Long quizId) {
-        quizService.deleteQuiz(userId, quizId);
+    public String deleteQuiz(@PathVariable("quizId") Long quizId) {
+        quizService.deleteQuiz(quizId);
         return "deleted quiz";
     }
 }

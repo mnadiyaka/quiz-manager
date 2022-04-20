@@ -39,8 +39,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public Quiz createQuiz(final QuizDto quiz, final Long userId) {
-        final User user = checkUser(userId);
+    public Quiz createQuiz(final QuizDto quiz) {
 
         log.info("Creating new quiz {}", quiz.toString());
         return quizRepository.save(QuizDto.toQuiz(quiz));
@@ -48,8 +47,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public Quiz updateQuiz(final QuizDto updatedQuiz, final Long quizId, final Long userId) {
-        final User user = checkUser(userId);
+    public Quiz updateQuiz(final QuizDto updatedQuiz, final Long quizId) {
 
         final QuizDto oldQuiz = findQuizById(quizId);
 
@@ -64,19 +62,8 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public void deleteQuiz(final Long userId, final Long quizId) {
-        final User user = checkUser(userId);
-
+    public void deleteQuiz(final Long quizId) {
         log.info("Deleting quiz {}", findQuizById(quizId));
         quizRepository.deleteById(quizId);
-    }
-
-    private User checkUser(final Long userId) {
-        final User user = userService.findUserById(userId);
-
-        if (user.getRole().equals(Role.CAPTAIN)) {
-            throw new EntityNotFoundException("This user is captain, not admin");
-        }
-        return user;
     }
 }
