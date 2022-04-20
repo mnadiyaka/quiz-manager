@@ -32,7 +32,7 @@ public class LocationServiceTest {
         Location location = new Location();
         location.setLocationName("Kyiv");
         location.setCity("Kyiv");
-        location.setZipCode(12345);
+        location.setZipCode("12345");
         location.setHouseNumber("4");
         location.setStreet("qwerty");
 
@@ -68,7 +68,7 @@ public class LocationServiceTest {
         Location location = new Location();
         location.setLocationName("Kyiv");
         location.setCity("Kyiv");
-        location.setZipCode(12345);
+        location.setZipCode("12345");
         location.setHouseNumber("4");
         location.setStreet("qwerty");
 

@@ -3,6 +3,7 @@ package com.sigma.model.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,6 +45,7 @@ public class User {
 
     @EqualsAndHashCode.Exclude
     @ManyToMany
+    @ToString.Exclude
     @JoinTable(name = "admin_location", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "location_id"))
     private List<Location> adminLocation;
