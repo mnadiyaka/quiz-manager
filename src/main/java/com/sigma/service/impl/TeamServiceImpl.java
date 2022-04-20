@@ -24,9 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class TeamServiceImpl implements TeamService {
-
     private final TeamRepository teamRepository;
-
     private final UserService userService;
 
     @Override
@@ -42,37 +40,31 @@ public class TeamServiceImpl implements TeamService {
         if (user.getRole().equals(Role.ADMIN)) {
             throw new AuthorizationServiceException("This user is admin, not captain");
         }
-
         if (!Objects.isNull(teamRepository.findByTeamName(teamDto.getTeamName()))) {
             throw new EntityExistsException("Already exists");
         }
-
         teamDto.setCaptain(user);
-
         log.info("Creating new team {}", teamDto);
-
         teamDto.setParticipants(new ArrayList<>());
         return teamRepository.save(TeamDto.toTeam(teamDto));
     }
 
     @Override
     @Transactional
-    public void updateTeam(final TeamDto updatedTeam, final Long userId, final Long teamId) {
+    public void updateTeam(final TeamDto updatedTeam, final Long teamId) {
         final TeamDto oldTeam = findTeamById(teamId);
         log.info("Updating team {}", oldTeam);
-
         Optional.ofNullable(updatedTeam.getTeamName()).ifPresent(oldTeam::setTeamName);
         Optional.ofNullable(updatedTeam.getParticipants()).ifPresent(oldTeam::setParticipants);
         Optional.ofNullable(updatedTeam.getCaptain()).ifPresent(oldTeam::setCaptain);
-
         teamRepository.save(TeamDto.toTeam(oldTeam));
     }
 
     @Override
     @Transactional
-    public void deleteTeam(final Long userId, final Long teamId) {
-        final TeamDto team = checkTeam(userId, teamId);
-
+    public void deleteTeam(final Long teamId) {
+//        final TeamDto team = checkTeam(userId, teamId);
+        final TeamDto team = findTeamById(teamId);
         log.info("Deleting team {}", team);
         teamRepository.delete(TeamDto.toTeam(team));
     }
@@ -84,17 +76,16 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<TeamDto> getAllTeams(final Long userId) {
+    public List<TeamDto> getAllTeams() {
         log.info("Getting list of teams");
-        return teamRepository.findAll().stream().filter(team -> Objects.equals(team.getCaptain().getId(), userId))
+        return teamRepository.findAll().stream()
                 .map(TeamDto::fromTeam).toList();
     }
-
-    private TeamDto checkTeam(Long userId, Long teamId) {
-        final TeamDto team = findTeamById(teamId);
-        if (!Objects.equals(team.getCaptain().getId(), userId)) {
-            throw new AuthorizationServiceException("Wrong account credentials");
-        }
-        return team;
-    }
+//    private TeamDto checkTeam(Long userId, Long teamId) {
+//        final TeamDto team = findTeamById(teamId);
+//        if (!Objects.equals(team.getCaptain().getId(), userId)) {
+//            throw new AuthorizationServiceException("Wrong account credentials");
+//        }
+//        return team;
+//    }
 }

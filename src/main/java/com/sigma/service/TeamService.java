@@ -6,16 +6,15 @@ import com.sigma.model.entity.Team;
 import java.util.List;
 
 public interface TeamService {
-
-    public List<TeamDto> getAllTeams(Long userId);
+    public List<TeamDto> getAllTeams();
 
     public TeamDto findTeamById(Long teamId);
 
     public Team createTeam(TeamDto teamDto, Long captainId);
 
-    public void updateTeam(TeamDto updatedTeam, Long userId, Long teamId);
+    public void updateTeam(TeamDto updatedTeam, Long teamId);
 
-    public void deleteTeam(Long userId, Long teamId);
+    public void deleteTeam(Long teamId);
 
     public Team confirmTeam(Team team, boolean confirmation); //TODO: DTO????
 }

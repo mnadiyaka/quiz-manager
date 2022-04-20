@@ -20,15 +20,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("user/{userId}/team")
+@RequestMapping("/team")
 @Slf4j
 public class TeamController {
-
     private final TeamService teamService;
 
     @GetMapping("/all")
     public List<TeamDto> getTeams(@PathVariable Long userId) {
-        return teamService.getAllTeams(userId);
+        return teamService.getAllTeams();
     }
 
     @PostMapping("")
@@ -37,14 +36,14 @@ public class TeamController {
     }
 
     @PatchMapping("/{teamId}")
-    public String updateTeam(@RequestBody TeamDto teamDto, @PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId) {
-        teamService.updateTeam(teamDto, userId, teamId);
+    public String updateTeam(@RequestBody TeamDto teamDto, @PathVariable("teamId") Long teamId) {
+        teamService.updateTeam(teamDto, teamId);
         return "team updated";
     }
 
     @DeleteMapping("/{teamId}")
-    public String deleteTeam(@PathVariable("userId") Long userId, @PathVariable("teamId") Long teamId) {
-        teamService.deleteTeam(userId, teamId);
+    public String deleteTeam(@PathVariable("teamId") Long teamId) {
+        teamService.deleteTeam(teamId);
         return "deleted team";
     }
 }
