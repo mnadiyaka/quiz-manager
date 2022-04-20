@@ -43,7 +43,7 @@ public class TeamServiceImpl implements TeamService {
             throw new AuthorizationServiceException("This user is admin, not captain");
         }
 
-        if (!Objects.equals(teamRepository.findByTeamName(teamDto.getTeamName()), null)) {
+        if (!Objects.isNull(teamRepository.findByTeamName(teamDto.getTeamName()))) {
             throw new EntityExistsException("Already exists");
         }
 

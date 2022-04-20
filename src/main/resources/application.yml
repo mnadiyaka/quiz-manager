@@ -1,5 +1,5 @@
 spring:
-  autoconfigure:  #with - doesn't log in, without - allows everything
+  autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
   jpa:
     generate-ddl: 'true'

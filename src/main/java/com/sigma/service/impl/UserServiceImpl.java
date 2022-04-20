@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public SignUpUserResponseDto createUser(final SignUpUserDto signUpDto) {
         log.info("Creating new user {}", signUpDto.getUsername());
-        if (!Objects.equals(userRepository.findByUsername(signUpDto.getUsername()), null)) {
+        if (!Objects.isNull(userRepository.findByUsername(signUpDto.getUsername()))) {
             return new SignUpUserResponseDto(FAILURE, EXISTED);
         }
 
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public SignInUserResponseDto login(final SignInUserDto signInUserDto) {
         final User myUser = userRepository.findByUsername(signInUserDto.getUsername());
-        if (Objects.equals(myUser, null)) {
+        if (Objects.isNull(myUser)) {
             return new SignInUserResponseDto(FAILURE, NOT_EXIST);
         }
 
