@@ -35,15 +35,15 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional
-    public Team createTeam(final TeamDto teamDto, final Long captainId) {
-        final User user = userService.findUserById(captainId);
-        if (user.getRole().equals(Role.ADMIN)) {
-            throw new AuthorizationServiceException("This user is admin, not captain");
-        }
+    public Team createTeam(final TeamDto teamDto, final User user) {
+        //final User user = userService.findUserById(captainId);
+//        if (user.getRole().equals(Role.ADMIN)) {
+//            throw new AuthorizationServiceException("This user is admin, not captain");
+//        }
         if (!Objects.isNull(teamRepository.findByTeamName(teamDto.getTeamName()))) {
             throw new EntityExistsException("Already exists");
         }
-        teamDto.setCaptain(user);
+        teamDto.setCaptainId(user.getId());
         log.info("Creating new team {}", teamDto);
         teamDto.setParticipants(new ArrayList<>());
         return teamRepository.save(TeamDto.toTeam(teamDto));
@@ -56,7 +56,7 @@ public class TeamServiceImpl implements TeamService {
         log.info("Updating team {}", oldTeam);
         Optional.ofNullable(updatedTeam.getTeamName()).ifPresent(oldTeam::setTeamName);
         Optional.ofNullable(updatedTeam.getParticipants()).ifPresent(oldTeam::setParticipants);
-        Optional.ofNullable(updatedTeam.getCaptain()).ifPresent(oldTeam::setCaptain);
+        Optional.ofNullable(updatedTeam.getCaptainId()).ifPresent(oldTeam::setCaptainId);
         teamRepository.save(TeamDto.toTeam(oldTeam));
     }
 

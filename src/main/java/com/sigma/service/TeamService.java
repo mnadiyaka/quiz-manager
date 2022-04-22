@@ -2,6 +2,7 @@ package com.sigma.service;
 
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Team;
+import com.sigma.model.entity.User;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface TeamService {
 
     public TeamDto findTeamById(Long teamId);
 
-    public Team createTeam(TeamDto teamDto, Long captainId);
+    public Team createTeam(TeamDto teamDto, User user);
 
     public void updateTeam(TeamDto updatedTeam, Long teamId);
 

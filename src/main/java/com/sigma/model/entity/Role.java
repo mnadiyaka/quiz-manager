@@ -4,5 +4,5 @@ import lombok.experimental.FieldNameConstants;
 
 //@FieldNameConstants(onlyExplicitlyIncluded = true)
 public enum Role {
-    ADMIN, CAPTAIN;
+    ADMIN, ROLE_CAPTAIN;
 }

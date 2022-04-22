@@ -22,7 +22,7 @@ public class TeamDto {
 
     private boolean confirmed;
 
-    private User captain;
+    private Long captainId;
 
     private List<ParticipantDto> participants;
 
@@ -31,7 +31,7 @@ public class TeamDto {
                 .setId(team.getId())
                 .setTeamName(team.getTeamName())
                 //.setConfirmed(team.getConfirmed())
-                .setCaptain(team.getCaptain())
+                .setCaptainId(team.getCaptain().getId())
                 .setParticipants((team.getParticipants()).stream().map((player)->ParticipantDto.fromParticipant(player)).collect(Collectors.toList()));
     }
 
@@ -40,7 +40,7 @@ public class TeamDto {
                 .setId(teamDto.getId())
                 .setTeamName(teamDto.getTeamName())
                 //.setConfirmed(teamDto.getConfirmed())
-                .setCaptain(teamDto.getCaptain())
+                .setCaptainId(teamDto.getCaptainId())
                 .setParticipants(teamDto.getParticipants().stream().map((playerDto)->ParticipantDto.toParticipant(playerDto)).collect(Collectors.toList()));
     }
 }

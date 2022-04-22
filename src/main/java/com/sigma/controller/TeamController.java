@@ -3,10 +3,13 @@ package com.sigma.controller;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Team;
+import com.sigma.model.entity.User;
 import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,9 +33,10 @@ public class TeamController {
         return teamService.getAllTeams();
     }
 
+    @PreAuthorize("hasRole('ROLE_CAPTAIN')")
     @PostMapping("")
-    public Team createTeam(@RequestBody TeamDto teamDto, @PathVariable Long userId) {
-        return teamService.createTeam(teamDto, userId);
+    public Team createTeam(@RequestBody TeamDto teamDto, @AuthenticationPrincipal User user) {
+        return teamService.createTeam(teamDto, user);
     }
 
     @PatchMapping("/{teamId}")

@@ -46,8 +46,11 @@ public class Team {
     private List<Quiz> quizzes;
 
     @OneToOne
-    @JoinColumn(name = "captain_id")
+    @JoinColumn(name = "captain_id", updatable = false, insertable = false)
     private User captain;
+
+    @Column(name = "captain_id")
+    private Long captainId;
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "team", orphanRemoval = true)

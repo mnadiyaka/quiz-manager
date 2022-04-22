@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,16 +23,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true
-)
-@RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private final AuthFilter authFilter;
+    private AuthFilter authFilter;
+
+    @Autowired
+    private AppAuthProvider appAuthProvider;
+
 
 //    @Autowired
 //    private final DataSource dataSource;
@@ -46,11 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        return registrationBean;
 //    }
 
-    @Override
-    @Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    @Override
+//    @Bean
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -60,6 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and();
+
+        http = http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).antMatcher("/*").authenticationProvider(appAuthProvider);
 
         http = http
                 .exceptionHandling()
@@ -76,12 +79,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signIn").permitAll()
-                //.antMatchers("/users").hasAnyRole(Role.CAPTAIN.toString())
+                .antMatchers("/users").hasAnyRole(Role.ROLE_CAPTAIN.name().substring(5))
                 .anyRequest().authenticated();
 //                .anyRequest().permitAll(); // does everything
 
 
-        http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).antMatcher("/*");
     }
 
 //    @Override

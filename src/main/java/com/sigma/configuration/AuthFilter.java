@@ -50,35 +50,45 @@ public class AuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (isEmpty(header) || !header.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+//        if (isEmpty(header) || !header.startsWith("Bearer ")) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
-        final String token = ofNullable(request.getHeader(AUTH)).orElseThrow(() -> new NoSuchElementException());
-        JWTUtil.verify(token, secret, issuer);
+        final String token = ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION).substring(7)).orElseThrow(() -> new NoSuchElementException());
+
+//        JWTUtil.verify(token, secret, issuer);
+
+        final TokenAuth tokenAuth = new TokenAuth(token);
+
+        SecurityContextHolder.getContext().setAuthentication(tokenAuth);
+
         filterChain.doFilter(request, response);
 
-        DecodedJWT jwt = JWT.decode(token.substring(7));
-        User user = userRepository
-                .findById(Long.valueOf((jwt.getSubject()))).orElseThrow(() -> new NoSuchElementException());
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getRole().toString()));
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken
-                (userDetails, null, userDetails == null ? List.of() : userDetails.getAuthorities());
 
-        authentication.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        filterChain.doFilter(request, response);
+//        DecodedJWT jwt = JWT.decode(token.substring(7));
+//        User user = userRepository
+//                .findById(Long.valueOf((jwt.getSubject()))).orElseThrow(() -> new NoSuchElementException());
+//        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), AuthorityUtils.createAuthorityList(user.getRole().toString()));
+//
+//        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken
+//                (userDetails, null, userDetails == null ? List.of() : userDetails.getAuthorities());
+//
+//        authentication.setDetails(
+//                new WebAuthenticationDetailsSource().buildDetails(request)
+//        );
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        filterChain.doFilter(request, response);
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return (request.getRequestURI()).matches(publicUrls.stream().map(pu -> String.format("(/%s)", pu)).collect(Collectors.joining("|")));
+        return request.getRequestURI().matches("/login");
+//        return (request.getRequestURI()).matches(publicUrls.stream().map(pu -> String.format("(/%s)", pu)).collect(Collectors.joining("|")));
     }
 
 }

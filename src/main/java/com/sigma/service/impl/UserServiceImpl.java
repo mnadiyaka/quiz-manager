@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final AuthenticationManager authenticationManager;
+//    private final AuthenticationManager authenticationManager;
 
     @Value("${jwt-settings.secret-key}")
     private String secret;
@@ -115,15 +115,15 @@ public class UserServiceImpl implements UserService {
             log.info(FAILURE);
             return new SignInUserResponseDto(FAILURE, NOT_EXIST); // TODO: custom exception?
         }
-
-        Authentication authenticate = authenticationManager
-                .authenticate(
-                        new UsernamePasswordAuthenticationToken(
-                                signInUserDto.getUsername(), signInUserDto.getPassword()
-                        )
-                );
-
-        authenticate.getPrincipal();
+//
+//        Authentication authenticate = authenticationManager
+//                .authenticate(
+//                        new UsernamePasswordAuthenticationToken(
+//                                signInUserDto.getUsername(), signInUserDto.getPassword()
+//                        )
+//                );
+//
+//        authenticate.getPrincipal();
         log.info(SUCCESS);
 
         String token = JWTUtil.generateJWT(myUser, secret, timestamp, issuer);

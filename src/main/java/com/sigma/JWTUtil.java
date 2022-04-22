@@ -35,9 +35,9 @@ public class JWTUtil {
                 .withIssuer(issuer)
                 .build();
 
-        verifier.verify(token.substring(7));
+        verifier.verify(token);
 
-        DecodedJWT jwt = JWT.decode(token.substring(7));
+        DecodedJWT jwt = JWT.decode(token);
         if (jwt.getExpiresAt().before(new Date())) {
             log.error("Token expired");
             throw new TokenExpiredException("Token expired: exists until " + jwt.getExpiresAt() + " now is " + System.currentTimeMillis());
