@@ -33,18 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private final AuthFilter authFilter;
 
-    @Autowired
-    private final DataSource dataSource;
+//    @Autowired
+//    private final DataSource dataSource;
 
-    @Bean
-    public FilterRegistrationBean<AuthFilter> someFilter() {
-        final FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(authFilter);
-        registrationBean.addUrlPatterns("/*");
-        registrationBean.setName("AuthFilter");
-        registrationBean.setOrder(Integer.MAX_VALUE);
-        return registrationBean;
-    }
+//    @Bean
+//    public FilterRegistrationBean<AuthFilter> someFilter() {
+//        final FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
+//        registrationBean.setFilter(authFilter);
+//        registrationBean.addUrlPatterns("/*");
+//        registrationBean.setName("AuthFilter");
+//        registrationBean.setOrder(Integer.MAX_VALUE);
+//        return registrationBean;
+//    }
 
     @Override
     @Bean
@@ -74,24 +74,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and();
 
         http.authorizeRequests()
-                .antMatchers("/login").permitAll() //doesn't do anything
+                .antMatchers("/login").permitAll()
                 .antMatchers("/signIn").permitAll()
-                .antMatchers("/all").hasAnyRole(Role.CAPTAIN.toString())
+                //.antMatchers("/users").hasAnyRole(Role.CAPTAIN.toString())
                 .anyRequest().authenticated();
 //                .anyRequest().permitAll(); // does everything
 
 
-        http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).antMatcher("/*");
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(passwordEncoder())
-                .usersByUsernameQuery("SELECT user_name, password, enabled FROM users WHERE user_name=?;")
-                .authoritiesByUsernameQuery("SELECT user_name, role FROM users WHERE user_name=?");
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.jdbcAuthentication()
+//                .dataSource(dataSource)
+//                .passwordEncoder(passwordEncoder())
+//                .usersByUsernameQuery("SELECT user_name, password, enabled FROM users WHERE user_name=?;")
+//                .authoritiesByUsernameQuery("SELECT user_name, role FROM users WHERE user_name=?");
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
