@@ -44,8 +44,11 @@ public class Quiz {
     private LocalDateTime dateTime;
 
     @ManyToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "location_id")
+    @JoinColumn(name = "address_id", referencedColumnName = "location_id", updatable = false, insertable = false)
     private Location address;
+
+    @Column(name = "address_id")
+    private Long addressId;
 
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "quizzes")

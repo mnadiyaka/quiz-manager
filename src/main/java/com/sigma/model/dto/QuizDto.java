@@ -5,7 +5,6 @@ import com.sigma.model.entity.Quiz;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -26,13 +25,16 @@ public class QuizDto {
 
     private LocalDateTime dateTime;
 
+    private Long addressId;
+
     public static QuizDto fromQuiz(Quiz quiz) {
         return new QuizDto()
                 .setId(quiz.getId())
                 .setQuizName(quiz.getQuizName())
                 .setCategory(quiz.getCategory())
                 .setShortDescription(quiz.getShortDescription())
-                .setDateTime(quiz.getDateTime());
+                .setDateTime(quiz.getDateTime())
+                .setAddressId(quiz.getAddressId());
     }
 
     public static Quiz toQuiz(QuizDto quiz) {
@@ -41,6 +43,7 @@ public class QuizDto {
                 .setQuizName(quiz.getQuizName())
                 .setCategory(quiz.getCategory())
                 .setShortDescription(quiz.getShortDescription())
-                .setDateTime(quiz.getDateTime());
+                .setDateTime(quiz.getDateTime())
+                .setAddressId(quiz.getAddressId());
     }
 }
