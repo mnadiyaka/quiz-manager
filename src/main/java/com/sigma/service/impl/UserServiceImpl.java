@@ -85,7 +85,6 @@ public class UserServiceImpl implements UserService {
         oldUser.setUsername(updatedUser.getUsername());
         oldUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         oldUser.setRole(updatedUser.getRole());
-        oldUser.setAdminLocation(updatedUser.getAdminLocation());
         userRepository.save(oldUser);
     }
 

@@ -3,6 +3,7 @@ package com.sigma.service.impl;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
+import com.sigma.model.entity.Team;
 import com.sigma.repository.ParticipantRepository;
 import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
@@ -33,14 +34,14 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Transactional
     public Participant createParticipant(final ParticipantDto participantDto, final Long teamId) {
 //        final TeamDto team = checkTeam(userId, teamId);
-        final TeamDto team = teamService.findTeamById(teamId);
-        final List<ParticipantDto> people = team.getParticipants();
+        final Team team = teamService.findTeamById(teamId);
+        final List<Participant> people = team.getParticipants();
         final Participant newPlayer = ParticipantDto.toParticipant(participantDto);
-        newPlayer.setTeam(TeamDto.toTeam(team));
+        newPlayer.setTeam(team);
         participantRepository.save(newPlayer);
-        people.add(ParticipantDto.fromParticipant(newPlayer));
+        people.add(newPlayer);
         team.setParticipants(people);
-        teamService.updateTeam(team, team.getId());
+        //teamService.updateTeam(team, team.getId());
         return newPlayer;
     }
 
@@ -48,17 +49,17 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Transactional
     public void updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long teamId) {
 //        final TeamDto team = checkTeam(userId, teamId);
-        final TeamDto team = teamService.findTeamById(teamId);
-        final List<ParticipantDto> people = team.getParticipants();
+        final Team team = teamService.findTeamById(teamId);
+        final List<Participant> people = team.getParticipants();
         final Participant old = findParticipantById(participantId);
         people.remove(old);
         Optional.ofNullable(newParticipant.getFirstname()).ifPresent(old::setFirstname);
         Optional.ofNullable(newParticipant.getLastname()).ifPresent(old::setLastname);
-        old.setTeam(TeamDto.toTeam(team));
+        old.setTeam(team);
         participantRepository.save(old);
-        people.add(newParticipant);
+        people.add(old);
         team.setParticipants(people);
-        teamService.updateTeam(team, team.getId());
+        //teamService.updateTeam(team, team.getId());
     }
 
     @Override
@@ -66,7 +67,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     public void deleteParticipant(final Long teamId, final Long participantId) {
         final Participant participant = findParticipantById(participantId);
 //        final TeamDto team = checkTeam(userId, participant.getTeam().getId());
-        final TeamDto team = teamService.findTeamById(teamId);
+        final Team team = teamService.findTeamById(teamId);
         log.info("Deleting participant {}", participant);
         participantRepository.deleteById(participantId);
     }
@@ -74,7 +75,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Override
     public List<ParticipantDto> getAllParticipants(final Long teamId) {
 //        final TeamDto team = checkTeam(userId, teamId);
-        final TeamDto team = teamService.findTeamById(teamId);
+        final Team team = teamService.findTeamById(teamId);
         log.info("Getting list of participants");
         return participantRepository.findAll().stream().filter(p -> Objects.equals(p.getTeam().getId(), teamId)).map(ParticipantDto::fromParticipant).toList();
     }

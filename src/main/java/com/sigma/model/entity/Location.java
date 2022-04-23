@@ -3,6 +3,7 @@ package com.sigma.model.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
@@ -53,10 +54,12 @@ public class Location {
     private String zipCode;
 
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @OneToMany(mappedBy = "address")
     private List<Quiz> quizzesLoc;
 
-    @EqualsAndHashCode.Exclude
-    @ManyToMany(mappedBy = "adminLocation")
-    private List<User> adminUsers;
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @ManyToMany(mappedBy = "adminLocation")
+//    private List<User> adminUsers;
 }

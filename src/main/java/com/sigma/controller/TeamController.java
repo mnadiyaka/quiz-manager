@@ -2,12 +2,10 @@ package com.sigma.controller;
 
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Team;
-import com.sigma.model.entity.User;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -23,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/team")
 @Slf4j
+@PreAuthorize("hasRole('CAPTAIN')")
 public class TeamController {
     private final TeamService teamService;
 
@@ -31,10 +30,9 @@ public class TeamController {
         return teamService.getAllTeams();
     }
 
-    @PreAuthorize("hasRole('ROLE_CAPTAIN')")
     @PostMapping("")
-    public Team createTeam(@RequestBody TeamDto teamDto, @AuthenticationPrincipal User user) {
-        return teamService.createTeam(teamDto, user);
+    public Team createTeam(@RequestBody TeamDto teamDto) {
+        return teamService.createTeam(teamDto);
     }
 
     @PatchMapping("/{teamId}")
@@ -43,6 +41,7 @@ public class TeamController {
         return "team updated";
     }
 
+    @PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
     @DeleteMapping("/{teamId}")
     public String deleteTeam(@PathVariable("teamId") Long teamId) {
         teamService.deleteTeam(teamId);

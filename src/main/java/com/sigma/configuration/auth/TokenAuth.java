@@ -1,5 +1,7 @@
 package com.sigma.configuration.auth;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sigma.model.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +37,9 @@ public class TokenAuth implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return user;
+        DecodedJWT token = JWT.decode(jwt);
+
+        return Long.valueOf(token.getSubject());
     }
 
     @Override

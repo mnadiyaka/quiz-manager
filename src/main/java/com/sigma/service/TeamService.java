@@ -9,9 +9,9 @@ import java.util.List;
 public interface TeamService {
     public List<TeamDto> getAllTeams();
 
-    public TeamDto findTeamById(Long teamId);
+    public Team findTeamById(Long teamId);
 
-    public Team createTeam(TeamDto teamDto, User user);
+    public Team createTeam(TeamDto teamDto);
 
     public void updateTeam(TeamDto updatedTeam, Long teamId);
 
