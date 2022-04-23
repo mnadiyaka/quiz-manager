@@ -48,12 +48,12 @@ public class User implements UserDetails {
     @Column(name = "role")
     private Role role;
 
-//    @EqualsAndHashCode.Exclude
-//    @ManyToMany
-//    @ToString.Exclude
-//    @JoinTable(name = "admin_location", joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "location_id"))
-//    private List<Location> adminLocation;
+    @EqualsAndHashCode.Exclude
+    @ManyToMany
+    @ToString.Exclude
+    @JoinTable(name = "admin_location", joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "location_id"))
+    private List<Location> adminLocation;
 
     public User(String username, String password, Role role) {
         this.username = username;

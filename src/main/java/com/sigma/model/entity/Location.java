@@ -58,8 +58,8 @@ public class Location {
     @OneToMany(mappedBy = "address")
     private List<Quiz> quizzesLoc;
 
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    @ManyToMany(mappedBy = "adminLocation")
-//    private List<User> adminUsers;
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "adminLocation")
+    private List<User> adminUsers;
 }

@@ -5,6 +5,7 @@ import com.sigma.model.entity.Quiz;
 import com.sigma.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/quiz")
 @Slf4j
+@PreAuthorize("hasRole('ADMIN')")
 public class QuizController {
 
     private final QuizService quizService;
@@ -35,8 +37,9 @@ public class QuizController {
     }
 
     @PatchMapping("/{quizId}")
-    public Quiz updateQuiz(@RequestBody QuizDto quizDto, @PathVariable Long quizId) {
-        return quizService.updateQuiz(quizDto, quizId);
+    public String updateQuiz(@RequestBody QuizDto quizDto, @PathVariable Long quizId) {
+        quizService.updateQuiz(quizDto, quizId);
+        return "quiz created";
     }
 
     @DeleteMapping("/{quizId}")

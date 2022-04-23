@@ -4,7 +4,6 @@ import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
 import com.sigma.repository.QuizRepository;
 import com.sigma.service.QuizService;
-import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,15 +27,14 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public QuizDto findQuizById(final Long quizId) {
+    public Quiz findQuizById(final Long quizId) {
         log.info("Searching for quiz with id {}", quizId);
-        return QuizDto.fromQuiz(quizRepository.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz with id = " + quizId + " not found")));
+        return quizRepository.findById(quizId).orElseThrow(() -> new EntityNotFoundException("Quiz with id = " + quizId + " not found"));
     }
 
     @Override
     @Transactional
     public Quiz createQuiz(final QuizDto quiz) {
-
         log.info("Creating new quiz {}", quiz.toString());
         return quizRepository.save(QuizDto.toQuiz(quiz));
     }
@@ -45,21 +43,22 @@ public class QuizServiceImpl implements QuizService {
     @Transactional
     public Quiz updateQuiz(final QuizDto updatedQuiz, final Long quizId) {
 
-        final QuizDto oldQuiz = findQuizById(quizId);
+        final Quiz oldQuiz = findQuizById(quizId);
 
         log.info("Updating quiz {}", oldQuiz);
         Optional.ofNullable(updatedQuiz.getQuizName()).ifPresent(oldQuiz::setQuizName);
         Optional.ofNullable(updatedQuiz.getCategory()).ifPresent(oldQuiz::setCategory);
         Optional.ofNullable(updatedQuiz.getDateTime()).ifPresent(oldQuiz::setDateTime);
         Optional.ofNullable(updatedQuiz.getShortDescription()).ifPresent(oldQuiz::setShortDescription);
+        Optional.ofNullable(updatedQuiz.getAddressId()).ifPresent(oldQuiz::setAddressId);
 
-        return quizRepository.save(QuizDto.toQuiz(oldQuiz));
+        return quizRepository.save(oldQuiz);
     }
 
     @Override
     @Transactional
     public void deleteQuiz(final Long quizId) {
-        log.info("Deleting quiz {}", findQuizById(quizId));
-        quizRepository.deleteById(quizId);
+        log.info("Deleting quiz {}", quizId);
+        quizRepository.delete(findQuizById(quizId));
     }
 }
