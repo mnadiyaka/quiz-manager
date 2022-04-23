@@ -1,6 +1,6 @@
 package com.sigma.service.impl;
 
-import com.sigma.JWTUtil;
+import com.sigma.configuration.auth.JWTUtil;
 import com.sigma.model.dto.SignInUserDto;
 import com.sigma.model.dto.SignInUserResponseDto;
 import com.sigma.model.dto.SignUpUserDto;
@@ -12,9 +12,6 @@ import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +35,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
-
-//    private final AuthenticationManager authenticationManager;
 
     @Value("${jwt-settings.secret-key}")
     private String secret;
@@ -115,15 +110,7 @@ public class UserServiceImpl implements UserService {
             log.info(FAILURE);
             return new SignInUserResponseDto(FAILURE, NOT_EXIST); // TODO: custom exception?
         }
-//
-//        Authentication authenticate = authenticationManager
-//                .authenticate(
-//                        new UsernamePasswordAuthenticationToken(
-//                                signInUserDto.getUsername(), signInUserDto.getPassword()
-//                        )
-//                );
-//
-//        authenticate.getPrincipal();
+
         log.info(SUCCESS);
 
         String token = JWTUtil.generateJWT(myUser, secret, timestamp, issuer);

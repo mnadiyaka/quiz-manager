@@ -1,4 +1,4 @@
-package com.sigma;
+package com.sigma.configuration.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

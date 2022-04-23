@@ -1,7 +1,6 @@
 package com.sigma.service.impl;
 
 import com.sigma.model.dto.TeamDto;
-import com.sigma.model.entity.Role;
 import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
 import com.sigma.repository.TeamRepository;
@@ -9,7 +8,6 @@ import com.sigma.service.TeamService;
 import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;

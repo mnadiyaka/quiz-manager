@@ -2,7 +2,6 @@ package com.sigma.controller;
 
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
-import com.sigma.model.entity.Role;
 import com.sigma.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,14 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/quiz")
 @Slf4j
-//@RolesAllowed(value = new String[]{Role.ADMIN.toString()})
 public class QuizController {
 
     private final QuizService quizService;

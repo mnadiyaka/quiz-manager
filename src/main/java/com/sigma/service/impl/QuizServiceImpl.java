@@ -2,8 +2,6 @@ package com.sigma.service.impl;
 
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
-import com.sigma.model.entity.Role;
-import com.sigma.model.entity.User;
 import com.sigma.repository.QuizRepository;
 import com.sigma.service.QuizService;
 import com.sigma.service.UserService;
@@ -22,8 +20,6 @@ import java.util.Optional;
 public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
-
-    private final UserService userService;
 
     @Override
     public List<QuizDto> getAllQuizzes() {

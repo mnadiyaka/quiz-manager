@@ -1,8 +1,7 @@
-package com.sigma.configuration;
+package com.sigma.configuration.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.sigma.JWTUtil;
 import com.sigma.model.entity.User;
 import com.sigma.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +25,11 @@ public class AppAuthProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String jwt = ((TokenAuth) authentication).getJwt();
+        final String jwt = ((TokenAuth) authentication).getJwt();
         JWTUtil.verify(jwt, secret, issuer);
 
-        DecodedJWT decode = JWT.decode(jwt);
-        User user = userRepository.findById(Long.valueOf(decode.getSubject())).orElseThrow();
+        final DecodedJWT decode = JWT.decode(jwt);
+        final User user = userRepository.findById(Long.valueOf(decode.getSubject())).orElseThrow();
 
         ((TokenAuth) authentication).setUser(user);
         return authentication;
