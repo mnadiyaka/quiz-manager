@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/team")
 @Slf4j
-@PreAuthorize("hasRole('CAPTAIN')")
+@PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
 public class TeamController {
     private final TeamService teamService;
 
@@ -30,7 +30,7 @@ public class TeamController {
         return teamService.getAllTeams();
     }
 
-    @PostMapping("")
+    @PostMapping()
     public Team createTeam(@RequestBody TeamDto teamDto) {
         return teamService.createTeam(teamDto);
     }
@@ -41,7 +41,6 @@ public class TeamController {
         return "team updated";
     }
 
-    @PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
     @DeleteMapping("/{teamId}")
     public String deleteTeam(@PathVariable("teamId") Long teamId) {
         teamService.deleteTeam(teamId);
