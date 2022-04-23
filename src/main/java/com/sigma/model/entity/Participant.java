@@ -39,6 +39,9 @@ public class Participant {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @ToString.Exclude
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", updatable = false, insertable = false)
     private Team team;
+
+    @Column(name = "team_id")
+    private Long teamId;
 }

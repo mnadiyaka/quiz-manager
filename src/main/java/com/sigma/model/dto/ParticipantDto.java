@@ -21,10 +21,13 @@ public class ParticipantDto {
     @Size(min = 3, max = 20)
     private String lastname;
 
+    private Long teamId;
+
     public static ParticipantDto fromParticipant(Participant participant) {
         return new ParticipantDto()
                 .setId(participant.getId())
                 .setFirstname(participant.getFirstname())
+                .setTeamId(participant.getTeamId())
                 .setLastname(participant.getLastname());
     }
 
@@ -32,6 +35,7 @@ public class ParticipantDto {
         return new Participant()
                 .setId(participantDto.id)
                 .setLastname(participantDto.lastname)
+                .setTeamId(participantDto.getTeamId())
                 .setFirstname(participantDto.firstname);
     }
 }

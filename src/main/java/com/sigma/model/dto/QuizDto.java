@@ -18,10 +18,8 @@ public class QuizDto {
 
     @NotBlank(message = "Enter name")
     @Size(min = 3, max = 20)
-    @Column(name = "quiz_name")
     private String quizName;
 
-    @Column(name = "category")
     private Category category;
 
     private String shortDescription;
