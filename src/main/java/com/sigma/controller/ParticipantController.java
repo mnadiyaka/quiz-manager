@@ -2,7 +2,6 @@ package com.sigma.controller;
 
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.entity.Participant;
-import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

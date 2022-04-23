@@ -4,9 +4,7 @@ import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Team;
-import com.sigma.model.entity.User;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 public interface TeamService {

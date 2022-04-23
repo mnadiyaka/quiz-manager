@@ -7,12 +7,10 @@ import com.sigma.model.entity.Team;
 import com.sigma.repository.ParticipantRepository;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.TeamService;
-import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
@@ -43,7 +41,6 @@ public class TeamServiceImpl implements TeamService {
         Long userId = (Long) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         teamDto.setCaptainId(userId);
         log.info("Creating new team {}", teamDto);
-        //teamDto.setParticipants(new ArrayList<>());//TODO: mb remove 1
         return teamRepository.save(TeamDto.toTeam(teamDto));
     }
 
@@ -53,7 +50,6 @@ public class TeamServiceImpl implements TeamService {
         final Team oldTeam = check(teamId);
         log.info("Updating team {}", oldTeam);
         Optional.ofNullable(updatedTeam.getTeamName()).ifPresent(oldTeam::setTeamName);
-//        Optional.ofNullable(updatedTeam.getParticipants()).ifPresent(oldTeam::setParticipants); //TODO: mb remove 1
         Optional.ofNullable(updatedTeam.getCaptainId()).ifPresent(oldTeam::setCaptainId);
         teamRepository.save(oldTeam);
     }
@@ -88,7 +84,6 @@ public class TeamServiceImpl implements TeamService {
         return team;
     }
 
-
     // -----Rarticipant-----
 
     private final ParticipantRepository participantRepository;
@@ -121,11 +116,11 @@ public class TeamServiceImpl implements TeamService {
         participantRepository.save(newPlayer);
         people.add(newPlayer);
         team.setParticipants(people);
-        teamRepository.save(team);//, team.getId());
+        teamRepository.save(team);
         return newPlayer;
     }
 
-        @Override
+    @Override
     @Transactional
     public void updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long teamId) {
         final Team team = check(teamId);
@@ -139,7 +134,6 @@ public class TeamServiceImpl implements TeamService {
         people.add(old);
         team.setParticipants(people);
         teamRepository.save(team);
-        //teamService.updateTeam(team, team.getId());
     }
 
     @Override
