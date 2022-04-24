@@ -162,7 +162,3 @@ VALUES (1, 1, 1, 20),
        (27, 5, 5, 10),
        (28, 5, 7, 20),
        (29, 5, 6, 18);
-
-SELECT SUM(res.score)
-FROM results res
-GROUP BY res.team_id;
