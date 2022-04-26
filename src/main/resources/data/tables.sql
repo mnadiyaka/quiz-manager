@@ -7,7 +7,7 @@ CREATE TABLE users
     team_id   BIGINT NULL,
     enabled   TINYINT(1) NULL,
     CONSTRAINT user_name
-        Unique (user_name)
+        UNIQUE (user_name)
 );
 
 CREATE TABLE teams
