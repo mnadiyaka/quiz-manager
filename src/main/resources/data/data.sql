@@ -15,7 +15,6 @@ VALUES (1, 2, 1, 'team1'),
        (5, 6, 1, 'team5'),
        (6, 7, 1, 'team6');
 
-
 INSERT INTO participants(participant_id, firstname, lastname, team_id)
 VALUES (1, 'name11', 'surname11', 1),
        (2, 'name12', 'surname12', 1),
@@ -23,62 +22,47 @@ VALUES (1, 'name11', 'surname11', 1),
        (4, 'name14', 'surname14', 1),
        (5, 'name15', 'surname15', 1),
        (6, 'name16', 'surname16', 1),
-       (7, 'name17', 'surname17', 1);
+       (7, 'name17', 'surname17', 1),
 
-INSERT INTO participants(participant_id, firstname, lastname, team_id)
-VALUES (8, 'name21', 'surname21', 2),
+       (8, 'name21', 'surname21', 2),
        (9, 'name22', 'surname22', 2),
        (10, 'name23', 'surname23', 2),
        (11, 'name24', 'surname24', 2),
        (12, 'name25', 'surname25', 2),
        (13, 'name26', 'surname26', 2),
-       (14, 'name27', 'surname27', 2);
+       (14, 'name27', 'surname27', 2),
 
-INSERT INTO participants(participant_id, firstname, lastname, team_id)
-VALUES (15, 'name31', 'surname31', 3),
+       (15, 'name31', 'surname31', 3),
        (16, 'name32', 'surname32', 3),
        (17, 'name33', 'surname33', 3),
        (18, 'name34', 'surname34', 3),
        (19, 'name35', 'surname35', 3),
        (20, 'name36', 'surname36', 3),
-       (21, 'name37', 'surname37', 3);
+       (21, 'name37', 'surname37', 3),
 
-INSERT INTO participants(participant_id, firstname, lastname, team_id)
-VALUES (22, 'name41', 'surname41', 4),
+       (22, 'name41', 'surname41', 4),
        (23, 'name42', 'surname42', 4),
        (24, 'name43', 'surname43', 4),
        (25, 'name44', 'surname44', 4),
        (26, 'name45', 'surname45', 4),
        (27, 'name46', 'surname46', 4),
-       (28, 'name47', 'surname47', 4);
+       (28, 'name47', 'surname47', 4),
 
-INSERT INTO participants(participant_id, firstname, lastname, team_id)
-VALUES (29, 'name51', 'surname51', 5),
+       (29, 'name51', 'surname51', 5),
        (30, 'name52', 'surname52', 5),
        (31, 'name53', 'surname53', 5),
        (32, 'name54', 'surname54', 5),
        (33, 'name55', 'surname55', 5),
        (34, 'name56', 'surname56', 5),
-       (35, 'name57', 'surname57', 5);
+       (35, 'name57', 'surname57', 5),
 
-INSERT INTO participants(participant_id, firstname, lastname, team_id)
-VALUES (36, 'name61', 'surname61', 6),
+       (36, 'name61', 'surname61', 6),
        (37, 'name62', 'surname62', 6),
        (38, 'name63', 'surname63', 6),
        (39, 'name64', 'surname64', 6),
        (40, 'name65', 'surname65', 6),
        (41, 'name66', 'surname66', 6),
        (42, 'name67', 'surname67', 6);
-
-INSERT INTO participants(participant_id, firstname, lastname, team_id)
-VALUES (43, 'name71', 'surname71', 7),
-       (44, 'name72', 'surname72', 7),
-       (45, 'name73', 'surname73', 7),
-       (46, 'name74', 'surname74', 7),
-       (47, 'name75', 'surname75', 7),
-       (48, 'name76', 'surname76', 7),
-       (49, 'name77', 'surname77', 7);
-
 
 INSERT INTO locations(location_id, city, street, house_number, location_name, zip_code)
 VALUES (1, 'city1', 'street1', 'number1', 'name1', 'zip1'),
@@ -100,20 +84,17 @@ VALUES (1, 1),
        (1, 4),
        (1, 5),
        (1, 6),
-       (1, 7),
 
        (2, 2),
        (2, 3),
        (2, 4),
        (2, 5),
-       (2, 7),
 
        (3, 1),
        (3, 2),
        (3, 3),
        (3, 5),
        (3, 6),
-       (3, 7),
 
        (4, 1),
        (4, 2),
@@ -121,11 +102,9 @@ VALUES (1, 1),
        (4, 4),
        (4, 5),
        (4, 6),
-       (4, 7),
 
        (5, 2),
        (5, 5),
-       (5, 7),
        (5, 6);
 
 INSERT INTO results(id, quiz_id, team_id, score)
@@ -135,20 +114,17 @@ VALUES (1, 1, 1, 20),
        (4, 1, 4, 13),
        (5, 1, 5, 7),
        (6, 1, 6, 10),
-       (7, 1, 7, 18),
 
        (8, 2, 2, 10),
        (9, 2, 3, 19),
        (10, 2, 4, 18),
        (11, 2, 5, 3),
-       (12, 2, 7, 20),
 
        (13, 3, 1, 18),
        (14, 3, 2, 16),
        (15, 3, 3, 17),
        (16, 3, 5, 16),
        (17, 3, 6, 17),
-       (18, 3, 7, 10),
 
        (19, 4, 1, 13),
        (20, 4, 2, 19),
@@ -156,9 +132,7 @@ VALUES (1, 1, 1, 20),
        (22, 4, 4, 20),
        (23, 4, 5, 17),
        (24, 4, 6, 10),
-       (25, 4, 7, 10),
 
        (26, 5, 2, 15),
        (27, 5, 5, 10),
-       (28, 5, 7, 20),
        (29, 5, 6, 18);
