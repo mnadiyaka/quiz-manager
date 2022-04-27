@@ -2,7 +2,6 @@ package com.sigma.configuration;
 
 import com.sigma.configuration.auth.AppAuthProvider;
 import com.sigma.configuration.auth.AuthFilter;
-import com.sigma.model.entity.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/signIn").permitAll()
+                .antMatchers("/signUp").permitAll()
                 .anyRequest().authenticated();
     }
 

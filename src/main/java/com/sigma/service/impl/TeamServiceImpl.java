@@ -4,7 +4,6 @@ import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Team;
-import com.sigma.repository.ParticipantRepository;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
@@ -25,7 +24,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class TeamServiceImpl implements TeamService {
+
     private final TeamRepository teamRepository;
+
+    private final ParticipantService participantService;
 
     @Override
     public Team findTeamById(final Long teamId) {
@@ -84,66 +86,6 @@ public class TeamServiceImpl implements TeamService {
         }
         return team;
     }
-
-    // -----Rarticipant-----
-
-//    private final ParticipantRepository participantRepository;
-    private final ParticipantService participantService;
-//
-//    @Override
-//    public Participant findParticipantById(final Long teamId, final Long participantId) {
-//        check(teamId);
-//        log.info("Searching for participant with id {}", participantId);
-//        Participant participant = participantRepository.findParticipantByIdAndTeamId(participantId, teamId);
-//        if (Objects.equals(participant, null)) {
-//            throw new EntityNotFoundException("Participant doesn't exist");
-//        }
-//        return participant;
-//    }
-//
-//    @Override
-//    public List<ParticipantDto> getAllParticipants(final Long teamId) {
-//        check(teamId);
-//        log.info("Getting list of participants");
-//        return participantRepository.findParticipantsByTeamId(teamId).stream().map(ParticipantDto::fromParticipant).toList();
-//    }
-//
-//    @Override
-//    @Transactional
-//    public Participant createParticipant(final ParticipantDto participantDto, final Long teamId) {
-//        final Team team = check(teamId);
-//        final List<Participant> people = team.getParticipants();
-//        final Participant newPlayer = ParticipantDto.toParticipant(participantDto);
-//        newPlayer.setTeamId(teamId);
-//        participantRepository.save(newPlayer);
-//        people.add(newPlayer);
-//        team.setParticipants(people);
-//        teamRepository.save(team);
-//        return newPlayer;
-//    }
-//
-//    @Override
-//    @Transactional
-//    public void updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long teamId) {
-//        final Team team = check(teamId);
-//        final List<Participant> people = team.getParticipants();
-//        final Participant old = findParticipantById(teamId, participantId);
-//        people.remove(old);
-//        Optional.ofNullable(newParticipant.getFirstname()).ifPresent(old::setFirstname);
-//        Optional.ofNullable(newParticipant.getLastname()).ifPresent(old::setLastname);
-//        Optional.ofNullable(newParticipant.getTeamId()).ifPresent(old::setTeamId);
-//        participantRepository.save(old);
-//        people.add(old);
-//        team.setParticipants(people);
-//        teamRepository.save(team);
-//    }
-//
-//    @Override
-//    @Transactional
-//    public void deleteParticipant(final Long teamId, final Long participantId) {
-//        log.info("Deleting participant {}", teamId);
-//        participantRepository.delete(findParticipantById(participantId, teamId));
-//    }
 
     @Override
     @Transactional

@@ -1,16 +1,12 @@
 package com.sigma.service.impl;
 
 import com.sigma.model.dto.ParticipantDto;
-import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
-import com.sigma.model.entity.Team;
 import com.sigma.repository.ParticipantRepository;
 import com.sigma.service.ParticipantService;
-import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AuthorizationServiceException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class ParticipantServiceImpl implements ParticipantService {
+
     private final ParticipantRepository participantRepository;
 
     @Override

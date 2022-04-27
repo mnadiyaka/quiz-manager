@@ -1,7 +1,6 @@
 package com.sigma.controller;
 
 import com.sigma.model.dto.ParticipantDto;
-import com.sigma.model.entity.Participant;
 import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +37,7 @@ public class ParticipantController {
     public String addParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long teamId) {
         log.info("Creating Participant");
         teamService.addPl(participantDto, teamId);
-        return "created";
+        return "player created";
     }
 
     @PatchMapping("/{playerId}")

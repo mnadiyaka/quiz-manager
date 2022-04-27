@@ -1,14 +1,11 @@
 package com.sigma.model.dto;
 
 import com.sigma.model.entity.Team;
-import com.sigma.model.entity.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Accessors(chain = true)
@@ -32,7 +29,7 @@ public class TeamDto {
                 .setTeamName(team.getTeamName())
                 //.setConfirmed(team.getConfirmed())
                 .setCaptainId(team.getCaptain().getId());
-                //.setParticipants((team.getParticipants()).stream().map((player)->ParticipantDto.fromParticipant(player)).collect(Collectors.toList()));
+        //.setParticipants((team.getParticipants()).stream().map((player)->ParticipantDto.fromParticipant(player)).collect(Collectors.toList()));
     }
 
     public static Team toTeam(TeamDto teamDto) {
@@ -41,6 +38,6 @@ public class TeamDto {
                 .setTeamName(teamDto.getTeamName())
                 //.setConfirmed(teamDto.getConfirmed())
                 .setCaptainId(teamDto.getCaptainId());
-                //.setParticipants(teamDto.getParticipants().stream().map((playerDto)->ParticipantDto.toParticipant(playerDto)).collect(Collectors.toList()));
+        //.setParticipants(teamDto.getParticipants().stream().map((playerDto)->ParticipantDto.toParticipant(playerDto)).collect(Collectors.toList()));
     }
 }
