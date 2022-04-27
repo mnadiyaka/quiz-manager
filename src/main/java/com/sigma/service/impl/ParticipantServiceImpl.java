@@ -10,6 +10,7 @@ import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AuthorizationServiceException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,62 +23,51 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class ParticipantServiceImpl implements ParticipantService {
-//    private final ParticipantRepository participantRepository;
-//    private final TeamService teamService; //TODO: remove service
-//
-//    @Override
-//    public Participant findParticipantById(final Long participantId) {
-//        log.info("Searching for participant with id {}", participantId);
-//        return participantRepository.findById(participantId).orElseThrow(() -> new EntityNotFoundException());
-//    }
-//
-//    @Override
-//    @Transactional
-//    public Participant createParticipant(final ParticipantDto participantDto, final Long teamId) {
-////        final TeamDto team = checkTeam(userId, teamId);
-//        final Team team = teamService.findTeamById(teamId);
-//        final List<Participant> people = team.getParticipants();
-//        final Participant newPlayer = ParticipantDto.toParticipant(participantDto);
-//        newPlayer.setTeam(team);
-//        participantRepository.save(newPlayer);
-//        people.add(newPlayer);
-//        team.setParticipants(people);
-//        //teamService.updateTeam(team, team.getId());
-//        return newPlayer;
-//    }
-//
-//    @Override
-//    @Transactional
-//    public void updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long teamId) {
-////        final TeamDto team = checkTeam(userId, teamId);
-//        final Team team = teamService.findTeamById(teamId);
-//        final List<Participant> people = team.getParticipants();
-//        final Participant old = findParticipantById(participantId);
-//        people.remove(old);
-//        Optional.ofNullable(newParticipant.getFirstname()).ifPresent(old::setFirstname);
-//        Optional.ofNullable(newParticipant.getLastname()).ifPresent(old::setLastname);
-//        old.setTeam(team);
-//        participantRepository.save(old);
-//        people.add(old);
-//        team.setParticipants(people);
-//        //teamService.updateTeam(team, team.getId());
-//    }
-//
-//    @Override
-//    @Transactional
-//    public void deleteParticipant(final Long teamId, final Long participantId) {
-//        final Participant participant = findParticipantById(participantId);
-//
-//        if (!participant.getTeamId().equals(teamId)){
-//            throw new AuthorizationServiceException("Wrong user");
-//        }
-//        log.info("Deleting participant {}", participant);
-//        participantRepository.deleteById(participantId);
-//    }
-//
-//    @Override
-//    public List<ParticipantDto> getAllParticipants(final Long teamId) {
-//        log.info("Getting list of participants");
-//        return participantRepository.findParticipantsByTeamId(teamId).stream().map(ParticipantDto::fromParticipant).toList();
-//    }
+    private final ParticipantRepository participantRepository;
+
+    @Override
+    public Participant findParticipantById(final Long teamId, final Long participantId) {
+        log.info("Searching for participant with id {}", participantId);
+        Participant participant = participantRepository.findParticipantByIdAndTeamId(participantId, teamId);
+        if (Objects.equals(participant, null)) {
+            throw new EntityNotFoundException("Participant doesn't exist");
+        }
+        return participant;
+    }
+
+    @Override
+    @Transactional
+    public Participant createParticipant(final ParticipantDto participantDto, final Long teamId) {
+        final Participant newPlayer = ParticipantDto.toParticipant(participantDto);
+        newPlayer.setTeamId(teamId);
+        return participantRepository.save(newPlayer);
+    }
+
+    @Override
+    @Transactional
+    public Participant updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long teamId) {
+
+        final Participant old = findParticipantById(teamId, participantId);
+        Optional.ofNullable(newParticipant.getFirstname()).ifPresent(old::setFirstname);
+        Optional.ofNullable(newParticipant.getLastname()).ifPresent(old::setLastname);
+        return participantRepository.save(old);
+    }
+
+    @Override
+    @Transactional
+    public void deleteParticipant(final Long teamId, final Long participantId) {
+        final Participant participant = findParticipantById(teamId, participantId);
+
+        if (!participant.getTeamId().equals(teamId)) {
+            throw new AuthorizationServiceException("Wrong user");
+        }
+        log.info("Deleting participant {}", participant);
+        participantRepository.delete(participant);
+    }
+
+    @Override
+    public List<ParticipantDto> getAllParticipants(final Long teamId) {
+        log.info("Getting list of participants");
+        return participantRepository.findParticipantsByTeamId(teamId).stream().map(ParticipantDto::fromParticipant).toList();
+    }
 }

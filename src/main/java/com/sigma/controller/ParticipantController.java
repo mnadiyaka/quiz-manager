@@ -2,6 +2,7 @@ package com.sigma.controller;
 
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.entity.Participant;
+import com.sigma.service.ParticipantService;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,28 +26,30 @@ import java.util.List;
 public class ParticipantController {
 
     private final TeamService teamService;
+    private final ParticipantService participantService;
 
     @DeleteMapping("/{playerId}")
     public String deleteUser(@PathVariable("teamId") Long teamId, @PathVariable("playerId") Long playerId) {
-        teamService.deleteParticipant(teamId, playerId);
+        participantService.deleteParticipant(teamId, playerId);
         return "deleted player";
     }
 
     @PostMapping()
-    public Participant addParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long teamId) {
+    public String addParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long teamId) {
         log.info("Creating Participant");
-        return teamService.createParticipant(participantDto, teamId);
+        teamService.addPl(participantDto, teamId);
+        return "created";
     }
 
     @PatchMapping("/{playerId}")
     public String updParticipant(@RequestBody ParticipantDto participantDto, @PathVariable Long teamId, @PathVariable Long playerId) {
-        teamService.updateParticipant(participantDto, playerId, teamId);
+        teamService.updatePl(participantDto, playerId, teamId);
         log.info("Participant updated");
         return "player updated";
     }
 
     @GetMapping("/all")
     public List<ParticipantDto> getPlayers(@PathVariable Long teamId) {
-        return teamService.getAllParticipants(teamId);
+        return participantService.getAllParticipants(teamId);
     }
 }

@@ -20,14 +20,17 @@ public interface TeamService {
 
     public Team confirmTeam(Team team, boolean confirmation); //TODO: DTO????
 
+    public void updatePl(final ParticipantDto newParticipant, final Long participantId, final Long teamId);
 
-    public Participant findParticipantById(Long teamId, Long participantId);
+    public void addPl(final ParticipantDto newParticipant, final Long teamId);
 
-    public List<ParticipantDto> getAllParticipants(final Long teamId);
-
-    public Participant createParticipant(final ParticipantDto participantDto, final Long teamId);
-
-    public void updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long teamId);
-
-    public void deleteParticipant(final Long teamId, final Long participantId);
+//    public Participant findParticipantById(Long teamId, Long participantId);
+//
+//    public List<ParticipantDto> getAllParticipants(final Long teamId);
+//
+//    public Participant createParticipant(final ParticipantDto participantDto, final Long teamId);
+//
+//    public void updateParticipant(final ParticipantDto newParticipant, final Long participantId, final Long teamId);
+//
+//    public void deleteParticipant(final Long teamId, final Long participantId);
 }
