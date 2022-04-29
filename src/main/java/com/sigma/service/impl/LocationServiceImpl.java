@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,41 +25,43 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<LocationDto> getAllLocations() {
         log.info("Getting list of location");
-        return locationRepository.findAll().stream().map(LocationDto::fromLocation).toList();
+        return locationRepository.findAll().stream().map(location -> LocationDto.fromLocation(location)).collect(Collectors.toList());
     }
 
     @Override
-    public Location findLocationById(final Long locationId) {
+    public Location findLocationById(Long locationId) {
         log.info("Searching for location with id {}", locationId);
-        return locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException());
+        return locationRepository.findById(locationId).orElseThrow(() -> new EntityNotFoundException("Location with id = " + locationId + " not found"));
     }
 
     @Override
     @Transactional
-    public Location createLocation(final LocationDto location) {
+    public Location createLocation(LocationDto location) {
         log.info("Creating new location {}", location.toString());
         return locationRepository.save(LocationDto.toLocation(location));
     }
 
     @Override
     @Transactional
-    public void updateLocation(final LocationDto updatedLocation, final Long locationId) {
+    public void updateLocation(LocationDto updatedLocation, Long locationId) {
         final Location oldLocation = findLocationById(locationId);
 
+        if(Objects.equals(oldLocation, null)){
+            createLocation(updatedLocation);
+        }
         log.info("Updating location {}", oldLocation);
-
-        Optional.ofNullable(updatedLocation.getLocationName()).ifPresent(oldLocation::setLocationName);
-        Optional.ofNullable(updatedLocation.getCity()).ifPresent(oldLocation::setCity);
-        Optional.ofNullable(updatedLocation.getStreet()).ifPresent(oldLocation::setStreet);
-        Optional.ofNullable(updatedLocation.getHouseNumber()).ifPresent(oldLocation::setHouseNumber);
-        Optional.ofNullable(updatedLocation.getZipCode()).ifPresent(oldLocation::setZipCode);
+        Optional.ofNullable(oldLocation.getLocationName()).ifPresent(updatedLocation::setLocationName);
+        Optional.ofNullable(oldLocation.getCity()).ifPresent(updatedLocation::setCity);
+        Optional.ofNullable(oldLocation.getStreet()).ifPresent(updatedLocation::setStreet);
+        Optional.ofNullable(oldLocation.getHouseNumber()).ifPresent(updatedLocation::setHouseNumber);
+        Optional.ofNullable(oldLocation.getZipCode()).ifPresent(updatedLocation::setZipCode);
 
         locationRepository.save(oldLocation);
     }
 
     @Override
     @Transactional
-    public void deleteLocation(final Long locationId) {
+    public void deleteLocation(Long locationId) {
         log.info("Deleting location {}", findLocationById(locationId));
         locationRepository.deleteById(locationId);
     }
