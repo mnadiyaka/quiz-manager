@@ -1,8 +1,11 @@
 package com.sigma.service.impl;
 
+import com.sigma.model.dto.LocationDto;
 import com.sigma.model.dto.QuizDto;
+import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Quiz;
 import com.sigma.repository.QuizRepository;
+import com.sigma.service.LocationService;
 import com.sigma.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +22,8 @@ import java.util.Optional;
 public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
+
+    private final LocationService locationService;
 
     @Override
     public List<QuizDto> getAllQuizzes() {
@@ -60,5 +65,15 @@ public class QuizServiceImpl implements QuizService {
     public void deleteQuiz(final Long quizId) {
         log.info("Deleting quiz {}", quizId);
         quizRepository.delete(findQuizById(quizId));
+    }
+
+    @Override
+    @Transactional
+    public Quiz assignLocation(final Long quizId, LocationDto locationDto){
+        Quiz quiz = findQuizById(quizId);
+        Location location = locationService.findLocationById(locationDto.getId());
+        quiz.setAddress(locationService.findLocationById(location.getId()));
+
+        return quizRepository.save(quiz);
     }
 }

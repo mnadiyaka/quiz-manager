@@ -1,5 +1,6 @@
 package com.sigma.controller;
 
+import com.sigma.model.dto.LocationDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
 import com.sigma.service.QuizService;
@@ -46,5 +47,10 @@ public class QuizController {
     public String deleteQuiz(@PathVariable("quizId") Long quizId) {
         quizService.deleteQuiz(quizId);
         return "deleted quiz";
+    }
+
+    @PatchMapping("/{quizId}/loc")
+    public Quiz assignLoc(@RequestBody LocationDto locationDto, @PathVariable Long userId, @PathVariable Long quizId) {
+        return quizService.assignLocation(quizId, locationDto);
     }
 }
