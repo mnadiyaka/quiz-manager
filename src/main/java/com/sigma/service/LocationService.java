@@ -9,7 +9,7 @@ public interface LocationService {
 
     public List<LocationDto> getAllLocations();
 
-    public LocationDto findLocationById(Long locationId);
+    public Location findLocationById(Long locationId);
 
     public Location createLocation(LocationDto location);
 

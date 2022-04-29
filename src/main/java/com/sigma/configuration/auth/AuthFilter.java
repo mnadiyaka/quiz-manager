@@ -1,11 +1,8 @@
-package com.sigma.configuration;
+package com.sigma.configuration.auth;
 
-import com.sigma.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,35 +22,24 @@ import static java.util.Optional.ofNullable;
 @Component
 public class AuthFilter extends OncePerRequestFilter {
 
-    @Value("${jwt-settings.secret-key}")
-    private String secret;
-
-    @Value("${jwt-settings.issuer}")
-    private String issuer;
-
     private final String AUTH = "Authorization";
 
     private List<String> publicUrls = Arrays.asList("login", "signUp");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String jwt = ofNullable(request.getHeader(AUTH)).orElseThrow(() -> new NoSuchElementException());
-        JWTUtil.verify(jwt, secret, issuer);
+
+        final String token = ofNullable(request.getHeader(AUTH).substring(7)).orElseThrow(() -> new NoSuchElementException());
+
+        final TokenAuth tokenAuth = new TokenAuth(token);
+
+        SecurityContextHolder.getContext().setAuthentication(tokenAuth);
+
         filterChain.doFilter(request, response);
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         return (request.getRequestURI()).matches(publicUrls.stream().map(pu -> String.format("(/%s)", pu)).collect(Collectors.joining("|")));
-    }
-
-    @Bean
-    public FilterRegistrationBean<AuthFilter> someFilter() {
-        final FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(this);
-        registrationBean.addUrlPatterns("/*");
-        registrationBean.setName("AuthFilter");
-        registrationBean.setOrder(Integer.MAX_VALUE);
-        return registrationBean;
     }
 }

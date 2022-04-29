@@ -1,10 +1,11 @@
 package com.sigma.service.impl;
 
-import com.sigma.JWTUtil;
+import com.sigma.configuration.auth.JWTUtil;
 import com.sigma.model.dto.SignInUserDto;
 import com.sigma.model.dto.SignInUserResponseDto;
 import com.sigma.model.dto.SignUpUserDto;
 import com.sigma.model.dto.SignUpUserResponseDto;
+import com.sigma.model.dto.UserDto;
 import com.sigma.model.entity.User;
 import com.sigma.repository.UserRepository;
 import com.sigma.service.UserService;
@@ -17,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,54 +46,51 @@ public class UserServiceImpl implements UserService {
     private String issuer;
 
     @Override
-    public List<User> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         log.info("Getting list of users");
-        return userRepository.findAll();
+        return userRepository.findAll().stream().map(UserDto::fromUser).toList();
     }
 
     @Override
-    public User findUserById(Long userId) {
+    public User findUserById(final Long userId) {
         log.info("Searching for user with id {}", userId);
-        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException());
+        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User with id = " + userId + " not found"));
     }
 
     @Override
-    public User findUserByUsername(String username) {
+    public User findUserByUsername(final String username) {
         log.info("Searching for user with username {}", username);
-        if (userRepository.findByUsername(username) == null) {
-            throw new EntityNotFoundException();
-        }
-        return userRepository.findByUsername(username);
+
+        return Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(() -> new EntityNotFoundException());
     }
 
     @Override
     @Transactional
-    public SignUpUserResponseDto createUser(SignUpUserDto signUpDto) {
+    public SignUpUserResponseDto createUser(final SignUpUserDto signUpDto) {
         log.info("Creating new user {}", signUpDto.getUsername());
-        if (userRepository.findByUsername(signUpDto.getUsername()) != null) {
+        if (!Objects.isNull(userRepository.findByUsername(signUpDto.getUsername()))) {
             return new SignUpUserResponseDto(FAILURE, EXISTED);
         }
 
-        User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getRole());
+        final User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getRole());
         userRepository.save(user);
         return new SignUpUserResponseDto(SUCCESS, CREATED);
     }
 
     @Override
     @Transactional
-    public void updateUser(User updatedUser, Long userId) {
-        User oldUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException());
+    public void updateUser(final User updatedUser, final Long userId) {
+        final User oldUser = findUserById(userId);
         log.info("Updating user {}", oldUser.getUsername());
         oldUser.setUsername(updatedUser.getUsername());
         oldUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         oldUser.setRole(updatedUser.getRole());
-        oldUser.setAdminLocation(updatedUser.getAdminLocation());
         userRepository.save(oldUser);
     }
 
     @Override
     @Transactional
-    public void deleteUser(Long userId) {
+    public void deleteUser(final Long userId) {
         if (!userRepository.existsById(userId)) {
             throw new EntityNotFoundException();
         }
@@ -99,9 +99,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public SignInUserResponseDto login(SignInUserDto signInUserDto) {
-        User myUser = userRepository.findByUsername(signInUserDto.getUsername());
-        if (myUser == null) {
+    public SignInUserResponseDto login(final SignInUserDto signInUserDto) {
+        final User myUser = userRepository.findByUsername(signInUserDto.getUsername());
+        if (Objects.isNull(myUser)) {
             return new SignInUserResponseDto(FAILURE, NOT_EXIST);
         }
 

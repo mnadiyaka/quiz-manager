@@ -32,11 +32,11 @@ public class LocationServiceTest {
         Location location = new Location();
         location.setLocationName("Kyiv");
         location.setCity("Kyiv");
-        location.setZipCode(12345);
+        location.setZipCode("12345");
         location.setHouseNumber("4");
         location.setStreet("qwerty");
 
-//        locationService.createLocation(location);
+//        locationService.createLocation(LocationDto.location);
 //
 //        Assertions.assertEquals(location, locationService.findLocationById(location.getId()));
     }
@@ -68,7 +68,7 @@ public class LocationServiceTest {
         Location location = new Location();
         location.setLocationName("Kyiv");
         location.setCity("Kyiv");
-        location.setZipCode(12345);
+        location.setZipCode("12345");
         location.setHouseNumber("4");
         location.setStreet("qwerty");
 

@@ -11,4 +11,6 @@ import java.util.List;
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
     public List<Team> findTeamsByQuizzesContaining(Quiz quiz);
+
+    public Team findByTeamName(String name);
 }

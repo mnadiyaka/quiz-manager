@@ -25,14 +25,11 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    private final String SUCCESS = "success";
-    private final String FAILURE = "failure";
-
     private final UserService userService;
 
     @GetMapping("/users")
     public List<UserDto> getUsers() {
-        return userService.getAllUsers().stream().map(UserDto::fromUser).toList();
+        return userService.getAllUsers();
     }
 
     @GetMapping("/")
@@ -49,7 +46,6 @@ public class UserController {
     @PostMapping("/login")
     public SignInUserResponseDto loginUser(@RequestBody SignInUserDto user) throws AuthenticationException {
         return userService.login(user);
-
     }
 
     @DeleteMapping("/users/{user_id}/delete")

@@ -4,6 +4,9 @@ import com.sigma.model.entity.Location;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 @Data
 @Accessors(chain = true)
 public class LocationDto {
@@ -12,13 +15,21 @@ public class LocationDto {
 
     private String locationName;
 
-    private String street;
-
+    @NotBlank(message = "Enter city")
+    @Size(min = 3, max = 30)
     private String city;
 
+    @NotBlank(message = "Enter street")
+    @Size(min = 3, max = 30)
+    private String street;
+
+    @NotBlank(message = "Enter number")
+    @Size(min = 1, max = 12)
     private String houseNumber;
 
-    private int zipCode;
+    @NotBlank(message = "Enter code")
+    @Size(min = 3, max = 10)
+    private String zipCode;
 
     public static LocationDto fromLocation(Location location) {
         return new LocationDto()
