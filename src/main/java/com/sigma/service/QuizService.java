@@ -18,5 +18,5 @@ public interface QuizService {
 
     public void deleteQuiz(Long quizId);
 
-    public Quiz assignLocation(final Long quizId, LocationDto locationDto);
+    public Quiz assignLocation(final Long quizId, final Long locId);
 }

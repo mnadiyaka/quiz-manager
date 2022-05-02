@@ -69,10 +69,10 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public Quiz assignLocation(final Long quizId, LocationDto locationDto){
+    public Quiz assignLocation(final Long quizId, final Long locId){
         Quiz quiz = findQuizById(quizId);
-        Location location = locationService.findLocationById(locationDto.getId());
-        quiz.setAddress(locationService.findLocationById(location.getId()));
+        Location location = locationService.findLocationById(locId);
+        quiz.setAddressId(locId);
 
         return quizRepository.save(quiz);
     }

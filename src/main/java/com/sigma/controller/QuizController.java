@@ -49,8 +49,8 @@ public class QuizController {
         return "deleted quiz";
     }
 
-    @PatchMapping("/{quizId}/loc")
-    public Quiz assignLoc(@RequestBody LocationDto locationDto, @PathVariable Long userId, @PathVariable Long quizId) {
-        return quizService.assignLocation(quizId, locationDto);
+    @PatchMapping("/{quizId}/loc/{locId}")
+    public Quiz assignLoc(@PathVariable Long locId, @PathVariable Long quizId) {
+        return quizService.assignLocation(quizId, locId);
     }
 }
