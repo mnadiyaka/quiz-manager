@@ -1,5 +1,6 @@
 package com.sigma.repository.impl;
 
+import com.sigma.model.dto.FilterDto;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.repository.CustomRepo;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ public class CustomRepoImpl implements CustomRepo {
     private EntityManager entityManager;
 
     @Override
-    public List<QuizResults> findResultsWithCustomQuery(Map<String, String> param) {
+    public List<QuizResults> findResultsWithCustomQuery(FilterDto data) {
 
         String query = "SELECT * FROM results WHERE (";
 
@@ -35,8 +36,8 @@ public class CustomRepoImpl implements CustomRepo {
         }
 
         query = query.substring(0, query.length() - 4) + ");";
-        final Query q = entityManager.createNativeQuery(query, QuizResults.class);
 
+        final Query q = entityManager.createNativeQuery(query, QuizResults.class);
         List<QuizResults> userList = q.getResultList();
 
         return userList;

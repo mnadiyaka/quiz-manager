@@ -1,5 +1,6 @@
 package com.sigma.controller;
 
+import com.sigma.model.dto.FilterDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.service.QuizResultService;
@@ -7,13 +8,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -34,8 +33,8 @@ public class ResultController {
         return quizResultService.updateRes(quizResults);
     }
 
-    @RequestMapping(value = "filter", method = RequestMethod.GET)
-    public @ResponseBody Set<QuizResultsDto> filterRes(@RequestParam Map<String, String> data) {
+    @GetMapping(value = "filter")
+    public @ResponseBody Set<QuizResultsDto> filterRes(@RequestBody FilterDto data) {
         return quizResultService.filterData(data);
     }
 }

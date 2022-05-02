@@ -1,5 +1,6 @@
 package com.sigma.service.impl;
 
+import com.sigma.model.dto.FilterDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.repository.QuizResultsRepository;
@@ -22,9 +23,6 @@ import java.util.stream.Collectors;
 public class QuizResultServiceImpl implements QuizResultService {
 
     private final QuizResultsRepository quizResultsRepository;
-//
-//    @Autowired
-//    EntityManager em;
 
     @Override
     public QuizResults findResById(Long id) {
@@ -58,7 +56,7 @@ public class QuizResultServiceImpl implements QuizResultService {
     }
 
     @Override
-    public Set<QuizResultsDto> filterData(Map<String, String> data) {
+    public Set<QuizResultsDto> filterData(FilterDto data) {
         List<QuizResults> res = quizResultsRepository.findResultsWithCustomQuery(data);
 
         return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toSet());
