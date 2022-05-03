@@ -3,6 +3,7 @@ package com.sigma.repository.impl;
 import com.sigma.model.dto.FilterDto;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.repository.CustomRepo;
+import org.hibernate.query.QueryProducer;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -20,24 +21,16 @@ public class CustomRepoImpl implements CustomRepo {
     @Override
     public List<QuizResults> findResultsWithCustomQuery(FilterDto data) {
 
-        String query = "SELECT * FROM results WHERE (";
-
-        String field = "";
-        for (String key : param.keySet()) {
-            field="";
-            for (int j = 0; j < key.length(); j++) {
-                if (Character.isUpperCase(key.charAt(j))) {
-                    field += key.substring(0, j) + "_" + key.substring(j, j + 1).toLowerCase() + key.substring(j + 1);
-                    break;
-                }
-            }
-
-            query += "results." + field + " = " +param.get(key) + " OR ";
-        }
-
-        query = query.substring(0, query.length() - 4) + ");";
+        String query = "SELECT * FROM full_res WHERE (address_id = :locId AND category = :cat AND (datetime BETWEEN :dt AND :dt + :p));";
 
         final Query q = entityManager.createNativeQuery(query, QuizResults.class);
+        q.setParameter("locId", data.getLocationId());
+        q.setParameter("cat", data.getCategory());
+        q.setParameter("dt", data.getDateTime());
+        q.setParameter("p", data.getPeriod());
+
+        //QueryProducer.
+
         List<QuizResults> userList = q.getResultList();
 
         return userList;

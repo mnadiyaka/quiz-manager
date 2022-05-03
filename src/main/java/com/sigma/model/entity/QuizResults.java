@@ -20,7 +20,7 @@ public class QuizResults {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "quiz_id")
+    @Column(name = "id")
     private Long id;
 
     @OneToOne
