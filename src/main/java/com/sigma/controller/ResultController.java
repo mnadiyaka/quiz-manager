@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -34,7 +35,8 @@ public class ResultController {
     }
 
     @GetMapping(value = "filter")
-    public @ResponseBody Set<QuizResultsDto> filterRes(@RequestBody FilterDto data) {
+    public @ResponseBody
+    List<QuizResultsDto> filterRes(@RequestBody FilterDto data) {
         return quizResultService.filterData(data);
     }
 }

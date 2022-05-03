@@ -56,10 +56,10 @@ public class QuizResultServiceImpl implements QuizResultService {
     }
 
     @Override
-    public Set<QuizResultsDto> filterData(FilterDto data) {
+    public List<QuizResultsDto> filterData(FilterDto data) {
         List<QuizResults> res = quizResultsRepository.findResultsWithCustomQuery(data);
 
-        return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toSet());
+        return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toList());
     }
 
 }

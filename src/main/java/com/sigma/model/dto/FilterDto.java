@@ -1,6 +1,6 @@
 package com.sigma.model.dto;
 
-import com.sigma.model.Period;
+import com.sigma.model.entity.Period;
 import com.sigma.model.entity.Category;
 import lombok.Data;
 

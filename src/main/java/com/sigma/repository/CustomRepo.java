@@ -1,6 +1,7 @@
 package com.sigma.repository;
 
 import com.sigma.model.dto.FilterDto;
+import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
 
 import java.util.List;

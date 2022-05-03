@@ -4,6 +4,7 @@ import com.sigma.model.dto.FilterDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,5 +20,5 @@ public interface QuizResultService {
 
     QuizResults findResById(Long id);
 
-    Set<QuizResultsDto> filterData(FilterDto data);
+    List<QuizResultsDto> filterData(FilterDto data);
 }
