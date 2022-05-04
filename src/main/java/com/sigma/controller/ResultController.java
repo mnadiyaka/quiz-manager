@@ -1,6 +1,6 @@
 package com.sigma.controller;
 
-import com.sigma.model.dto.FilterDto;
+import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.service.QuizResultService;
@@ -36,7 +36,7 @@ public class ResultController {
 
     @GetMapping(value = "filter")
     public @ResponseBody
-    List<QuizResultsDto> filterRes(@RequestBody FilterDto data) {
+    List<QuizResultsDto> filterRes(@RequestBody QuizResultsSearchDto data) {
         return quizResultService.filterData(data);
     }
 }

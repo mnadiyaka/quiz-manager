@@ -31,6 +31,6 @@ public class QuizResults {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    @Column(name = "totalScore")
-    private int totalScore;
+    @Column(name = "score")
+    private int score;
 }

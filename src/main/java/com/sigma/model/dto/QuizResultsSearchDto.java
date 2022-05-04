@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class FilterDto {
+public class QuizResultsSearchDto {
 
     Category category;
 

@@ -1,6 +1,6 @@
 package com.sigma.repository.impl;
 
-import com.sigma.model.dto.FilterDto;
+import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.repository.CustomRepo;
 import org.springframework.stereotype.Repository;
@@ -18,10 +18,10 @@ public class CustomRepoImpl implements CustomRepo {
     private EntityManager entityManager;
 
     @Override
-    public List<QuizResults> findResultsWithCustomQuery(FilterDto data) {
+    public List<QuizResults> findResultsWithCustomQuery(QuizResultsSearchDto data) {
 
-        final StringBuilder query = new StringBuilder("SELECT r.id, r.quiz_id, r.team_id, r.total_score " +
-                "FROM results r JOIN quizzes q on r.quiz_id = q.quiz_id ");
+        final StringBuilder query = new StringBuilder("SELECT r.id, r.quiz_id, r.team_id, r.score " +
+                "FROM quiz_results r JOIN quizzes q on r.quiz_id = q.quiz_id ");
         if (Optional.ofNullable(data).isPresent()) {
             query.append("WHERE");
             Optional.ofNullable(data.getLocationId()).ifPresent((el) -> query.append(" AND address_id = " + el));

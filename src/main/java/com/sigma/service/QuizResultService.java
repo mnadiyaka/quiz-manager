@@ -1,6 +1,6 @@
 package com.sigma.service;
 
-import com.sigma.model.dto.FilterDto;
+import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
 
@@ -19,5 +19,5 @@ public interface QuizResultService {
 
     QuizResults findResById(Long id);
 
-    List<QuizResultsDto> filterData(FilterDto data);
+    List<QuizResultsDto> filterData(QuizResultsSearchDto data);
 }

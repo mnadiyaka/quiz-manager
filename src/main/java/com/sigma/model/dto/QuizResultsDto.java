@@ -18,13 +18,13 @@ public class QuizResultsDto {
 
     private String teamName;
     @NotNull
-    private int totalScore;
+    private int score;
 
     public static QuizResultsDto fromQuizResult(QuizResults quizResults) {
         return new QuizResultsDto()
                 .setId(quizResults.getId())
                 .setQuizName(quizResults.getQuiz().getQuizName())
                 .setTeamName(quizResults.getTeam().getTeamName())
-                .setTotalScore(quizResults.getTotalScore());
+                .setScore(quizResults.getScore());
     }
 }

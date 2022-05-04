@@ -1,6 +1,6 @@
 package com.sigma.service.impl;
 
-import com.sigma.model.dto.FilterDto;
+import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.repository.QuizResultsRepository;
@@ -38,7 +38,7 @@ public class QuizResultServiceImpl implements QuizResultService {
     @Transactional
     public QuizResults updateRes(QuizResultsDto newQuizResults) {
         QuizResults quizResults = findResById(newQuizResults.getId());
-        Optional.ofNullable(newQuizResults.getTotalScore()).ifPresent(quizResults::setTotalScore);
+        Optional.ofNullable(newQuizResults.getScore()).ifPresent(quizResults::setScore);
 
         return quizResultsRepository.save(quizResults);
     }
@@ -55,7 +55,7 @@ public class QuizResultServiceImpl implements QuizResultService {
     }
 
     @Override
-    public List<QuizResultsDto> filterData(FilterDto data) {
+    public List<QuizResultsDto> filterData(QuizResultsSearchDto data) {
         List<QuizResults> res = quizResultsRepository.findResultsWithCustomQuery(data);
 
         return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toList());
