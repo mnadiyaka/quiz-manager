@@ -7,6 +7,7 @@ VALUES (1, 'Nadiia', '$2b$10$ZDpLQEq4i.ELlzx6OFcoSuWpTPIq0KPXYZwfm7qtIF9DQgyvW1d
        (6, 'captain4', '$2b$10$NGnPQDlXvH3X6nal1phi0.6prlMixeiUZC6CajmCWCnKm2ApRtbMa', 1),
        (7, 'captain5', '$2b$10$kDt4ZDJ2QXmSCm2wlEF2Q.AUEpEZf82o.AMi7BZu33/LFIhDUT8nW', 1);
 
+
 INSERT INTO teams(team_id, captain_id, confirmed, team_name)
 VALUES (1, 2, 1, 'team1'),
        (5, 3, 1, 'team2'),
@@ -14,6 +15,7 @@ VALUES (1, 2, 1, 'team1'),
        (4, 5, 1, 'team4'),
        (5, 6, 1, 'team5'),
        (6, 7, 1, 'team6');
+
 
 INSERT INTO participants(participant_id, firstname, lastname, team_id)
 VALUES (1, 'name11', 'surname11', 1),
@@ -106,6 +108,7 @@ VALUES (1, 1),
        (5, 2),
        (5, 5),
        (5, 6);
+
 
 INSERT INTO quiz_results(id, quiz_id, team_id, score)
 VALUES (1, 1, 1, 20),
