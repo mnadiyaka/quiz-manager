@@ -84,21 +84,8 @@ CREATE TABLE results
     quiz_id     BIGINT NULL,
     team_id     BIGINT NULL,
     score       INT    NULL,
-    total_score INT    NULL,
     CONSTRAINT FK_quiz
         FOREIGN KEY (quiz_id) REFERENCES quizzes (quiz_id),
     CONSTRAINT FK_team
         FOREIGN KEY (team_id) REFERENCES teams (team_id)
 );
-
-CREATE TABLE full_res AS
-SELECT r.quiz_id,
-       r.team_id,
-       r.score,
-       r.total_score,
-       q.address_id,
-       q.category,
-       q.datetime
-FROM (results r
-         INNER JOIN(quizzes q)
-                   ON q.quiz_id = r.quiz_id);
