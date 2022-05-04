@@ -26,9 +26,9 @@ public class CustomRepoImpl implements CustomRepo {
             query.append("WHERE");
             Optional.ofNullable(data.getLocationId()).ifPresent((el) -> query.append(" AND address_id = " + el));
             Optional.ofNullable(data.getCategory()).ifPresent((el) -> query.append(" AND category = " + el.ordinal()));
-            if (Optional.ofNullable(data.getDateTime()).isPresent()) {
-                query.append(" AND datetime >= " + data.getDateTime());
-                Optional.ofNullable(data.getPeriod()).ifPresent((el) -> query.append(" AND datetime <= " + data.getDateTime().plusDays(el.getDays())));
+            if (Optional.ofNullable(data.getDate()).isPresent()) {
+                query.append(" AND datetime >= '" + data.getDate() + "'");
+                Optional.ofNullable(data.getPeriod()).ifPresent((el) -> query.append(" AND datetime <= '" + data.getDate().plusDays(el.getDays()) + "'"));
             }
         }
         query.append(";");
