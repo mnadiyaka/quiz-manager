@@ -78,7 +78,7 @@ CREATE TABLE locations
     zip_code      VARCHAR(20) NULL
 );
 
-CREATE TABLE results
+CREATE TABLE quiz_results
 (
     id          BIGINT NOT NULL PRIMARY KEY,
     quiz_id     BIGINT NULL,

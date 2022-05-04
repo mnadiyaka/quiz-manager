@@ -107,7 +107,7 @@ VALUES (1, 1),
        (5, 5),
        (5, 6);
 
-INSERT INTO results(id, quiz_id, team_id, score)
+INSERT INTO quiz_results(id, quiz_id, team_id, score)
 VALUES (1, 1, 1, 20),
        (2, 1, 2, 11),
        (3, 1, 3, 14),
