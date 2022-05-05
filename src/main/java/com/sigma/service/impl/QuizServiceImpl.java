@@ -2,8 +2,10 @@ package com.sigma.service.impl;
 
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
+import com.sigma.model.entity.Team;
 import com.sigma.repository.QuizRepository;
 import com.sigma.service.QuizService;
+import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.util.Optional;
 public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
+
+    private final TeamService teamService;
 
     @Override
     public List<QuizDto> getAllQuizzes() {
@@ -60,5 +64,15 @@ public class QuizServiceImpl implements QuizService {
     public void deleteQuiz(final Long quizId) {
         log.info("Deleting quiz {}", quizId);
         quizRepository.delete(findQuizById(quizId));
+    }
+
+    @Override
+    @Transactional
+    public void applyForQuiz(final Long quizId, final Long teamId) {
+        Quiz quiz = findQuizById(quizId);
+        List<Team> teams = quiz.getTeams();
+        teams.add(teamService.applyForQuiz(quiz,teamId));
+        quiz.setTeams(teams);
+        quizRepository.save(quiz);
     }
 }

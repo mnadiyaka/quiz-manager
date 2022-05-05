@@ -16,4 +16,6 @@ public interface QuizService {
     public Quiz updateQuiz(QuizDto updatedQuiz, Long quizId);
 
     public void deleteQuiz(Long quizId);
+
+    public void applyForQuiz(final Long quizId, final Long teamId);
 }

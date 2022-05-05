@@ -1,11 +1,14 @@
 package com.sigma.service.impl;
 
+import com.sigma.exception.QuizException;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
+import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Team;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.ParticipantService;
+import com.sigma.service.QuizService;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +31,8 @@ public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
     private final ParticipantService participantService;
+
+    private final QuizService quizService;
 
     @Override
     public Team findTeamById(final Long teamId) {
@@ -111,5 +116,34 @@ public class TeamServiceImpl implements TeamService {
         people.add(newPl);
         team.setParticipants(people);
         teamRepository.save(team);
+    }
+
+    @Override
+    @Transactional
+    public Team applyForQuiz(final Quiz quiz, final Long teamId) {
+        if (!quiz.getState().equals(State.ANOUNCED)) {
+            throw new QuizException("Quiz closed, try another one");
+        }
+        if (quiz.getTeams().size()>quiz.getTeamNumberMax()){
+            quiz.setState(State.CLOSED);
+            quizService.updateQuiz(QuizDto.fromQuiz(quiz),quizId,1L);
+            throw new QuizException("Quiz closed, try another one");
+        }
+
+        final Team team = findTeamById(teamId);
+        if (team.getParticipants().size()>quiz.getParticipantInTeamNumberMax() || team.getParticipants().size()<quiz.getParticipantInTeamNumberMin()){
+            throw new QuizException("Wrong size of the team");
+        }
+
+        final List<Quiz> teamsQ = team.getQuizzes();
+        teamsQ.add(quiz);
+        team.setQuizzes(teamsQ);
+
+        final QuizResults quizResults = new QuizResults();//TODO: Change idea or place?
+        quizResults.setQuiz(quiz);
+        quizResults.setTeam(team);
+        quizResultService.createRes(quizResults);
+
+        return teamRepository.save(team);
     }
 }

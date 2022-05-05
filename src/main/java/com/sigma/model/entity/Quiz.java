@@ -50,6 +50,15 @@ public class Quiz {
     @Column(name = "address_id")
     private Long addressId;
 
+    @Column(name = "team_n_max")
+    private Short teamNumberMax;
+
+    @Column(name = "part_n_max")
+    private Short participantInTeamNumberMax;
+
+    @Column(name = "part_n_min")
+    private Short participantInTeamNumberMin;
+
     @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "quizzes")
     private List<Team> teams;
