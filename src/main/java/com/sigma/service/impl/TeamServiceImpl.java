@@ -32,8 +32,6 @@ public class TeamServiceImpl implements TeamService {
 
     private final ParticipantService participantService;
 
-    private final QuizService quizService;
-
     @Override
     public Team findTeamById(final Long teamId) {
         log.info("Searching for team with id {}", teamId);
@@ -124,11 +122,6 @@ public class TeamServiceImpl implements TeamService {
         if (!quiz.getState().equals(State.ANOUNCED)) {
             throw new QuizException("Quiz closed, try another one");
         }
-        if (quiz.getTeams().size()>quiz.getTeamNumberMax()){
-            quiz.setState(State.CLOSED);
-            quizService.updateQuiz(QuizDto.fromQuiz(quiz),quizId,1L);
-            throw new QuizException("Quiz closed, try another one");
-        }
 
         final Team team = findTeamById(teamId);
         if (team.getParticipants().size()>quiz.getParticipantInTeamNumberMax() || team.getParticipants().size()<quiz.getParticipantInTeamNumberMin()){
@@ -138,11 +131,6 @@ public class TeamServiceImpl implements TeamService {
         final List<Quiz> teamsQ = team.getQuizzes();
         teamsQ.add(quiz);
         team.setQuizzes(teamsQ);
-
-        final QuizResults quizResults = new QuizResults();//TODO: Change idea or place?
-        quizResults.setQuiz(quiz);
-        quizResults.setTeam(team);
-        quizResultService.createRes(quizResults);
 
         return teamRepository.save(team);
     }

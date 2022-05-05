@@ -1,5 +1,6 @@
 package com.sigma.service.impl;
 
+import com.sigma.exception.QuizException;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Team;
@@ -23,6 +24,8 @@ public class QuizServiceImpl implements QuizService {
     private final QuizRepository quizRepository;
 
     private final TeamService teamService;
+
+    private final QuizResultService quizResultService;
 
     @Override
     public List<QuizDto> getAllQuizzes() {
@@ -71,8 +74,19 @@ public class QuizServiceImpl implements QuizService {
     public void applyForQuiz(final Long quizId, final Long teamId) {
         Quiz quiz = findQuizById(quizId);
         List<Team> teams = quiz.getTeams();
-        teams.add(teamService.applyForQuiz(quiz,teamId));
+        if (teams.size()>quiz.getTeamNumberMax()){
+            quiz.setState(State.CLOSED);
+            updateQuiz(QuizDto.fromQuiz(quiz),quizId);
+            throw new QuizException("Quiz closed, try another one");
+        }
+        Team team = teamService.applyForQuiz(quiz,teamId);
+        teams.add(team);
         quiz.setTeams(teams);
         quizRepository.save(quiz);
+
+        final QuizResults quizResults = new QuizResults();//TODO: Change idea or place?
+        quizResults.setQuiz(quiz);
+        quizResults.setTeam(team);
+        quizResultService.createRes(quizResults);
     }
 }
