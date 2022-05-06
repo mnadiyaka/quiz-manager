@@ -40,6 +40,9 @@ public class Quiz {
     @Column(name = "short_description")
     private String shortDescription;
 
+    @Column(name = "state")
+    private State state;
+
     @Column(name = "datetime")
     private LocalDateTime dateTime;
 
