@@ -5,6 +5,7 @@ import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Quiz;
+import com.sigma.model.entity.State;
 import com.sigma.model.entity.Team;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.ParticipantService;
