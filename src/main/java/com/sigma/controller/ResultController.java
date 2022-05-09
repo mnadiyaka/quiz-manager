@@ -21,7 +21,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/result")
 @Slf4j
-@PreAuthorize("hasRole('CAPTAIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public class ResultController {
 
     private final QuizResultService quizResultService;
