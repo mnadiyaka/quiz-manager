@@ -6,6 +6,7 @@ import com.sigma.model.entity.QuizResults;
 import com.sigma.service.QuizResultService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping("/result")
 @Slf4j
+@PreAuthorize("hasRole('CAPTAIN')")
 public class ResultController {
 
     private final QuizResultService quizResultService;
@@ -30,8 +32,9 @@ public class ResultController {
     }
 
     @PatchMapping("")
-    public QuizResults setScore(QuizResultsDto quizResults) {
-        return quizResultService.updateRes(quizResults);
+    public String setScore(@RequestBody QuizResultsDto quizResults) {
+        quizResultService.updateRes(quizResults);
+        return "score entered";
     }
 
     @GetMapping(value = "filter")
