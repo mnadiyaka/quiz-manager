@@ -120,12 +120,8 @@ public class TeamServiceImpl implements TeamService {
     @Override
     @Transactional
     public Team applyForQuiz(final Quiz quiz, final Long teamId) {
-        if (!quiz.getState().equals(State.ANOUNCED)) {
-            throw new QuizException("Quiz closed, try another one");
-        }
-
         final Team team = findTeamById(teamId);
-        if (team.getParticipants().size()>quiz.getParticipantInTeamNumberMax() || team.getParticipants().size()<quiz.getParticipantInTeamNumberMin()){
+        if (team.getParticipants().size() > quiz.getParticipantInTeamNumberMax() || team.getParticipants().size() < quiz.getParticipantInTeamNumberMin()) {
             throw new QuizException("Wrong size of the team");
         }
 

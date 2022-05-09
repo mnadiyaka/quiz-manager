@@ -47,4 +47,11 @@ public class QuizController {
         quizService.deleteQuiz(quizId);
         return "deleted quiz";
     }
+
+    @PreAuthorize("hasRole('CAPTAIN')")
+    @PatchMapping("/{quizId}/apply/{teamId}")
+    public String applyForQuiz(@PathVariable Long quizId, @PathVariable Long teamId){
+        quizService.applyForQuiz(quizId, teamId);
+        return "applied";
+    }
 }

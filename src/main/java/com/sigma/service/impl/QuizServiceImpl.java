@@ -82,6 +82,11 @@ public class QuizServiceImpl implements QuizService {
             updateQuiz(QuizDto.fromQuiz(quiz),quizId);
             throw new QuizException("Quiz closed, try another one");
         }
+
+        if (!quiz.getState().equals(State.ANOUNCED)) {
+            throw new QuizException("Quiz closed, try another one");
+        }
+
         Team team = teamService.applyForQuiz(quiz,teamId);
         teams.add(team);
         quiz.setTeams(teams);
