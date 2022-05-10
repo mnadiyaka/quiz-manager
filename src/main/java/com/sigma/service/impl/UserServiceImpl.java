@@ -116,4 +116,12 @@ public class UserServiceImpl implements UserService {
         String token = JWTUtil.generateJWT(myUser, secret, timestamp, issuer);
         return new SignInUserResponseDto("Bearer", token);
     }
+
+    @Override
+    @Transactional
+    public void changeAccRole(final Long userId){
+        final User myUser = findUserById(userId);
+        myUser.setRole(Role.ADMIN);
+        userRepository.save(myUser);
+    }
 }

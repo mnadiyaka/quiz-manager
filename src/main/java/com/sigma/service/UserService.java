@@ -24,4 +24,6 @@ public interface UserService {
     public void deleteUser(Long userId);
 
     public SignInUserResponseDto login(SignInUserDto signInUserDto) throws AuthenticationException;
+
+    public void changeAccRole(final Long userId);
 }
