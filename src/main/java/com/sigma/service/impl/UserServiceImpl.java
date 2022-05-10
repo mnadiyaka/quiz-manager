@@ -6,6 +6,7 @@ import com.sigma.model.dto.SignInUserResponseDto;
 import com.sigma.model.dto.SignUpUserDto;
 import com.sigma.model.dto.SignUpUserResponseDto;
 import com.sigma.model.dto.UserDto;
+import com.sigma.model.entity.Role;
 import com.sigma.model.entity.User;
 import com.sigma.repository.UserRepository;
 import com.sigma.service.UserService;
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
             return new SignUpUserResponseDto(FAILURE, EXISTED);
         }
 
-        final User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getRole());
+        final User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), Role.CAPTAIN);
         userRepository.save(user);
         return new SignUpUserResponseDto(SUCCESS, CREATED);
     }
