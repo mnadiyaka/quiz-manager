@@ -54,4 +54,10 @@ public class QuizController {
         quizService.applyForQuiz(quizId, teamId);
         return "applied";
     }
+
+    @PatchMapping("/{quizId}/change/{state}")
+    public String  closeQuiz(@PathVariable Long quizId, @PathVariable String state){
+        quizService.changeQuizState(quizId, state);
+        return "closed";
+    }
 }

@@ -46,6 +46,8 @@ public class QuizServiceImpl implements QuizService {
     @Transactional
     public Quiz createQuiz(final QuizDto quiz) {
         log.info("Creating new quiz {}", quiz.toString());
+        Quiz newQuiz = QuizDto.toQuiz(quiz);
+        newQuiz.setState(State.ANOUNCED);
         return quizRepository.save(QuizDto.toQuiz(quiz));
     }
 
@@ -97,5 +99,14 @@ public class QuizServiceImpl implements QuizService {
         quizResults.setQuiz(quiz);
         quizResults.setTeam(team);
         quizResultService.createRes(quizResults);
+    }
+
+
+    @Override
+    @Transactional
+    public void changeQuizState(Long quizId, String state){
+        Quiz quiz = findQuizById(quizId);
+        quiz.setState(State.valueOf(state));
+        quizRepository.save(quiz);
     }
 }
