@@ -6,6 +6,7 @@ import com.sigma.model.entity.QuizResults;
 import com.sigma.service.QuizResultService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,7 @@ public class ResultController {
     }
 
     @GetMapping(value = "filter")
+    @PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
     public @ResponseBody
     List<QuizResultsDto> filterRes(@RequestBody QuizResultsSearchDto data) {
         return quizResultService.getQuizResultsStatistics(data);

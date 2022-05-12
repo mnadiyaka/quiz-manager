@@ -22,15 +22,15 @@ public class CustomQuizResultsStatisticsRepoImpl implements CustomQuizResultsSta
 
         final StringBuilder query = new StringBuilder("SELECT r.id, r.quiz_id, r.team_id, r.score " +
                 "FROM quiz_results r JOIN quizzes q on r.quiz_id = q.quiz_id ");
-        if (Optional.ofNullable(data).isPresent()) {
+        Optional.ofNullable(data).ifPresent(data1-> {
             query.append("WHERE");
-            Optional.ofNullable(data.getLocationId()).ifPresent((el) -> query.append(" AND address_id = " + el));
-            Optional.ofNullable(data.getCategory()).ifPresent((el) -> query.append(" AND category = " + el.ordinal()));
-            if (Optional.ofNullable(data.getDate()).isPresent()) {
-                query.append(" AND datetime >= '" + data.getDate() + "'");
-                Optional.ofNullable(data.getPeriod()).ifPresent((el) -> query.append(" AND datetime <= '" + data.getDate().plusDays(el.getDays()) + "'"));
-            }
-        }
+            Optional.ofNullable(data1.getLocationId()).ifPresent((el) -> query.append(" AND address_id = " + el));
+            Optional.ofNullable(data1.getCategory()).ifPresent((el) -> query.append(" AND category = " + el.ordinal()));
+            Optional.ofNullable(data1.getDate()).ifPresent(date -> {
+                query.append(" AND datetime >= '" + date + "'");
+                Optional.ofNullable(data1.getPeriod()).ifPresent((el) -> query.append(" AND datetime <= '" + date.plusDays(el.getDays()) + "'"));
+            });
+        });
         query.append(";");
 
         final Query q = entityManager.createNativeQuery(query.toString().replace("WHERE AND", "WHERE").replace("WHERE;", ";"), QuizResults.class);
