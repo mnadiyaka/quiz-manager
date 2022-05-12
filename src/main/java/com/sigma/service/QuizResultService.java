@@ -19,5 +19,5 @@ public interface QuizResultService {
 
     QuizResults findResById(Long id);
 
-    List<QuizResultsDto> filterData(QuizResultsSearchDto data);
+    List<QuizResultsDto> getQuizResultsStatistics(QuizResultsSearchDto data);
 }

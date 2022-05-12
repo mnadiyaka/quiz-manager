@@ -18,7 +18,7 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/result")
+@RequestMapping("/quiz-result")
 @Slf4j
 public class ResultController {
 
@@ -37,6 +37,6 @@ public class ResultController {
     @GetMapping(value = "filter")
     public @ResponseBody
     List<QuizResultsDto> filterRes(@RequestBody QuizResultsSearchDto data) {
-        return quizResultService.filterData(data);
+        return quizResultService.getQuizResultsStatistics(data);
     }
 }

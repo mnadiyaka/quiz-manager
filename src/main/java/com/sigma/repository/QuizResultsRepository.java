@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QuizResultsRepository extends
-        JpaRepository<QuizResults, Long>, CustomRepo {
+        JpaRepository<QuizResults, Long>, CustomQuizResultsStatisticsRepo {
 }

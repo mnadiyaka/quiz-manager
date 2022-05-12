@@ -2,7 +2,7 @@ package com.sigma.repository.impl;
 
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.entity.QuizResults;
-import com.sigma.repository.CustomRepo;
+import com.sigma.repository.CustomQuizResultsStatisticsRepo;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CustomRepoImpl implements CustomRepo {
+public class CustomQuizResultsStatisticsRepoImpl implements CustomQuizResultsStatisticsRepo {
 
     @PersistenceContext
     private EntityManager entityManager;
