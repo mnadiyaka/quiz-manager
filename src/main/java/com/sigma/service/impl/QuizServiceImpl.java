@@ -77,13 +77,14 @@ public class QuizServiceImpl implements QuizService {
     public void applyForQuiz(final Long quizId, final Long teamId) {
         Quiz quiz = findQuizById(quizId);
         List<Team> teams = quiz.getTeams();
-        if (teams.size() > quiz.getTeamNumberMax()) {
-            quiz.setState(State.CLOSED);
-            updateQuiz(QuizDto.fromQuiz(quiz), quizId);
+
+        if (!quiz.getState().equals(State.ANOUNCED)) {
             throw new QuizException("Quiz closed, try another one");
         }
 
-        if (!quiz.getState().equals(State.ANOUNCED)) {
+        if (teams.size() > quiz.getTeamNumberMax()) {
+            quiz.setState(State.CLOSED);
+            updateQuiz(QuizDto.fromQuiz(quiz), quizId);
             throw new QuizException("Quiz closed, try another one");
         }
 
