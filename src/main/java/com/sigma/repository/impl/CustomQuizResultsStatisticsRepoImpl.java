@@ -34,12 +34,9 @@ public class CustomQuizResultsStatisticsRepoImpl implements CustomQuizResultsSta
                 Optional.ofNullable(data.getPeriod()).ifPresent((el) -> params.add("datetime <= '" + date.plusDays(el.getDays()) + "'"));
             });
         }
-        query += params.stream().collect(Collectors.joining(" AND "));
-        query += ";";
-        final Query q = entityManager.createNativeQuery(query.toString(), QuizResults.class);
+        query += params.stream().collect(Collectors.joining(" AND ")) + ";";
+        final Query q = entityManager.createNativeQuery(query, QuizResults.class);
 
-        List<QuizResults> userList = q.getResultList();
-
-        return userList;
+        return q.getResultList();
     }
 }
