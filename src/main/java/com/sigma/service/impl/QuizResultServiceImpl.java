@@ -1,8 +1,10 @@
 package com.sigma.service.impl;
 
+import com.sigma.exception.QuizException;
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
+import com.sigma.model.entity.State;
 import com.sigma.repository.QuizResultsRepository;
 import com.sigma.service.QuizResultService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,9 @@ public class QuizResultServiceImpl implements QuizResultService {
     @Transactional
     public QuizResults updateRes(QuizResultsDto newQuizResults) {
         QuizResults quizResults = findResById(newQuizResults.getId());
+        if(!quizResults.getQuiz().getState().equals(State.CLOSED)){
+            throw new QuizException("Quiz is not CLOSED yet");
+        }
         Optional.ofNullable(newQuizResults.getScore()).ifPresent(quizResults::setScore);
 
         return quizResultsRepository.save(quizResults);
