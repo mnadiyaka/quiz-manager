@@ -25,7 +25,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<LocationDto> getAllLocations() {
         log.info("Getting list of location");
-        return locationRepository.findAll().stream().map(location -> LocationDto.fromLocation(location)).collect(Collectors.toList());
+        return locationRepository.findAll().stream().map(LocationDto::fromLocation).collect(Collectors.toList());
     }
 
     @Override
