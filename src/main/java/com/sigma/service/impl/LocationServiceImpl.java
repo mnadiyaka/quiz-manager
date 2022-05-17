@@ -41,7 +41,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     @Transactional
-    public void updateLocation(final LocationDto updatedLocation, final Long locationId) {
+    public Location updateLocation(final LocationDto updatedLocation, final Long locationId) {
         final Location oldLocation = findLocationById(locationId);
 
         log.info("Updating location {}", oldLocation);
@@ -52,7 +52,7 @@ public class LocationServiceImpl implements LocationService {
         Optional.ofNullable(updatedLocation.getHouseNumber()).ifPresent(oldLocation::setHouseNumber);
         Optional.ofNullable(updatedLocation.getZipCode()).ifPresent(oldLocation::setZipCode);
 
-        locationRepository.save(oldLocation);
+        return locationRepository.save(oldLocation);
     }
 
     @Override
