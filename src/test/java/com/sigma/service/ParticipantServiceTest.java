@@ -43,13 +43,12 @@ public class ParticipantServiceTest {
 
     @Test
     public void findParticipantById_WithNonExistingId_ThenThrowException() {
-        when(participantRepository.findById(anyLong())).thenThrow(EntityNotFoundException.class);
+        when(participantRepository.findParticipantByIdAndTeamId(anyLong(), anyLong())).thenThrow(EntityNotFoundException.class);
 
         Assertions.assertThrows(EntityNotFoundException.class, () -> participantService.findParticipantById(anyLong(), anyLong()));
     }
 
     @Test
-    @Transactional
     public void createParticipantTest() {
         Participant expected = new Participant();
         expected.setId(1L);
@@ -62,7 +61,6 @@ public class ParticipantServiceTest {
     }
 
     @Test
-    @Transactional
     public void updateParticipantTest() {
         Participant participant = new Participant();
         participant.setId(1L);
@@ -79,8 +77,7 @@ public class ParticipantServiceTest {
     }
 
     @Test
-    @Transactional
-    public void deleteParticipants() {//TODO: correct
+    public void deleteParticipants_WithCorrectCaptain() {
         Participant expected = new Participant();
         expected.setId(1L);
         expected.setTeamId(1L);
@@ -88,6 +85,17 @@ public class ParticipantServiceTest {
 
         participantService.deleteParticipant(1L, 1L);
         verify(participantRepository).delete(expected);
+    }
+
+    @Test
+    public void deleteParticipants_WithIncorrectCaptain_ThenThrowException() {
+        Participant expected = new Participant();
+        expected.setId(1L);
+        expected.setTeamId(1L);
+        when(participantRepository.findParticipantByIdAndTeamId(anyLong(), anyLong())).thenThrow(EntityNotFoundException.class);
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> participantService.deleteParticipant(anyLong(), anyLong()));
+
     }
 
     @Test
