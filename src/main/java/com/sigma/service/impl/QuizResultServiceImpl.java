@@ -83,7 +83,7 @@ public class QuizResultServiceImpl implements QuizResultService {
     public void createResultsTable(Long quizId) {
         Quiz quiz = quizService.findQuizById(quizId);
         if (!quiz.getState().equals(State.CLOSED)) {
-            throw new QuizException("Quiz is not closed");
+            throw new QuizException("Quiz is not completed");
         }
         QuizResults quizResults;
         List<Team> teams = quiz.getTeams();

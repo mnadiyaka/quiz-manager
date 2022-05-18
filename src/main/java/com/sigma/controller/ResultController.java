@@ -32,8 +32,8 @@ public class ResultController {
         return quizResultService.getAllRes();
     }
 
-    @GetMapping("/quizId")
-    public List<QuizResultsDto> getTeams(@PathVariable Long quizId) {
+    @GetMapping("/{quizId}")
+    public List<QuizResultsDto> getTeamsByQuizId(@PathVariable Long quizId) {
         return quizResultService.findResultsByQuizId(quizId);
     }
 
@@ -43,7 +43,7 @@ public class ResultController {
         return "score entered";
     }
 
-    @PostMapping("/create/quizId")
+    @PostMapping("/create/{quizId}")
     public String createResultTable(@PathVariable Long quizId){
         quizResultService.createResultsTable(quizId);
         return "created";
