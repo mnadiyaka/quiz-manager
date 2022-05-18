@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
