@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +49,6 @@ public class LocationServiceTest {
     }
 
     @Test
-    @Transactional
     public void createLocationTest() {
         Location expected = new Location();
 
@@ -61,7 +59,6 @@ public class LocationServiceTest {
     }
 
     @Test
-    @Transactional
     public void updateLocationTest() {
         Location location = new Location();
         location.setId(1L);
@@ -77,7 +74,6 @@ public class LocationServiceTest {
     }
 
     @Test
-    @Transactional
     public void deleteLocation() {//TODO: correct
         Location expected = new Location();
         expected.setId(1L);
