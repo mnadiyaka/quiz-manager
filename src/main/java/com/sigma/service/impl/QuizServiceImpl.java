@@ -28,7 +28,7 @@ public class QuizServiceImpl implements QuizService {
 
     private final TeamService teamService;
 
-    private final QuizResultService quizResultService;
+//    private final QuizResultService quizResultService;
 
     @Override
     public List<QuizDto> getAllQuizzes() {
@@ -95,10 +95,10 @@ public class QuizServiceImpl implements QuizService {
         quiz.setTeams(teams);
         quizRepository.save(quiz);
 
-        final QuizResults quizResults = new QuizResults();//TODO: Change idea or place?
-        quizResults.setQuiz(quiz);
-        quizResults.setTeam(team);
-        quizResultService.createRes(quizResults);
+//        final QuizResults quizResults = new QuizResults();//TODO: Change idea or place?
+//        quizResults.setQuiz(quiz);
+//        quizResults.setTeam(team);
+//        quizResultService.createRes(quizResults);
     }
 
 

@@ -3,10 +3,13 @@ package com.sigma.service.impl;
 import com.sigma.exception.QuizException;
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
+import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.model.entity.State;
+import com.sigma.model.entity.Team;
 import com.sigma.repository.QuizResultsRepository;
 import com.sigma.service.QuizResultService;
+import com.sigma.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,9 +28,18 @@ public class QuizResultServiceImpl implements QuizResultService {
 
     private final QuizResultsRepository quizResultsRepository;
 
+    private final QuizService quizService;
+
     @Override
     public QuizResults findResById(Long id) {
         return quizResultsRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No record with this id"));
+    }
+
+    @Override
+    public List<QuizResultsDto> findResultsByQuizId(Long quizId) {
+        List<QuizResults> res = quizResultsRepository.findQuizResultsByQuizId(quizId);
+        Optional.ofNullable(res).orElseThrow(() -> new EntityNotFoundException("No quiz like that"));
+        return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toList());
     }
 
     @Override
@@ -40,7 +52,7 @@ public class QuizResultServiceImpl implements QuizResultService {
     @Transactional
     public QuizResults updateRes(QuizResultsDto newQuizResults) {
         QuizResults quizResults = findResById(newQuizResults.getId());
-        if(!quizResults.getQuiz().getState().equals(State.CLOSED)){
+        if (!quizResults.getQuiz().getState().equals(State.CLOSED)) {
             throw new QuizException("Quiz is not CLOSED yet");
         }
         Optional.ofNullable(newQuizResults.getScore()).ifPresent(quizResults::setScore);
@@ -66,4 +78,20 @@ public class QuizResultServiceImpl implements QuizResultService {
         return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toList());
     }
 
+    @Transactional
+    @Override
+    public void createResultsTable(Long quizId) {
+        Quiz quiz = quizService.findQuizById(quizId);
+        if (!quiz.getState().equals(State.CLOSED)) {
+            throw new QuizException("Quiz is not closed");
+        }
+        QuizResults quizResults;
+        List<Team> teams = quiz.getTeams();
+        for (Team team : teams) {
+            quizResults = new QuizResults();
+            quizResults.setQuiz(quiz);
+            quizResults.setTeam(team);
+            createRes(quizResults);
+        }
+    }
 }

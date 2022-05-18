@@ -20,4 +20,8 @@ public interface QuizResultService {
     QuizResults findResById(Long id);
 
     List<QuizResultsDto> filterData(QuizResultsSearchDto data);
+
+    void createResultsTable(Long quizId);
+
+    List<QuizResultsDto> findResultsByQuizId(Long quizId);
 }
