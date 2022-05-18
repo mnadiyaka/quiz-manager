@@ -7,7 +7,6 @@ import com.sigma.service.impl.LocationServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
