@@ -94,7 +94,6 @@ public class ParticipantServiceTest {
         when(participantRepository.findParticipantByIdAndTeamId(anyLong(), anyLong())).thenThrow(EntityNotFoundException.class);
 
         Assertions.assertThrows(EntityNotFoundException.class, () -> participantService.deleteParticipant(anyLong(), anyLong()));
-
     }
 
     @Test
