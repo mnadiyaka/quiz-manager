@@ -16,6 +16,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -78,9 +80,10 @@ public class LocationServiceTest {
         Location expected = new Location();
         expected.setId(1L);
         when(locationRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+        doNothing().when(locationRepository).deleteById(anyLong());
 
         locationService.deleteLocation(expected.getId());
-        verify(locationRepository).delete(expected);
+        verify(locationRepository).deleteById(eq(expected.getId()));
     }
 
     @Test
