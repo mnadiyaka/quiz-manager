@@ -92,10 +92,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUser(final Long userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new EntityNotFoundException();
-        }
-        log.info("Deleting user {}", userRepository.getById(userId).getUsername());
+        log.info("Deleting user {}", findUserById(userId).getUsername());
         userRepository.deleteById(userId);
     }
 
