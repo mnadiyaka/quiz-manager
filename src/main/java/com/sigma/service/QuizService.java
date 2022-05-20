@@ -1,5 +1,6 @@
 package com.sigma.service;
 
+import com.sigma.model.dto.LocationDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
 
@@ -16,4 +17,6 @@ public interface QuizService {
     public Quiz updateQuiz(QuizDto updatedQuiz, Long quizId);
 
     public void deleteQuiz(Long quizId);
+
+    public Quiz assignLocation(final Long quizId, final Long locId);
 }
