@@ -49,12 +49,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional
-    public void updateTeam(final TeamDto updatedTeam, final Long teamId) {
+    public Team updateTeam(final TeamDto updatedTeam, final Long teamId) {
         final Team oldTeam = check(teamId);
         log.info("Updating team {}", oldTeam);
         Optional.ofNullable(updatedTeam.getTeamName()).ifPresent(oldTeam::setTeamName);
         Optional.ofNullable(updatedTeam.getCaptainId()).ifPresent(oldTeam::setCaptainId);
-        teamRepository.save(oldTeam);
+        return teamRepository.save(oldTeam);
     }
 
     @Override
