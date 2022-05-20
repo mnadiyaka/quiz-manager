@@ -76,7 +76,6 @@ public class UserServiceTest {
         SignUpUserDto signUpUserDto = new SignUpUserDto();
         signUpUserDto.setUsername("new");
         signUpUserDto.setPassword("new");
-        signUpUserDto.setRole(Role.CAPTAIN);
 
         User user = new User(signUpUserDto.getUsername(), passwordEncoder.encode(signUpUserDto.getPassword()), Role.CAPTAIN);
         when(this.userRepository.save(user)).thenReturn(user);
@@ -88,9 +87,10 @@ public class UserServiceTest {
 
     @Test
     public void updateUserTest_WithUpdatedUserAndId_ThenReturnUpdatedUser() {
-        User team = new User();
-        team.setId(1L);
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(team));
+        User user = new User();
+        user.setId(1L);
+        user.setPassword("pas");
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
 
         User oldUser = userService.findUserById(1L);
         oldUser.setUsername("new");
@@ -103,7 +103,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void deleteUser_WithCorrectCaptain() {
+    public void deleteUser_WithUserId() {
         User expected = new User();
         expected.setId(1L);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(expected));
