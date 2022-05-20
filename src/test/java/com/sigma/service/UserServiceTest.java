@@ -1,25 +1,15 @@
 package com.sigma.service;
 
-import com.sigma.configuration.auth.TokenAuth;
-import com.sigma.model.dto.SignInUserDto;
 import com.sigma.model.dto.SignUpUserDto;
 import com.sigma.model.dto.SignUpUserResponseDto;
-import com.sigma.model.dto.TeamDto;
 import com.sigma.model.dto.UserDto;
 import com.sigma.model.entity.Role;
-import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
-import com.sigma.repository.ParticipantRepository;
-import com.sigma.repository.TeamRepository;
 import com.sigma.repository.UserRepository;
-import com.sigma.service.impl.ParticipantServiceImpl;
-import com.sigma.service.impl.TeamServiceImpl;
 import com.sigma.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -31,7 +21,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -70,7 +59,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void createUserTest_WithUser_ThenReturnNewUser() {//TODO: SMTH With Encode
+    public void createUserTest_WithUser_ThenReturnNewUser() {//TODO: Smth With Encode
         SignUpUserResponseDto expected = new SignUpUserResponseDto("success", "user created");
 
         SignUpUserDto signUpUserDto = new SignUpUserDto();
@@ -103,35 +92,35 @@ public class UserServiceTest {
     }
 
     @Test
-    public void deleteUser_WithUserId() {
-        User expected = new User();
+    public void deleteUser_WithCorrectUserId() {
+        User expected = new User("j", "j", Role.CAPTAIN);
         expected.setId(1L);
-        when(userRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(expected));
 
         userService.deleteUser(1L);
-        verify(userRepository).delete(expected);
+        verify(userRepository).deleteById(1L);
     }
 
     @Test
-    public void deleteUser_WithIncorrectCaptain_ThenThrowException() {
+    public void deleteUser_WithIncorrectUserId_ThenThrowException() {
         User expected = new User();
         expected.setId(1L);
-        when(userRepository.findById(anyLong())).thenThrow(EntityNotFoundException.class);
+        when(userRepository.findById(2L)).thenThrow(EntityNotFoundException.class);
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> userService.deleteUser(anyLong()));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> userService.deleteUser(2L));
         verify(userRepository, times(0)).delete(expected);
     }
 
     @Test
     public void getAllUsers_WithUserId_ThenReturnList() {
-        List<User> teams = new ArrayList<>();
-        teams.add(new User());
-        teams.add(new User());
-        teams.add(new User());
-        when(userRepository.findAll()).thenReturn(teams);
+        List<User> users = new ArrayList<>();
+        users.add(new User("j", "j", Role.CAPTAIN));
+        users.add(new User("jj", "j", Role.CAPTAIN));
+        users.add(new User("jjj", "j", Role.CAPTAIN));
+        when(userRepository.findAll()).thenReturn(users);
 
         List<UserDto> actual = userService.getAllUsers();
-        Assertions.assertEquals(teams.stream().map(UserDto::fromUser).collect(Collectors.toList()), actual);
+        Assertions.assertEquals(users.stream().map(UserDto::fromUser).collect(Collectors.toList()), actual);
         verify(userRepository, times(1)).findAll();
     }
 }
