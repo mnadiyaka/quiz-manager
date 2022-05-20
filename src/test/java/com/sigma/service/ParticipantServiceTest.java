@@ -50,7 +50,7 @@ public class ParticipantServiceTest {
     }
 
     @Test
-    public void createParticipantTest() {
+    public void createParticipantTest_WithParticipant_ThenReturnNewParticipant() {
         Participant expected = new Participant();
         expected.setId(1L);
         expected.setTeamId(1L);
@@ -63,7 +63,7 @@ public class ParticipantServiceTest {
     }
 
     @Test
-    public void updateParticipantTest() {
+    public void updateParticipantTest_WithUpdatedParticipantAndId_ThenReturnUpdatedParticipant() {
         Participant participant = new Participant();
         participant.setId(1L);
         participant.setTeamId(1L);
@@ -102,7 +102,7 @@ public class ParticipantServiceTest {
     }
 
     @Test
-    public void getAllParticipants() {
+    public void getAllParticipants_WithTeamId_ThenReturnList() {
         List<Participant> participants = new ArrayList<>();
         participants.add(new Participant());
         participants.add(new Participant());
