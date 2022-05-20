@@ -51,7 +51,7 @@ public class LocationServiceTest {
     }
 
     @Test
-    public void createLocationTest() {
+    public void createLocation_WithLocationDto_ThenReturnNewLocation() {
         Location expected = new Location();
 
         when(locationRepository.save(expected)).thenReturn(expected);
@@ -61,7 +61,7 @@ public class LocationServiceTest {
     }
 
     @Test
-    public void updateLocationTest() {
+    public void updateLocation_WithLocationDtoAndId_ThenReturnUpdatedLocation() {
         Location location = new Location();
         location.setId(1L);
         when(locationRepository.findById(anyLong())).thenReturn(Optional.of(location));
@@ -76,7 +76,7 @@ public class LocationServiceTest {
     }
 
     @Test
-    public void deleteLocation() {//TODO: correct
+    public void deleteLocation_WithLocationId() {
         Location expected = new Location();
         expected.setId(1L);
         when(locationRepository.findById(anyLong())).thenReturn(Optional.of(expected));
@@ -87,7 +87,7 @@ public class LocationServiceTest {
     }
 
     @Test
-    public void getAllLocation() {
+    public void getAllLocation_ThenReturnList() {
         List<Location> locations = new ArrayList<>();
         locations.add(new Location());
         locations.add(new Location());
