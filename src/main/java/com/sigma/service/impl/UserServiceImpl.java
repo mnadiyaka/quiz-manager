@@ -80,13 +80,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(final User updatedUser, final Long userId) {
+    public User updateUser(final User updatedUser, final Long userId) {
         final User oldUser = findUserById(userId);
         log.info("Updating user {}", oldUser.getUsername());
         oldUser.setUsername(updatedUser.getUsername());
         oldUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         oldUser.setRole(updatedUser.getRole());
-        userRepository.save(oldUser);
+        return userRepository.save(oldUser);
     }
 
     @Override

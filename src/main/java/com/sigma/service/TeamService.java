@@ -13,7 +13,7 @@ public interface TeamService {
 
     public Team createTeam(TeamDto teamDto);
 
-    public void updateTeam(TeamDto updatedTeam, Long teamId);
+    public Team updateTeam(TeamDto updatedTeam, Long teamId);
 
     public void deleteTeam(Long teamId);
 
