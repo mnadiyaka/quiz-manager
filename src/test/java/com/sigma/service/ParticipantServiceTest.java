@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -38,6 +39,7 @@ public class ParticipantServiceTest {
         final Participant result = participantService.findParticipantById(anyLong(), anyLong());
 
         Assertions.assertEquals(expectedResult, result);
+        verify(participantRepository, times(1)).findParticipantByIdAndTeamId(anyLong(), anyLong());
     }
 
     @Test
@@ -57,6 +59,7 @@ public class ParticipantServiceTest {
 
         Participant actual = participantService.createParticipant(ParticipantDto.fromParticipant(expected), 1L);
         Assertions.assertEquals(expected, actual);
+        verify(participantRepository, times(1)).save(expected);
     }
 
     @Test
@@ -73,6 +76,7 @@ public class ParticipantServiceTest {
 
         Participant actual = participantService.updateParticipant(ParticipantDto.fromParticipant(oldParticipant), 1L, 1L);
         Assertions.assertEquals(oldParticipant, actual);
+        verify(participantRepository, times(1)).save(oldParticipant);
     }
 
     @Test
@@ -94,6 +98,7 @@ public class ParticipantServiceTest {
         when(participantRepository.findParticipantByIdAndTeamId(anyLong(), anyLong())).thenThrow(EntityNotFoundException.class);
 
         Assertions.assertThrows(EntityNotFoundException.class, () -> participantService.deleteParticipant(anyLong(), anyLong()));
+        verify(participantRepository, times(0)).delete(expected);
     }
 
     @Test
@@ -106,5 +111,6 @@ public class ParticipantServiceTest {
 
         List<ParticipantDto> actual = participantService.getAllParticipants(anyLong());
         Assertions.assertEquals(participants.stream().map(ParticipantDto::fromParticipant).collect(Collectors.toList()), actual);
+        verify(participantRepository, times(1)).findParticipantsByTeamId(anyLong());
     }
 }
