@@ -19,6 +19,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -41,6 +42,7 @@ public class LocationServiceTest {
         final Location result = locationService.findLocationById(anyLong());
 
         Assertions.assertEquals(expectedResult, result);
+        verify(locationRepository, times(1)).findById(anyLong());
     }
 
     @Test
@@ -48,6 +50,7 @@ public class LocationServiceTest {
         when(locationRepository.findById(anyLong())).thenThrow(EntityNotFoundException.class);
 
         Assertions.assertThrows(EntityNotFoundException.class, () -> locationService.findLocationById(anyLong()));
+        verify(locationRepository, times(1)).findById(anyLong());
     }
 
     @Test
@@ -58,6 +61,7 @@ public class LocationServiceTest {
 
         Location actual = locationService.createLocation(LocationDto.fromLocation(expected));
         Assertions.assertEquals(expected, actual);
+        verify(locationRepository, times(1)).save(expected);
     }
 
     @Test
@@ -73,6 +77,7 @@ public class LocationServiceTest {
 
         Location actual = locationService.updateLocation(LocationDto.fromLocation(location), location.getId());
         Assertions.assertEquals(oldLoc, actual);
+        verify(locationRepository, times(1)).save(location);
     }
 
     @Test
@@ -96,5 +101,6 @@ public class LocationServiceTest {
 
         List<LocationDto> actual = locationService.getAllLocations();
         Assertions.assertEquals(locations.stream().map(LocationDto::fromLocation).collect(Collectors.toList()), actual);
+        verify(locationRepository, times(1)).findAll();
     }
 }
