@@ -1,9 +1,11 @@
 package com.sigma.service;
 
+import com.sigma.configuration.auth.TokenAuth;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Team;
+import com.sigma.model.entity.User;
 import com.sigma.repository.ParticipantRepository;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.impl.ParticipantServiceImpl;
@@ -11,6 +13,10 @@ import com.sigma.service.impl.TeamServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -20,6 +26,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -63,9 +70,16 @@ public class TeamServiceTest {
 
     @Test
     public void createTeamTest_WithTeam_ThenReturnNewTeam() {
+        User user = new User();
+        user.setId(1L);
+        SecurityContext securityContext = mock(SecurityContextImpl.class);
+        TokenAuth tokenAuth = new TokenAuth(anyString());
+        tokenAuth.setUser(user);
+        when(securityContext.getAuthentication()).thenReturn(tokenAuth);
+
         Team expected = new Team();
         expected.setId(1L);
-        expected.setCaptainId(1L);
+        expected.setCaptain(user);
 
         when(teamRepository.save(expected)).thenReturn(expected);
 
@@ -80,7 +94,7 @@ public class TeamServiceTest {
         team.setId(1L);
         when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
 
-        Team oldTeam = teamService.findTeamById( 1L);
+        Team oldTeam = teamService.findTeamById(1L);
         oldTeam.setTeamName("new");
 
         when(teamRepository.save(oldTeam)).thenReturn(oldTeam);
