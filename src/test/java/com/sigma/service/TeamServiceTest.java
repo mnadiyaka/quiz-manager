@@ -3,6 +3,7 @@ package com.sigma.service;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
+import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Team;
 import com.sigma.repository.ParticipantRepository;
 import com.sigma.repository.TeamRepository;
@@ -86,8 +87,9 @@ public class TeamServiceTest {
 
         when(teamRepository.save(oldTeam)).thenReturn(oldTeam);
 
-        /*Team actual = */teamService.updateTeam(TeamDto.fromTeam(oldTeam), 1L);
-       // Assertions.assertEquals(oldTeam, actual);//TODO: when merged previous will work
+        /*Team actual = */
+        teamService.updateTeam(TeamDto.fromTeam(oldTeam), 1L);
+        // Assertions.assertEquals(oldTeam, actual);//TODO: when merged previous will work
         verify(teamRepository, times(1)).save(oldTeam);
     }
 
@@ -168,6 +170,40 @@ public class TeamServiceTest {
         teamService.updatePl(ParticipantDto.fromParticipant(participant), 1L, 1L);
 
         Assertions.assertEquals(participant, participantService.findParticipantById(1L, 1L));
+        verify(teamRepository, times(1)).save(team);
+    }
 
+    @Test
+    public void addPlayer_WithParticipantDtoAndTeamId_ThenSaveTeam() {
+        Team team = new Team();
+        team.setId(1L);
+        team.setTeamName("name");
+        team.setParticipants(new ArrayList<>());
+
+        when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
+        when(teamRepository.save(team)).thenReturn(team);
+
+        teamService.addPl(new ParticipantDto().setTeamId(1L), 1L);
+
+        Assertions.assertEquals(1, team.getParticipants().size());
+//        verify
+    }
+
+    @Test
+    public void applyForQuiz_WithQuizAndTeanId_ThenReturnTeam(){
+        Team team = new Team();
+        team.setId(1L);
+        team.setTeamName("name");
+        team.setQuizzes(new ArrayList<>());
+
+        when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
+        when(teamRepository.save(team)).thenReturn(team);
+
+        Quiz quiz = new Quiz();
+        quiz.setId(1L);
+
+        teamService.applyForQuiz(quiz, 1L);
+        Assertions.assertEquals(1, team.getParticipants().size());
+//verify
     }
 }
