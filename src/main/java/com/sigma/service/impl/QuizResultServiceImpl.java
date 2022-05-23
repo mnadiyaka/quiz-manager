@@ -52,7 +52,7 @@ public class QuizResultServiceImpl implements QuizResultService {
     @Transactional
     public QuizResults updateRes(QuizResultsDto newQuizResults) {
         QuizResults quizResults = findResById(newQuizResults.getId());
-        if (!quizResults.getQuiz().getState().equals(State.CLOSED)) {
+        if (!quizResults.getQuiz().getState().equals(State.COMPLETED)) {
             throw new QuizException("Quiz is not CLOSED yet");
         }
         Optional.ofNullable(newQuizResults.getScore()).ifPresent(quizResults::setScore);
@@ -82,7 +82,7 @@ public class QuizResultServiceImpl implements QuizResultService {
     @Override
     public void createResultsTable(Long quizId) {
         Quiz quiz = quizService.findQuizById(quizId);
-        if (!quiz.getState().equals(State.CLOSED)) {
+        if (!quiz.getState().equals(State.COMPLETED)) {
             throw new QuizException("Quiz is not completed");
         }
         QuizResults quizResults;

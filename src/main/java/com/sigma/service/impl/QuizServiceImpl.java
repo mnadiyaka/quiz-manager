@@ -94,11 +94,6 @@ public class QuizServiceImpl implements QuizService {
         teams.add(team);
         quiz.setTeams(teams);
         quizRepository.save(quiz);
-
-//        final QuizResults quizResults = new QuizResults();//TODO: Change idea or place?
-//        quizResults.setQuiz(quiz);
-//        quizResults.setTeam(team);
-//        quizResultService.createRes(quizResults);
     }
 
 
