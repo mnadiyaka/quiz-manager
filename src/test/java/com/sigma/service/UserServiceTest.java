@@ -1,5 +1,7 @@
 package com.sigma.service;
 
+import com.sigma.model.dto.SignInUserDto;
+import com.sigma.model.dto.SignInUserResponseDto;
 import com.sigma.model.dto.SignUpUserDto;
 import com.sigma.model.dto.SignUpUserResponseDto;
 import com.sigma.model.dto.UserDto;
@@ -7,9 +9,11 @@ import com.sigma.model.entity.Role;
 import com.sigma.model.entity.User;
 import com.sigma.repository.UserRepository;
 import com.sigma.service.impl.UserServiceImpl;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -33,6 +37,15 @@ public class UserServiceTest {
     private UserService userService;
 
     private PasswordEncoder passwordEncoder;
+
+    @Value("${jwt-settings.secret-key}")
+    private String secret;
+
+    @Value("${jwt-settings.timestamp}")
+    private int timestamp;
+
+    @Value("${jwt-settings.issuer}")
+    private String issuer;
 
     @BeforeEach
     void setUp() {
@@ -59,7 +72,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void createUserTest_WithUser_ThenReturnNewUser() {//TODO: Smth With Encode
+    public void createUserTest_WithUser_ThenReturnResponseDto() {//TODO: Smth With Encode
         SignUpUserResponseDto expected = new SignUpUserResponseDto("success", "user created");
 
         SignUpUserDto signUpUserDto = new SignUpUserDto();
@@ -122,5 +135,60 @@ public class UserServiceTest {
         List<UserDto> actual = userService.getAllUsers();
         Assertions.assertEquals(users.stream().map(UserDto::fromUser).collect(Collectors.toList()), actual);
         verify(userRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void login_WithCorrectSignInUserDto_ThenReturnPositiveResponse() throws AuthenticationException {// TODO: correct
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("name");
+        user.setPassword(passwordEncoder.encode("ppp"));
+        SignInUserDto signInUserDto = new SignInUserDto();
+        signInUserDto.setUsername("name");
+        signInUserDto.setPassword("ppp");
+        when(userRepository.findByUsername(signInUserDto.getUsername())).thenReturn(user);
+
+        Assertions.assertNotEquals(new SignInUserResponseDto("failure", "user doesn't exist"), userService.login(signInUserDto));
+    }
+
+    @Test
+    public void login_WithInCorrectPassword_ThenReturnNegativeResponse() throws AuthenticationException {// TODO: correct
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("name");
+        user.setPassword(passwordEncoder.encode("qqq"));
+        SignInUserDto signInUserDto = new SignInUserDto();
+        signInUserDto.setUsername("name");
+        signInUserDto.setPassword("ppp");
+        when(userRepository.findByUsername(signInUserDto.getUsername())).thenReturn(user);
+
+        Assertions.assertEquals(new SignInUserResponseDto("failure", "user doesn't exist"), userService.login(signInUserDto));
+    }
+
+    @Test
+    public void login_WithInCorrectUsername_ThenReturnNegativeResponse() throws AuthenticationException {// TODO: correct
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("name1");
+        user.setPassword(passwordEncoder.encode("ppp"));
+        SignInUserDto signInUserDto = new SignInUserDto();
+        signInUserDto.setUsername("name");
+        signInUserDto.setPassword("ppp");
+        when(userRepository.findByUsername(signInUserDto.getUsername())).thenReturn(null);
+
+        Assertions.assertEquals(new SignInUserResponseDto("failure", "user doesn't exist"), userService.login(signInUserDto));
+    }
+
+    @Test
+    public void changeAccRole_WithUserId_ThenUpdateUser(){
+        User expected = new User();
+        expected.setId(1L);
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+        when(userRepository.save(expected)).thenReturn(expected);
+        userService.changeAccRole(1L);
+        User admin = userService.findUserById(1L);
+        Assertions.assertEquals(Role.ADMIN, admin.getRole());
+        verify(userRepository, times(1)).save(expected);
     }
 }
