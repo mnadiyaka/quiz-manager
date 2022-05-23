@@ -1,5 +1,6 @@
 package com.sigma.service;
 
+import com.sigma.configuration.auth.JWTUtil;
 import com.sigma.model.dto.SignInUserDto;
 import com.sigma.model.dto.SignInUserResponseDto;
 import com.sigma.model.dto.SignUpUserDto;
@@ -32,24 +33,14 @@ import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
 
-    private UserRepository userRepository;
+    private UserRepository userRepository = mock(UserRepository.class);
 
     private UserService userService;
 
     private PasswordEncoder passwordEncoder;
 
-    @Value("${jwt-settings.secret-key}")
-    private String secret;
-
-    @Value("${jwt-settings.timestamp}")
-    private int timestamp;
-
-    @Value("${jwt-settings.issuer}")
-    private String issuer;
-
     @BeforeEach
     void setUp() {
-        userRepository = mock(UserRepository.class);
         passwordEncoder = new BCryptPasswordEncoder();
         userService = new UserServiceImpl(userRepository, passwordEncoder);
     }
@@ -72,7 +63,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void createUserTest_WithUser_ThenReturnResponseDto() {//TODO: Smth With Encode
+    public void createUserTest_WithUser_ThenReturnResponseDto() {//TODO: verify doesn't work
         SignUpUserResponseDto expected = new SignUpUserResponseDto("success", "user created");
 
         SignUpUserDto signUpUserDto = new SignUpUserDto();
@@ -80,11 +71,11 @@ public class UserServiceTest {
         signUpUserDto.setPassword("new");
 
         User user = new User(signUpUserDto.getUsername(), passwordEncoder.encode(signUpUserDto.getPassword()), Role.CAPTAIN);
-        when(this.userRepository.save(user)).thenReturn(user);
+        when(userRepository.save(user)).thenReturn(user);
 
         SignUpUserResponseDto actual = userService.createUser(signUpUserDto);
         Assertions.assertEquals(expected, actual);
-        verify(this.userRepository, times(1)).save(user);
+        verify(userRepository, times(1)).save(user);
     }
 
     @Test
@@ -139,17 +130,19 @@ public class UserServiceTest {
 
     @Test
     public void login_WithCorrectSignInUserDto_ThenReturnPositiveResponse() throws AuthenticationException {// TODO: correct
-
         User user = new User();
         user.setId(1L);
         user.setUsername("name");
         user.setPassword(passwordEncoder.encode("ppp"));
+        user.setRole(Role.CAPTAIN);
         SignInUserDto signInUserDto = new SignInUserDto();
         signInUserDto.setUsername("name");
         signInUserDto.setPassword("ppp");
         when(userRepository.findByUsername(signInUserDto.getUsername())).thenReturn(user);
-
-        Assertions.assertNotEquals(new SignInUserResponseDto("failure", "user doesn't exist"), userService.login(signInUserDto));
+        //when(JWTUtil.generateJWT(user, "secret", 0, "issuer")).thenReturn("token");
+        userService.login(signInUserDto);
+//        Assertions.assertNotEquals(new SignInUserResponseDto("failure", "user doesn't exist"), userService.login(signInUserDto));
+        verify(userRepository, times(1)).findByUsername(signInUserDto.getUsername());
     }
 
     @Test
@@ -181,7 +174,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void changeAccRole_WithUserId_ThenUpdateUser(){
+    public void changeAccRole_WithUserId_ThenUpdateUser() {
         User expected = new User();
         expected.setId(1L);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(expected));
