@@ -18,7 +18,7 @@ public class QuizResultsSearchDto {
 
     Period period;
 
-    public boolean checkExistence(){
+    public boolean shouldApplyFilters(){
         return Objects.nonNull(category)||Objects.nonNull(locationId)||Objects.nonNull(date)||Objects.nonNull(period);
     }
 
