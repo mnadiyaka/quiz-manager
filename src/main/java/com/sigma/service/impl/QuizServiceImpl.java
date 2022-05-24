@@ -2,12 +2,12 @@ package com.sigma.service.impl;
 
 import com.sigma.exception.QuizException;
 import com.sigma.model.dto.QuizDto;
+import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Quiz;
-import com.sigma.model.entity.QuizResults;
 import com.sigma.model.entity.State;
 import com.sigma.model.entity.Team;
 import com.sigma.repository.QuizRepository;
-import com.sigma.service.QuizResultService;
+import com.sigma.service.LocationService;
 import com.sigma.service.QuizService;
 import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class QuizServiceImpl implements QuizService {
 
     private final TeamService teamService;
 
-//    private final QuizResultService quizResultService;
+    private final LocationService locationService;
 
     @Override
     public List<QuizDto> getAllQuizzes() {
@@ -99,9 +99,20 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public void changeQuizState(Long quizId, String state){
+    public void changeQuizState(Long quizId, String state) {
         Quiz quiz = findQuizById(quizId);
         quiz.setState(State.valueOf(state));
         quizRepository.save(quiz);
+    }
+
+    @Override
+    @Transactional
+    public Quiz assignLocation(final Long quizId, final Long locId){
+        Quiz quiz = findQuizById(quizId);
+        Location location = locationService.findLocationById(locId);
+        quiz.setAddressId(locId);
+
+        return quizRepository.save(quiz);
+
     }
 }

@@ -5,6 +5,7 @@ import com.sigma.model.entity.Category;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Data
 public class QuizResultsSearchDto {
@@ -16,4 +17,9 @@ public class QuizResultsSearchDto {
     LocalDate date;
 
     Period period;
+
+    public boolean shouldApplyFilters(){
+        return Objects.nonNull(category)||Objects.nonNull(locationId)||Objects.nonNull(date)||Objects.nonNull(period);
+    }
+
 }

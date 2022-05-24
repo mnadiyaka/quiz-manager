@@ -13,7 +13,7 @@ public interface LocationService {
 
     public Location createLocation(LocationDto location);
 
-    public void updateLocation(LocationDto updatedLocation, Long locationId);
+    public Location updateLocation(LocationDto updatedLocation, Long locationId);
 
     public void deleteLocation(Long locationId);
 }

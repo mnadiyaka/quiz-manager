@@ -8,7 +8,8 @@ import java.util.List;
 
 @Repository
 public interface QuizResultsRepository extends
-        JpaRepository<QuizResults, Long>, CustomRepo {
+        JpaRepository<QuizResults, Long>, CustomQuizResultsStatisticsRepo {
 
     List<QuizResults> findQuizResultsByQuizId(Long quizId);
+
 }
