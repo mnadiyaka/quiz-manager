@@ -19,5 +19,9 @@ public interface QuizResultService {
 
     QuizResults findResById(Long id);
 
+    void createResultsTable(Long quizId);
+
+    List<QuizResultsDto> findResultsByQuizId(Long quizId);
+
     List<QuizResultsDto> getQuizResultsStatistics(QuizResultsSearchDto data);
 }

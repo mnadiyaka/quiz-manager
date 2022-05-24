@@ -2,6 +2,7 @@ package com.sigma.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
@@ -53,7 +54,17 @@ public class Quiz {
     @Column(name = "address_id")
     private Long addressId;
 
+    @Column(name = "team_n_max")
+    private Short teamNumberMax;
+
+    @Column(name = "part_n_max")
+    private Short participantInTeamNumberMax;
+
+    @Column(name = "part_n_min")
+    private Short participantInTeamNumberMin;
+
     @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     @ManyToMany(mappedBy = "quizzes")
     private List<Team> teams;
 }

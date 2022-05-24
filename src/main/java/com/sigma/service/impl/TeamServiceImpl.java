@@ -1,8 +1,10 @@
 package com.sigma.service.impl;
 
+import com.sigma.exception.QuizException;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
+import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Team;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.ParticipantService;
@@ -111,5 +113,20 @@ public class TeamServiceImpl implements TeamService {
         people.add(newPl);
         team.setParticipants(people);
         teamRepository.save(team);
+    }
+
+    @Override
+    @Transactional
+    public Team applyForQuiz(final Quiz quiz, final Long teamId) {
+        final Team team = findTeamById(teamId);
+        if (team.getParticipants().size() > quiz.getParticipantInTeamNumberMax() || team.getParticipants().size() < quiz.getParticipantInTeamNumberMin()) {
+            throw new QuizException("Wrong size of the team");
+        }
+
+        final List<Quiz> teamsQ = team.getQuizzes();
+        teamsQ.add(quiz);
+        team.setQuizzes(teamsQ);
+
+        return teamRepository.save(team);
     }
 }
