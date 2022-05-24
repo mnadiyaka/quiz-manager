@@ -1,5 +1,6 @@
 package com.sigma.service;
 
+import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
@@ -24,4 +25,6 @@ public interface QuizResultService {
     List<QuizResultsDto> findResultsByQuizId(Long quizId);
 
     List<QuizResultsDto> getQuizResultsStatistics(QuizResultsSearchDto data);
+
+    List<QuizResultsDto> getAggregationStatistics(AggregationStatisticsDto data);
 }

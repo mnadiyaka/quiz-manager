@@ -1,6 +1,7 @@
 package com.sigma.service.impl;
 
 import com.sigma.exception.QuizException;
+import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.Quiz;
@@ -74,6 +75,13 @@ public class QuizResultServiceImpl implements QuizResultService {
     @Override
     public List<QuizResultsDto> getQuizResultsStatistics(QuizResultsSearchDto data) {
         List<QuizResults> res = quizResultsRepository.findResultsWithCustomQuery(data);
+
+        return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<QuizResultsDto> getAggregationStatistics(AggregationStatisticsDto data) {
+        List<QuizResults> res = quizResultsRepository.findAggregatedData(data);
 
         return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toList());
     }
