@@ -1,6 +1,5 @@
 package com.sigma.model.dto;
 
-import com.sigma.model.entity.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +14,4 @@ public class SignUpUserDto {
 
     @NotNull
     private String password;
-
-    @NotNull
-    private Role role;
 }

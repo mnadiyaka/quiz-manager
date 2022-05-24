@@ -48,6 +48,19 @@ public class QuizController {
         return "deleted quiz";
     }
 
+    @PreAuthorize("hasRole('CAPTAIN')")
+    @PatchMapping("/{quizId}/apply/{teamId}")
+    public String applyForQuiz(@PathVariable Long quizId, @PathVariable Long teamId){
+        quizService.applyForQuiz(quizId, teamId);
+        return "applied";
+    }
+
+    @PatchMapping("/{quizId}/change/{state}")
+    public String  closeQuiz(@PathVariable Long quizId, @PathVariable String state) {
+        quizService.changeQuizState(quizId, state);
+        return "closed";
+    }
+
     @PatchMapping("/{quizId}/location/{locationId}")
     public Quiz assignLocation(@PathVariable Long locationId, @PathVariable Long quizId) {
         return quizService.assignLocation(quizId, locationId);

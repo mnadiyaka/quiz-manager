@@ -5,7 +5,7 @@ import com.sigma.model.entity.QuizResults;
 
 import java.util.List;
 
-public interface CustomRepo {
+public interface CustomQuizResultsStatisticsRepo {
 
     List<QuizResults> findResultsWithCustomQuery(QuizResultsSearchDto data);
 }

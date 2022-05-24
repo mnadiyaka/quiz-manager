@@ -18,5 +18,9 @@ public interface QuizService {
 
     public void deleteQuiz(Long quizId);
 
+    public void applyForQuiz(final Long quizId, final Long teamId);
+
+    public void changeQuizState(Long quizId, String state);
+
     public Quiz assignLocation(final Long quizId, final Long locId);
 }
