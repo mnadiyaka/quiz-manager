@@ -19,9 +19,11 @@ public interface UserService {
 
     public SignUpUserResponseDto createUser(SignUpUserDto signUpDto);
 
-    public void updateUser(User updatedUser, Long userId);
+    public User updateUser(User updatedUser, Long userId);
 
     public void deleteUser(Long userId);
 
     public SignInUserResponseDto login(SignInUserDto signInUserDto) throws AuthenticationException;
+
+    public void changeAccRole(final Long userId);
 }
