@@ -10,6 +10,7 @@ import com.sigma.repository.ParticipantRepository;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.impl.ParticipantServiceImpl;
 import com.sigma.service.impl.TeamServiceImpl;
+import com.sigma.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -38,15 +41,12 @@ public class TeamServiceTest {
 
     private TeamService teamService;
 
-    private ParticipantRepository participantRepository;
+    private ParticipantService participantService = mock(ParticipantServiceImpl.class);
 
-    private ParticipantService participantService;
+    private UserService userService = mock(UserServiceImpl.class);
 
     @BeforeEach
     void setUp() {
-        participantRepository = mock(ParticipantRepository.class);
-        participantService = new ParticipantServiceImpl(participantRepository);
-
         teamRepository = mock(TeamRepository.class);
         teamService = new TeamServiceImpl(teamRepository, participantService);
     }
@@ -98,9 +98,12 @@ public class TeamServiceTest {
     }
 
     @Test
+    @WithMockUser(username = "captain", roles = "CAPTAIN")
     public void deleteTeam_WithCorrectCaptain() {
         Team expected = new Team();
         expected.setId(1L);
+        User user = userService.findUserByUsername("captain");
+        expected.setCaptain(user);
         when(teamRepository.findById(anyLong())).thenReturn(Optional.of(expected));
 
         teamService.deleteTeam(1L);
@@ -161,12 +164,12 @@ public class TeamServiceTest {
 
         team.setParticipants(participants);
         when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
-        when(participantRepository.findParticipantByIdAndTeamId(1L, 1L)).thenReturn(participants.get(1));
+        when(participantService.findParticipantById(1L, 1L)).thenReturn(participants.get(1));
 
         participant = participantService.findParticipantById(1L, 1L);
         participant.setFirstname("1111");
 
-        when(participantRepository.save(participant)).thenReturn(participant);
+        when(participantService.createParticipant(ParticipantDto.fromParticipant(participant), 1L)).thenReturn(participant);
         when(teamRepository.save(team)).thenReturn(team);
 
         teamService.updatePl(ParticipantDto.fromParticipant(participant), 1L, 1L);
