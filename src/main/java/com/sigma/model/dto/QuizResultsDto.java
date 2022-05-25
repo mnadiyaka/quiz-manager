@@ -20,6 +20,8 @@ public class QuizResultsDto {
     @NotNull
     private int score;
 
+    private int avgScore;
+
     public static QuizResultsDto fromQuizResult(QuizResults quizResults) {
         return new QuizResultsDto()
                 .setId(quizResults.getId())
