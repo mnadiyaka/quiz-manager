@@ -4,6 +4,7 @@ import com.sigma.model.dto.LocationDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Quiz;
+import com.sigma.model.entity.State;
 import com.sigma.repository.LocationRepository;
 import com.sigma.repository.QuizRepository;
 import com.sigma.repository.TeamRepository;
@@ -90,13 +91,13 @@ public class QuizServiceTest {
         quiz.setId(1L);
         when(quizRepository.findById(anyLong())).thenReturn(Optional.of(quiz));
 
-        Quiz oldLoc = quizService.findQuizById(anyLong());
-        oldLoc.setQuizName("new");
+        Quiz oldQuiz = quizService.findQuizById(anyLong());
+        oldQuiz.setQuizName("new");
 
-        when(quizRepository.save(oldLoc)).thenReturn(oldLoc);
+        when(quizRepository.save(oldQuiz)).thenReturn(oldQuiz);
 
         Quiz actual = quizService.updateQuiz(QuizDto.fromQuiz(quiz), quiz.getId());
-        Assertions.assertEquals(oldLoc, actual);
+        Assertions.assertEquals(oldQuiz, actual);
         verify(quizRepository, times(1)).save(quiz);
     }
 
@@ -122,5 +123,39 @@ public class QuizServiceTest {
         List<QuizDto> actual = quizService.getAllQuizzes();
         Assertions.assertEquals(quizzes.stream().map(QuizDto::fromQuiz).collect(Collectors.toList()), actual);
         verify(quizRepository, times(1)).findAll();
+    }
+
+    //TODO assign
+
+    @Test
+    public void changeQuizState_WithQuizIdAndNewState_ThenSaveQuiz(){
+        Quiz expected = new Quiz();
+        expected.setId(1L);
+        expected.setState(State.ANOUNCED);
+
+        when(quizRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+        when(quizRepository.save(expected)).thenReturn(expected);
+
+        quizService.changeQuizState(1L, State.CLOSED.toString());
+        Assertions.assertEquals(State.CLOSED, quizService.findQuizById(1L).getState());
+        verify(quizRepository, times(1)).save(expected);
+    }
+
+    @Test
+    public void assignLocation_WithQuizIdAndLocId_ThenSaveQuiz(){
+        Quiz expected = new Quiz();
+        expected.setId(1L);
+
+        Location location = new Location();
+        location.setId(1L);
+
+        when(quizRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+        when(quizRepository.save(expected)).thenReturn(expected);
+
+        when(locationRepository.findById(anyLong())).thenReturn(Optional.of(location));
+
+        quizService.assignLocation(1L, 1L);
+        Assertions.assertEquals(1L, quizService.findQuizById(1L).getAddressId());
+        verify(quizRepository, times(1)).save(expected);
     }
 }
