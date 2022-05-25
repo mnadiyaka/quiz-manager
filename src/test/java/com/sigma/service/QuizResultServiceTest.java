@@ -1,6 +1,7 @@
 package com.sigma.service;
 
 import com.sigma.model.dto.QuizResultsDto;
+import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.model.entity.State;
@@ -113,4 +114,40 @@ public class QuizResultServiceTest {
         verify(quizResultsRepository, times(1)).findAll();
     }
 
+    @Test
+    public void getQuizResultsStatistic_WithQuizResultSearchDto_ThenReturnList() {
+        List<QuizResults> quizzes = new ArrayList<>();
+        quizzes.add(new QuizResults().setId(1L).setQuiz(new Quiz().setQuizName("name")).setTeam(new Team().setTeamName("name")));
+        quizzes.add(new QuizResults().setId(2L).setQuiz(new Quiz().setQuizName("name")).setTeam(new Team().setTeamName("name")));
+        quizzes.add(new QuizResults().setId(3L).setQuiz(new Quiz().setQuizName("name")).setTeam(new Team().setTeamName("name")));
+        when(quizResultsRepository.findResultsWithCustomQuery(new QuizResultsSearchDto())).thenReturn(quizzes);
+
+        List<QuizResultsDto> actual = quizResultService.getQuizResultsStatistics(new QuizResultsSearchDto());
+
+        Assertions.assertEquals(quizzes.size(), actual.size());
+        verify(quizResultsRepository, times(1)).findResultsWithCustomQuery(new QuizResultsSearchDto());
+    }
+
+    @Test
+    public void createResultTable_WithQuizId_ThenSaveData() { //TODO: correct
+        Quiz quiz = new Quiz();
+        quiz.setState(State.COMPLETED);
+        quiz.setId(1L);
+
+        List<Team> teams = new ArrayList<>();
+        teams.add(new Team().setTeamName("name"));
+        teams.add(new Team().setTeamName("name1"));
+        teams.add(new Team().setTeamName("name3"));
+        quiz.setTeams(teams);
+
+        when(quizService.findQuizById(1L)).thenReturn(quiz);
+
+        when(quizResultsRepository.save(new QuizResults())).thenReturn(new QuizResults());
+
+        quizResultService.createResultsTable(1L);
+        Set<QuizResultsDto> actual = quizResultService.getAllRes();
+
+        Assertions.assertEquals(3, actual.size());
+        verify(quizResultsRepository, times(1)).save(new QuizResults());
+    }
 }
