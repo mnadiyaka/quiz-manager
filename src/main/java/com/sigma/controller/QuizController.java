@@ -1,5 +1,6 @@
 package com.sigma.controller;
 
+import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
 import com.sigma.service.QuizService;
@@ -64,5 +65,11 @@ public class QuizController {
     @PatchMapping("/{quizId}/location/{locationId}")
     public Quiz assignLocation(@PathVariable Long locationId, @PathVariable Long quizId) {
         return quizService.assignLocation(quizId, locationId);
+    }
+
+    @GetMapping("/aggStat")
+    @PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
+    public List<QuizDto> groupQuizzes(@RequestBody AggregationStatisticsDto data) {
+        return quizService.getAggregationQuizStatistics(data);
     }
 }

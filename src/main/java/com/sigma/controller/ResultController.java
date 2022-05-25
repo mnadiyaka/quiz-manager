@@ -45,7 +45,7 @@ public class ResultController {
     }
 
     @PostMapping("/create/{quizId}")
-    public String createResultTable(@PathVariable Long quizId){
+    public String createResultTable(@PathVariable Long quizId) {
         quizResultService.createResultsTable(quizId);
         return "created";
     }
@@ -59,8 +59,7 @@ public class ResultController {
 
     @GetMapping(value = "aggStat")
     @PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
-    public @ResponseBody
-    List<QuizResultsDto> groupRes(@RequestBody AggregationStatisticsDto data) {
+    public List<QuizResultsDto> groupRes(@RequestBody AggregationStatisticsDto data) {
         return quizResultService.getAggregationStatistics(data);
     }
 }

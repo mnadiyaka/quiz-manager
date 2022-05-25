@@ -61,11 +61,11 @@ public class CustomQuizResultsStatisticsRepoImpl implements CustomQuizResultsSta
     public List<Quiz> findQuizAggregatedData(AggregationStatisticsDto data) {
         String query;
         if (data.shouldApplyAggregation()) {
-            query = "SELECT q.quiz_name, q.datetime, q.category, q.state, q.address_id, " + data.getAggregation() + "(q." + data.getGrouping().getParam() + ")" +
+            query = "SELECT q.quiz_id, q.quiz_name, q.short_description ,q.datetime, q.category, q.address_id, " + data.getAggregation() + "(q." + data.getGrouping().getParam() + ")" +
                     " FROM quizzes q" +
                     " GROUP BY q." + data.getGrouping().getParam() + ";";
         } else {
-            query = "SELECT * " +
+            query = "SELECT q.quiz_id, q.quiz_name, q.short_description ,q.datetime, q.category, q.address_id " +
                     " FROM quizzes q;";
         }
         final Query q = entityManager.createNativeQuery(query, QuizResults.class);
