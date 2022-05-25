@@ -1,15 +1,12 @@
 package com.sigma.service;
 
 import com.sigma.exception.QuizException;
-import com.sigma.model.dto.LocationDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.State;
 import com.sigma.model.entity.Team;
-import com.sigma.repository.LocationRepository;
 import com.sigma.repository.QuizRepository;
-import com.sigma.repository.TeamRepository;
 import com.sigma.service.impl.LocationServiceImpl;
 import com.sigma.service.impl.QuizServiceImpl;
 import com.sigma.service.impl.TeamServiceImpl;
@@ -39,22 +36,12 @@ public class QuizServiceTest {
 
     private QuizService quizService;
 
-    private LocationRepository locationRepository;
+    private final LocationService locationService = mock(LocationServiceImpl.class);
 
-    private LocationService locationService;
-
-    private TeamRepository teamRepository;
-
-    private TeamService teamService;
+    private final TeamService teamService = mock(TeamServiceImpl.class);
 
     @BeforeEach
     void setUp() {
-        locationRepository = mock(LocationRepository.class);
-        locationService = mock(LocationServiceImpl.class);
-
-        teamRepository  = mock(TeamRepository.class);
-        teamService = mock(TeamServiceImpl.class);
-
         quizRepository = mock(QuizRepository.class);
         quizService = new QuizServiceImpl(quizRepository, teamService, locationService);
     }
@@ -129,7 +116,7 @@ public class QuizServiceTest {
     }
 
     @Test
-    public void applyForQuiz_WithQuizIdAndTeamId_ThenSaveQuiz(){
+    public void applyForQuiz_WithQuizIdAndTeamId_ThenSaveQuiz() {
         Quiz expected = new Quiz();
         expected.setId(1L);
         expected.setState(State.ANOUNCED);
@@ -146,7 +133,7 @@ public class QuizServiceTest {
     }
 
     @Test
-    public void applyForQuiz_WithQuizIdWhereStateIsNotAnouncedAndTeamId_ThenThrowException(){
+    public void applyForQuiz_WithQuizIdWhereStateIsNotAnouncedAndTeamId_ThenThrowException() {
         Quiz expected = new Quiz();
         expected.setId(1L);
         expected.setState(State.CLOSED);
@@ -156,12 +143,12 @@ public class QuizServiceTest {
         when(quizRepository.findById(anyLong())).thenReturn(Optional.of(expected));
         when(quizRepository.save(expected)).thenReturn(expected);
 
-        Assertions.assertThrows(QuizException.class, ()->quizService.applyForQuiz(1L, 3L));
+        Assertions.assertThrows(QuizException.class, () -> quizService.applyForQuiz(1L, 3L));
         verify(quizRepository, times(1)).findById(1L);
     }
 
     @Test
-    public void applyForQuiz_WithQuizIdWhereMaxTeamNumberReachedAndTeamId_ThenThrowException(){
+    public void applyForQuiz_WithQuizIdWhereMaxTeamNumberReachedAndTeamId_ThenThrowException() {
         Quiz expected = new Quiz();
         expected.setId(1L);
         expected.setState(State.CLOSED);
@@ -171,12 +158,12 @@ public class QuizServiceTest {
         when(quizRepository.findById(anyLong())).thenReturn(Optional.of(expected));
         when(quizRepository.save(expected)).thenReturn(expected);
 
-        Assertions.assertThrows(QuizException.class, ()->quizService.applyForQuiz(1L, 3L));
+        Assertions.assertThrows(QuizException.class, () -> quizService.applyForQuiz(1L, 3L));
         verify(quizRepository, times(1)).findById(1L);
     }
 
     @Test
-    public void changeQuizState_WithQuizIdAndNewState_ThenSaveQuiz(){
+    public void changeQuizState_WithQuizIdAndNewState_ThenSaveQuiz() {
         Quiz expected = new Quiz();
         expected.setId(1L);
         expected.setState(State.ANOUNCED);
@@ -190,7 +177,7 @@ public class QuizServiceTest {
     }
 
     @Test
-    public void assignLocation_WithQuizIdAndLocId_ThenSaveQuiz(){
+    public void assignLocation_WithQuizIdAndLocId_ThenSaveQuiz() {
         Quiz expected = new Quiz();
         expected.setId(1L);
 
@@ -199,8 +186,6 @@ public class QuizServiceTest {
 
         when(quizRepository.findById(anyLong())).thenReturn(Optional.of(expected));
         when(quizRepository.save(expected)).thenReturn(expected);
-
-        when(locationRepository.findById(anyLong())).thenReturn(Optional.of(location));
 
         quizService.assignLocation(1L, 1L);
         Assertions.assertEquals(1L, quizService.findQuizById(1L).getAddressId());
