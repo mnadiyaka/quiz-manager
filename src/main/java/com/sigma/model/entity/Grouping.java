@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Grouping {
-    PERIOD("period"), CATEGORY_NAME("category"), DATE("date"), LOCATION_NAME("locationName");
+    PERIOD("period"), CATEGORY_NAME("category"), DATE("datetime"), LOCATION_NAME("address_id");
 
     String param;
 }

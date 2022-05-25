@@ -2,6 +2,7 @@ package com.sigma.repository.impl;
 
 import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizResultsSearchDto;
+import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.repository.CustomQuizResultsStatisticsRepo;
 import org.springframework.stereotype.Repository;
@@ -42,16 +43,30 @@ public class CustomQuizResultsStatisticsRepoImpl implements CustomQuizResultsSta
     }
 
     @Override
-    public List<QuizResults> findAggregatedData(AggregationStatisticsDto data) {
+    public List<QuizResults> findQuizResultAggregatedData(AggregationStatisticsDto data) {
         String query;
         if (data.shouldApplyAggregation()) {
-            query = "SELECT r.id, r.quiz_id, r.team_id, r.score, " + data.getAggregation() + "(r.score)"+
+            query = "SELECT r.id, r.quiz_id, r.team_id, r.score, " + data.getAggregation() + "(r.score)" +
                     " FROM quiz_results r JOIN quizzes q on r.quiz_id = q.quiz_id " +
                     " GROUP BY q." + data.getGrouping().getParam() + ";";
-        }
-        else {
+        } else {
             query = "SELECT r.id, r.quiz_id, r.team_id, r.score " +
                     " FROM quiz_results r JOIN quizzes q on r.quiz_id = q.quiz_id;";
+        }
+        final Query q = entityManager.createNativeQuery(query, QuizResults.class);
+
+        return q.getResultList();
+    }
+
+    public List<Quiz> findQuizAggregatedData(AggregationStatisticsDto data) {
+        String query;
+        if (data.shouldApplyAggregation()) {
+            query = "SELECT q.quiz_name, q.datetime, q.category, q.state, q.address_id, " + data.getAggregation() + "(q." + data.getGrouping().getParam() + ")" +
+                    " FROM quizzes q" +
+                    " GROUP BY q." + data.getGrouping().getParam() + ";";
+        } else {
+            query = "SELECT * " +
+                    " FROM quizzes q;";
         }
         final Query q = entityManager.createNativeQuery(query, QuizResults.class);
 

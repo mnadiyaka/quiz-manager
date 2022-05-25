@@ -81,7 +81,7 @@ public class QuizResultServiceImpl implements QuizResultService {
 
     @Override
     public List<QuizResultsDto> getAggregationStatistics(AggregationStatisticsDto data) {
-        List<QuizResults> res = quizResultsRepository.findAggregatedData(data);
+        List<QuizResults> res = quizResultsRepository.findQuizResultAggregatedData(data);
 
         return res.stream().map(QuizResultsDto::fromQuizResult).collect(Collectors.toList());
     }
