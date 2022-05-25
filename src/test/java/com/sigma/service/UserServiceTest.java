@@ -1,6 +1,5 @@
 package com.sigma.service;
 
-import com.sigma.configuration.auth.JWTUtil;
 import com.sigma.model.dto.SignInUserDto;
 import com.sigma.model.dto.SignInUserResponseDto;
 import com.sigma.model.dto.SignUpUserDto;
@@ -14,7 +13,6 @@ import org.apache.tomcat.websocket.AuthenticationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
