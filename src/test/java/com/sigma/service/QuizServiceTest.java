@@ -1,10 +1,12 @@
 package com.sigma.service;
 
+import com.sigma.exception.QuizException;
 import com.sigma.model.dto.LocationDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.State;
+import com.sigma.model.entity.Team;
 import com.sigma.repository.LocationRepository;
 import com.sigma.repository.QuizRepository;
 import com.sigma.repository.TeamRepository;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -125,7 +128,52 @@ public class QuizServiceTest {
         verify(quizRepository, times(1)).findAll();
     }
 
-    //TODO assign
+    @Test
+    public void applyForQuiz_WithQuizIdAndTeamId_ThenSaveQuiz(){
+        Quiz expected = new Quiz();
+        expected.setId(1L);
+        expected.setState(State.ANOUNCED);
+        expected.setTeamNumberMax((short) 5);
+        expected.setTeams(new ArrayList<>(Arrays.asList(new Team(), new Team())));
+
+        when(quizRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+        when(quizRepository.save(expected)).thenReturn(expected);
+
+        quizService.applyForQuiz(1L, 3L);
+
+        Assertions.assertEquals(3, expected.getTeams().size());
+        verify(quizRepository, times(1)).save(expected);
+    }
+
+    @Test
+    public void applyForQuiz_WithQuizIdWhereStateIsNotAnouncedAndTeamId_ThenThrowException(){
+        Quiz expected = new Quiz();
+        expected.setId(1L);
+        expected.setState(State.CLOSED);
+        expected.setTeamNumberMax((short) 5);
+        expected.setTeams(new ArrayList<>(Arrays.asList(new Team(), new Team())));
+
+        when(quizRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+        when(quizRepository.save(expected)).thenReturn(expected);
+
+        Assertions.assertThrows(QuizException.class, ()->quizService.applyForQuiz(1L, 3L));
+        verify(quizRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    public void applyForQuiz_WithQuizIdWhereMaxTeamNumberReachedAndTeamId_ThenThrowException(){
+        Quiz expected = new Quiz();
+        expected.setId(1L);
+        expected.setState(State.CLOSED);
+        expected.setTeamNumberMax((short) 2);
+        expected.setTeams(new ArrayList<>(Arrays.asList(new Team(), new Team())));
+
+        when(quizRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+        when(quizRepository.save(expected)).thenReturn(expected);
+
+        Assertions.assertThrows(QuizException.class, ()->quizService.applyForQuiz(1L, 3L));
+        verify(quizRepository, times(1)).findById(1L);
+    }
 
     @Test
     public void changeQuizState_WithQuizIdAndNewState_ThenSaveQuiz(){
