@@ -46,7 +46,9 @@ public class CustomQuizResultsStatisticsRepoImpl implements CustomQuizResultsSta
     public List<QuizResults> findQuizResultAggregatedData(AggregationStatisticsDto data) {
         String query;
         if (data.shouldApplyAggregation()) {
-            query = "SELECT r.id, r.quiz_id, r.team_id, r.score, " + data.getAggregation() + "(r.score)" +
+            query = "DELETE FROM aggregation_result WHERE TRUE; " +
+                    "INSERT INTO aggregation_result (id, quiz_id, team_id, score, result) " +
+                    "SELECT r.id, r.quiz_id, r.team_id, r.score, " + data.getAggregation() + "(r.score)" +
                     " FROM quiz_results r JOIN quizzes q on r.quiz_id = q.quiz_id " +
                     " GROUP BY q." + data.getGrouping().getParam() + ";";
         } else {
