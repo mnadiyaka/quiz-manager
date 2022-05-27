@@ -3,7 +3,6 @@ package com.sigma.controller;
 import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
-import com.sigma.model.entity.AggregationResult;
 import com.sigma.service.QuizResultService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +60,7 @@ public class ResultController {
 
     @GetMapping(value = "aggStat")
     @PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
-    public List<AggregationResult> groupRes(@RequestBody AggregationStatisticsDto data) throws SQLException {
-        return quizResultService.getAggregationStatistics(data);
+    public void groupRes(@RequestBody AggregationStatisticsDto data) throws SQLException {
+        quizResultService.getAggregationStatistics(data);
     }
 }

@@ -4,12 +4,10 @@ import com.sigma.exception.QuizException;
 import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
-import com.sigma.model.entity.AggregationResult;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.model.entity.State;
 import com.sigma.model.entity.Team;
-import com.sigma.repository.AggregationResultRepository;
 import com.sigma.repository.QuizResultsRepository;
 import com.sigma.service.QuizResultService;
 import com.sigma.service.QuizService;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -32,8 +29,6 @@ import java.util.stream.Collectors;
 public class QuizResultServiceImpl implements QuizResultService {
 
     private final QuizResultsRepository quizResultsRepository;
-
-    private final AggregationResultRepository aggregationResultRepository;
 
     private final QuizService quizService;
 
@@ -86,10 +81,10 @@ public class QuizResultServiceImpl implements QuizResultService {
     }
 
     @Override
-    public List<AggregationResult> getAggregationStatistics(AggregationStatisticsDto data) throws SQLException {
+    public void getAggregationStatistics(AggregationStatisticsDto data) throws SQLException {
         quizResultsRepository.findQuizResultAggregatedData(data);// TODO: CORrect
 
-        return aggregationResultRepository.findAll();
+
     }
 
     @Transactional
