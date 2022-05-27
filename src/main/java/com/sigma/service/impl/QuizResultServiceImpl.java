@@ -86,7 +86,7 @@ public class QuizResultServiceImpl implements QuizResultService {
     }
 
     @Override
-    public List<QuizResultsDto> getAggregationStatistics(AggregationStatisticsDto data) throws SQLException {
+    public List<AggregationResult> getAggregationStatistics(AggregationStatisticsDto data) throws SQLException {
         quizResultsRepository.findQuizResultAggregatedData(data);// TODO: CORrect
 
         return aggregationResultRepository.findAll();

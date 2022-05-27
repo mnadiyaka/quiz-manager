@@ -1,5 +1,6 @@
 package com.sigma.service;
 
+import com.sigma.model.dto.LocationDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
 

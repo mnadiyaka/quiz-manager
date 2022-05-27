@@ -113,5 +113,6 @@ public class QuizServiceImpl implements QuizService {
         quiz.setAddressId(locId);
 
         return quizRepository.save(quiz);
+
     }
 }
