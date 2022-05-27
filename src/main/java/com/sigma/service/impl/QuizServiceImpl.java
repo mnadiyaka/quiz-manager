@@ -1,7 +1,6 @@
 package com.sigma.service.impl;
 
 import com.sigma.exception.QuizException;
-import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Quiz;
@@ -19,7 +18,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -115,12 +113,5 @@ public class QuizServiceImpl implements QuizService {
         quiz.setAddressId(locId);
 
         return quizRepository.save(quiz);
-    }
-
-    @Override
-    public List<QuizDto> getAggregationQuizStatistics(AggregationStatisticsDto data) {
-        List<Quiz> res = quizRepository.findQuizAggregatedData(data);
-
-        return res.stream().map(QuizDto::fromQuiz).collect(Collectors.toList());
     }
 }

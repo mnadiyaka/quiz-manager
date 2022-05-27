@@ -6,6 +6,7 @@ import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.AggregationResult;
 import com.sigma.model.entity.QuizResults;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -27,5 +28,5 @@ public interface QuizResultService {
 
     List<QuizResultsDto> getQuizResultsStatistics(QuizResultsSearchDto data);
 
-    List<AggregationResult> getAggregationStatistics(AggregationStatisticsDto data);
+    List<AggregationResult> getAggregationStatistics(AggregationStatisticsDto data) throws SQLException;
 }

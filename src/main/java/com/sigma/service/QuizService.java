@@ -1,6 +1,5 @@
 package com.sigma.service;
 
-import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
 
@@ -23,6 +22,4 @@ public interface QuizService {
     public void changeQuizState(Long quizId, String state);
 
     public Quiz assignLocation(final Long quizId, final Long locId);
-
-    public List<QuizDto> getAggregationQuizStatistics(AggregationStatisticsDto data);
 }
