@@ -12,6 +12,8 @@ public class AggregationStatisticsDto {
 
     Grouping grouping;
 
+    boolean team;
+
     public boolean shouldApplyAggregation(){
         return Objects.nonNull(aggregation)||Objects.nonNull(grouping);
     }

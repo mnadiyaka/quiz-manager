@@ -1,5 +1,6 @@
 package com.sigma.controller;
 
+import com.sigma.model.dto.AggregationStatisticResDto;
 import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -60,7 +60,7 @@ public class ResultController {
 
     @GetMapping(value = "aggStat")
     @PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
-    public void groupRes(@RequestBody AggregationStatisticsDto data) throws SQLException {
-        quizResultService.getAggregationStatistics(data);
+    public List<AggregationStatisticResDto> groupRes(@RequestBody AggregationStatisticsDto data) {
+        return quizResultService.getAggregationStatistics(data);
     }
 }

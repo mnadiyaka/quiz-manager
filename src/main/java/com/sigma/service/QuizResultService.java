@@ -1,11 +1,11 @@
 package com.sigma.service;
 
+import com.sigma.model.dto.AggregationStatisticResDto;
 import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.QuizResults;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
@@ -27,5 +27,5 @@ public interface QuizResultService {
 
     List<QuizResultsDto> getQuizResultsStatistics(QuizResultsSearchDto data);
 
-    void getAggregationStatistics(AggregationStatisticsDto data) throws SQLException;
+    List<AggregationStatisticResDto> getAggregationStatistics(AggregationStatisticsDto data);
 }
