@@ -1,12 +1,11 @@
 package com.sigma.service;
 
-import com.sigma.configuration.auth.TokenAuth;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
+import com.sigma.model.entity.Role;
 import com.sigma.model.entity.Team;
 import com.sigma.model.entity.User;
-import com.sigma.repository.ParticipantRepository;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.impl.ParticipantServiceImpl;
 import com.sigma.service.impl.TeamServiceImpl;
@@ -14,13 +13,9 @@ import com.sigma.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -41,9 +36,7 @@ public class TeamServiceTest {
 
     private TeamService teamService;
 
-    private ParticipantService participantService = mock(ParticipantServiceImpl.class);
-
-    private UserService userService = mock(UserServiceImpl.class);
+    private final ParticipantService participantService = mock(ParticipantServiceImpl.class);
 
     @BeforeEach
     void setUp() {
@@ -69,10 +62,22 @@ public class TeamServiceTest {
     }
 
     @Test
-    public void createTeamTest_WithTeam_ThenReturnNewTeam() {
+    public void createTeamTest_WithTeam_ThenReturnNewTeam() {//TODO: Correct, fails
         Team expected = new Team();
         expected.setId(1L);
+        expected.setTeamName("name");
+        User user = new User();
+        user.setId(1L);
+        user.setRole(Role.CAPTAIN);
+        expected.setCaptainId(1L);
 
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(securityContext.getAuthentication().getPrincipal()).thenReturn(1L);
+        SecurityContextHolder.setContext(securityContext);
+
+        expected.setCaptain(user);
         when(teamRepository.save(expected)).thenReturn(expected);
 
         Team actual = teamService.createTeam(TeamDto.fromTeam(expected));
@@ -81,10 +86,24 @@ public class TeamServiceTest {
     }
 
     @Test
-    public void updateTeamTest_WithUpdatedTeamAndId_ThenReturnUpdatedTeam() {//TODO: change service
+    public void updateTeamTest_WithUpdatedTeamAndId_ThenReturnUpdatedTeam() {
         Team team = new Team();
         team.setId(1L);
         team.setTeamName("name");
+        team.setCaptainId(1l);
+
+        User user = new User();
+        user.setId(1L);
+        user.setRole(Role.CAPTAIN);
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(securityContext.getAuthentication().getPrincipal()).thenReturn(1L);
+        SecurityContextHolder.setContext(securityContext);
+
+        team.setCaptain(user);
+
         when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
 
         Team oldTeam = teamService.findTeamById(1L);
@@ -98,12 +117,19 @@ public class TeamServiceTest {
     }
 
     @Test
-    @WithMockUser(username = "captain", roles = "CAPTAIN")
     public void deleteTeam_WithCorrectCaptain() {
         Team expected = new Team();
         expected.setId(1L);
-        User user = userService.findUserByUsername("captain");
-        expected.setCaptain(user);
+        User user = new User();
+        user.setId(1L);
+        expected.setCaptainId(1L);
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(securityContext.getAuthentication().getPrincipal()).thenReturn(1L);
+        SecurityContextHolder.setContext(securityContext);
+
         when(teamRepository.findById(anyLong())).thenReturn(Optional.of(expected));
 
         teamService.deleteTeam(1L);
@@ -123,9 +149,9 @@ public class TeamServiceTest {
     @Test
     public void getAllTeams_ThenReturnList() {
         List<Team> teams = new ArrayList<>();
-        teams.add(new Team().setCaptainId(1L));
-        teams.add(new Team().setCaptainId(2L));
-        teams.add(new Team().setCaptainId(3L));
+        teams.add(new Team().setCaptain(new User("pp1", "pp", Role.CAPTAIN)));
+        teams.add(new Team().setCaptain(new User("pp2", "pp", Role.CAPTAIN)));
+        teams.add(new Team().setCaptain(new User("pp3", "pp", Role.CAPTAIN)));
         when(teamRepository.findAll()).thenReturn(teams);
 
         List<TeamDto> actual = teamService.getAllTeams();
@@ -141,7 +167,6 @@ public class TeamServiceTest {
         when(teamRepository.save(expected)).thenReturn(expected);
 
         Team actual = teamService.confirmTeam(expected, true);
-//        Assertions.assertEquals(!expected.getConfirmed(), actual.getConfirmed());
         verify(teamRepository, times(1)).save(expected);
     }
 
@@ -150,6 +175,7 @@ public class TeamServiceTest {
         Team team = new Team();
         team.setId(1L);
         team.setTeamName("name");
+        team.setCaptainId(1L);
 
         List<Participant> participants = new ArrayList<>();
         Participant participant = new Participant();
@@ -161,6 +187,18 @@ public class TeamServiceTest {
         participant.setFirstname("new");
         participant.setId(2L);
         participants.add(participant);
+
+        User user = new User();
+        user.setId(1L);
+        user.setRole(Role.CAPTAIN);
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(securityContext.getAuthentication().getPrincipal()).thenReturn(1L);
+        SecurityContextHolder.setContext(securityContext);
+
+        team.setCaptain(user);
 
         team.setParticipants(participants);
         when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
@@ -183,7 +221,20 @@ public class TeamServiceTest {
         Team team = new Team();
         team.setId(1L);
         team.setTeamName("name");
+        team.setCaptainId(1L);
         team.setParticipants(new ArrayList<>());
+
+        User user = new User();
+        user.setId(1L);
+        user.setRole(Role.CAPTAIN);
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(securityContext.getAuthentication().getPrincipal()).thenReturn(1L);
+        SecurityContextHolder.setContext(securityContext);
+
+        team.setCaptain(user);
 
         when(teamRepository.findById(anyLong())).thenReturn(Optional.of(team));
         when(teamRepository.save(team)).thenReturn(team);
@@ -191,6 +242,6 @@ public class TeamServiceTest {
         teamService.addPl(new ParticipantDto().setTeamId(1L), 1L);
 
         Assertions.assertEquals(1, team.getParticipants().size());
-//        verify
+        verify(teamRepository, times(1)).save(team);
     }
 }
