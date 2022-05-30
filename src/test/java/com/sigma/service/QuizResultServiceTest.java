@@ -12,6 +12,8 @@ import com.sigma.service.impl.QuizServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -36,6 +38,9 @@ public class QuizResultServiceTest {
     private QuizResultService quizResultService;
 
     private final QuizService quizService = mock(QuizServiceImpl.class);
+
+    @Captor
+    ArgumentCaptor<QuizResults> captor;
 
     @BeforeEach
     void setUp() {
@@ -147,7 +152,7 @@ public class QuizResultServiceTest {
         quizResultService.createResultsTable(1L);
         List<QuizResults> actual = quizResultsRepository.findAll();
 
-        Assertions.assertEquals(3, actual.size());
-        verify(quizResultsRepository, times(1)).save(new QuizResults());
+        //Assertions.assertEquals(3, actual.size());
+        verify(quizResultsRepository, times(3)).save(captor.capture());
     }
 }
