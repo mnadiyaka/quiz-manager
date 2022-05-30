@@ -30,26 +30,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-//import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest(fullyQualifiedNames = "com.baeldung.powermockito.introduction.*")
 public class UserServiceTest {
 
     private UserRepository userRepository = mock(UserRepository.class);
 
     private UserService userService;
 
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder = mock(BCryptPasswordEncoder.class);
 
     @BeforeEach
     void setUp() {
-        passwordEncoder = new BCryptPasswordEncoder();
         userService = new UserServiceImpl(userRepository, passwordEncoder);
     }
 
@@ -71,20 +68,20 @@ public class UserServiceTest {
     }
 
     @Test
-    public void createUserTest_WithUser_ThenReturnResponseDto() {//TODO: verify doesn't work
+    public void createUserTest_WithUser_ThenReturnResponseDto() {
         SignUpUserResponseDto expected = new SignUpUserResponseDto("success", "user created");
 
         SignUpUserDto signUpUserDto = new SignUpUserDto();
         signUpUserDto.setUsername("new");
         signUpUserDto.setPassword("new");
 
+        when(passwordEncoder.encode(anyString())).thenReturn(signUpUserDto.getPassword());
         User user = new User(signUpUserDto.getUsername(), passwordEncoder.encode(signUpUserDto.getPassword()), Role.CAPTAIN);
         when(userRepository.save(user)).thenReturn(user);
 
         SignUpUserResponseDto actual = userService.createUser(signUpUserDto);
         Assertions.assertEquals(expected, actual);
-//        verify(userRepository, times(1)).save(user); //TODO: delete or change: this method saves for the second time,
-//                                                             and data is different because of password encoder
+        verify(userRepository, times(1)).save(user);
     }
 
     @Test
@@ -148,11 +145,12 @@ public class UserServiceTest {
         signInUserDto.setUsername("name");
         signInUserDto.setPassword("ppp");
         when(userRepository.findByUsername(signInUserDto.getUsername())).thenReturn(user);
+        when(passwordEncoder.matches("ppp", "ppp")).thenReturn(Boolean.TRUE);
         MockedStatic<JWTUtil> jwtUtilMockedStatic = mockStatic(JWTUtil.class);
         jwtUtilMockedStatic.when(()->JWTUtil.generateJWT(user, "secret", 0, "issuer"))
                 .thenReturn("token");
 
-        userService.login(signInUserDto);
+       // userService.login(signInUserDto);
         Assertions.assertNotEquals(new SignInUserResponseDto("failure", "user doesn't exist"), userService.login(signInUserDto));
         //verify(userRepository, times(1)).findByUsername(signInUserDto.getUsername()); //TODO: delete or coorect, doesn't work like this
     }
