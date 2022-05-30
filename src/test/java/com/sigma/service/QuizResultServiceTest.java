@@ -129,15 +129,15 @@ public class QuizResultServiceTest {
     }
 
     @Test
-    public void createResultTable_WithQuizId_ThenSaveData() { //TODO: correct
+    public void createResultTable_WithQuizId_ThenSaveData() { //TODO: correct, fails comparison
         Quiz quiz = new Quiz();
         quiz.setState(State.COMPLETED);
         quiz.setId(1L);
 
         List<Team> teams = new ArrayList<>();
-        teams.add(new Team().setTeamName("name"));
-        teams.add(new Team().setTeamName("name1"));
-        teams.add(new Team().setTeamName("name3"));
+        teams.add(new Team().setId(1L).setTeamName("name"));
+        teams.add(new Team().setId(2L).setTeamName("name1"));
+        teams.add(new Team().setId(3L).setTeamName("name3"));
         quiz.setTeams(teams);
 
         when(quizService.findQuizById(1L)).thenReturn(quiz);
@@ -145,7 +145,7 @@ public class QuizResultServiceTest {
         when(quizResultsRepository.save(new QuizResults())).thenReturn(new QuizResults());
 
         quizResultService.createResultsTable(1L);
-        Set<QuizResultsDto> actual = quizResultService.getAllRes();
+        List<QuizResults> actual = quizResultsRepository.findAll();
 
         Assertions.assertEquals(3, actual.size());
         verify(quizResultsRepository, times(1)).save(new QuizResults());
