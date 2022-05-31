@@ -43,7 +43,7 @@ public class CustomQuizResultsStatisticsRepoImpl implements CustomQuizResultsSta
 
     @Override
     public List<Object[]> findQuizResultAggregatedData(AggregationStatisticsDto data) {
-        String query;
+        final String query;
         if (data.shouldApplyAggregation()) {
             query = String.format("SELECT q.%s, %s(r.score) FROM quiz_results r JOIN quizzes q on r.quiz_id = q.quiz_id GROUP BY q.%s%s",
                     data.getGrouping().getParam(), data.getAggregation(),
