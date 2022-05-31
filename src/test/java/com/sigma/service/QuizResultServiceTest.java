@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mockito;
 
 import javax.persistence.EntityNotFoundException;
@@ -39,9 +38,6 @@ public class QuizResultServiceTest {
     private QuizResultService quizResultService;
 
     private final QuizService quizService = mock(QuizServiceImpl.class);
-
-    @Captor
-    ArgumentCaptor<QuizResults> captor;
 
     @BeforeEach
     void setUp() {
@@ -135,8 +131,8 @@ public class QuizResultServiceTest {
     }
 
     @Test
-    public void createResultTable_WithQuizId_ThenSaveData() { //TODO: correct, fails comparison
-        captor = ArgumentCaptor.forClass(QuizResults.class);
+    public void createResultTable_WithQuizId_ThenSaveData() {
+        ArgumentCaptor<QuizResults> captor = ArgumentCaptor.forClass(QuizResults.class);
 
         Quiz quiz = new Quiz();
         quiz.setState(State.COMPLETED);
@@ -153,7 +149,6 @@ public class QuizResultServiceTest {
         when(quizResultsRepository.save(new QuizResults())).thenReturn(new QuizResults());
 
         quizResultService.createResultsTable(1L);
-        List<QuizResults> actual = quizResultsRepository.findAll();
 
         Mockito.verify(quizResultsRepository, times(3)).save(captor.capture());
         Assertions.assertEquals(3, captor.getAllValues().size());
