@@ -1,6 +1,5 @@
 package com.sigma.service;
 
-//import com.sigma.configuration.auth.JWTUtil;
 import com.sigma.configuration.auth.JWTUtil;
 import com.sigma.model.dto.SignInUserDto;
 import com.sigma.model.dto.SignInUserResponseDto;
@@ -15,9 +14,6 @@ import org.apache.tomcat.websocket.AuthenticationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-//import org.junit.runner.RunWith;
-//import org.powermock.core.classloader.annotations.PrepareForTest;
-//import org.powermock.modules.junit4.PowerMockRunner;
 import org.mockito.MockedStatic;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,11 +35,11 @@ import static org.mockito.Mockito.when;
 
 public class UserServiceTest {
 
-    private UserRepository userRepository = mock(UserRepository.class);
+    private final UserRepository userRepository = mock(UserRepository.class);
 
     private UserService userService;
 
-    private PasswordEncoder passwordEncoder = mock(BCryptPasswordEncoder.class);
+    private final PasswordEncoder passwordEncoder = mock(BCryptPasswordEncoder.class);
 
     @BeforeEach
     void setUp() {
@@ -135,10 +131,11 @@ public class UserServiceTest {
     }
 
     @Test
-    public void login_WithCorrectSignInUserDto_ThenReturnPositiveResponse() throws AuthenticationException {// TODO: correct
+    public void login_WithCorrectSignInUserDto_ThenReturnPositiveResponse() throws AuthenticationException {
         User user = new User();
         user.setId(1L);
         user.setUsername("name");
+        when(passwordEncoder.encode("ppp")).thenReturn("ppp");
         user.setPassword(passwordEncoder.encode("ppp"));
         user.setRole(Role.CAPTAIN);
         SignInUserDto signInUserDto = new SignInUserDto();
@@ -147,16 +144,15 @@ public class UserServiceTest {
         when(userRepository.findByUsername(signInUserDto.getUsername())).thenReturn(user);
         when(passwordEncoder.matches("ppp", "ppp")).thenReturn(Boolean.TRUE);
         MockedStatic<JWTUtil> jwtUtilMockedStatic = mockStatic(JWTUtil.class);
-        jwtUtilMockedStatic.when(()->JWTUtil.generateJWT(user, "secret", 0, "issuer"))
+        jwtUtilMockedStatic.when(() -> JWTUtil.generateJWT(user, "secret", 0, "issuer"))
                 .thenReturn("token");
 
-       // userService.login(signInUserDto);
         Assertions.assertNotEquals(new SignInUserResponseDto("failure", "user doesn't exist"), userService.login(signInUserDto));
-        //verify(userRepository, times(1)).findByUsername(signInUserDto.getUsername()); //TODO: delete or coorect, doesn't work like this
+        verify(userRepository, times(1)).findByUsername(signInUserDto.getUsername());
     }
 
     @Test
-    public void login_WithInCorrectPassword_ThenReturnNegativeResponse() throws AuthenticationException {// TODO: correct
+    public void login_WithInCorrectPassword_ThenReturnNegativeResponse() throws AuthenticationException {
         User user = new User();
         user.setId(1L);
         user.setUsername("name");
@@ -170,7 +166,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void login_WithInCorrectUsername_ThenReturnNegativeResponse() throws AuthenticationException {// TODO: correct
+    public void login_WithInCorrectUsername_ThenReturnNegativeResponse() throws AuthenticationException {
         User user = new User();
         user.setId(1L);
         user.setUsername("name1");
