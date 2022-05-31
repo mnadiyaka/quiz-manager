@@ -40,9 +40,6 @@ public class TeamServiceTest {
 
     private final ParticipantService participantService = mock(ParticipantServiceImpl.class);
 
-    @Captor
-    ArgumentCaptor<Team> captor;
-
     @BeforeEach
     void setUp() {
         teamRepository = mock(TeamRepository.class);
@@ -68,7 +65,7 @@ public class TeamServiceTest {
 
     @Test
     public void createTeamTest_WithTeam_ThenReturnNewTeam() {//TODO: Correct, fails
-        captor = ArgumentCaptor.forClass(Team.class);
+        ArgumentCaptor<Team> captor = ArgumentCaptor.forClass(Team.class);
 
         Team team = new Team();
         team.setId(1L);
@@ -90,7 +87,6 @@ public class TeamServiceTest {
         when(teamRepository.save(new Team())).thenReturn(new Team());
 
         Team expected = teamService.createTeam(TeamDto.fromTeam(team));
-
 
         verify(teamRepository, times(1)).save(captor.capture());
         Assertions.assertEquals(captor.getValue(), expected);
