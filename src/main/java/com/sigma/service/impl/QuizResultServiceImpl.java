@@ -53,7 +53,7 @@ public class QuizResultServiceImpl implements QuizResultService {
     public QuizResults updateRes(QuizResultsDto newQuizResults) {
         QuizResults quizResults = findResById(newQuizResults.getId());
         if (!quizResults.getQuiz().getState().equals(State.COMPLETED)) {
-            throw new QuizException("Quiz is not CLOSED yet");
+            throw new QuizException("Quiz is not COMPLETED yet");
         }
         Optional.ofNullable(newQuizResults.getScore()).ifPresent(quizResults::setScore);
 
