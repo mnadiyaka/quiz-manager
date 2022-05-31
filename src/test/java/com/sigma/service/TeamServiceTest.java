@@ -9,10 +9,11 @@ import com.sigma.model.entity.User;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.impl.ParticipantServiceImpl;
 import com.sigma.service.impl.TeamServiceImpl;
-import com.sigma.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +38,9 @@ public class TeamServiceTest {
     private TeamService teamService;
 
     private final ParticipantService participantService = mock(ParticipantServiceImpl.class);
+
+    @Captor
+    ArgumentCaptor<Team> captor;
 
     @BeforeEach
     void setUp() {
@@ -63,6 +67,8 @@ public class TeamServiceTest {
 
     @Test
     public void createTeamTest_WithTeam_ThenReturnNewTeam() {//TODO: Correct, fails
+        captor = ArgumentCaptor.forClass(Team.class);
+
         Team expected = new Team();
         expected.setId(1L);
         expected.setTeamName("name");
@@ -81,8 +87,9 @@ public class TeamServiceTest {
         when(teamRepository.save(expected)).thenReturn(expected);
 
         Team actual = teamService.createTeam(TeamDto.fromTeam(expected));
-        Assertions.assertEquals(expected, actual);
-        verify(teamRepository, times(1)).save(expected);
+
+        verify(teamRepository, times(1)).save(captor.capture());
+        Assertions.assertEquals(captor.getValue(), actual);
     }
 
     @Test
