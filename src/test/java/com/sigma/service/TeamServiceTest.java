@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import java.util.ArrayList;
@@ -69,13 +70,13 @@ public class TeamServiceTest {
     public void createTeamTest_WithTeam_ThenReturnNewTeam() {//TODO: Correct, fails
         captor = ArgumentCaptor.forClass(Team.class);
 
-        Team expected = new Team();
-        expected.setId(1L);
-        expected.setTeamName("name");
+        Team team = new Team();
+        team.setId(1L);
+        team.setTeamName("name");
         User user = new User();
         user.setId(1L);
         user.setRole(Role.CAPTAIN);
-        expected.setCaptainId(1L);
+        team.setCaptainId(1L);
 
         Authentication authentication = mock(Authentication.class);
         SecurityContext securityContext = mock(SecurityContext.class);
@@ -83,13 +84,38 @@ public class TeamServiceTest {
         when(securityContext.getAuthentication().getPrincipal()).thenReturn(1L);
         SecurityContextHolder.setContext(securityContext);
 
-        expected.setCaptain(user);
-        when(teamRepository.save(expected)).thenReturn(expected);
+        team.setCaptain(user);
+        when(teamRepository.findByTeamName("name")).thenReturn(null);
 
-        Team actual = teamService.createTeam(TeamDto.fromTeam(expected));
+        when(teamRepository.save(new Team())).thenReturn(new Team());
+
+        Team expected = teamService.createTeam(TeamDto.fromTeam(team));
+
 
         verify(teamRepository, times(1)).save(captor.capture());
-        Assertions.assertEquals(captor.getValue(), actual);
+        Assertions.assertEquals(captor.getValue(), expected);
+    }
+
+    @Test
+    public void createTeamTest_WithExistingTeamName_ThenThrowException() {
+        Team team = new Team();
+        team.setId(1L);
+        team.setTeamName("name");
+        User user = new User();
+        user.setId(1L);
+        user.setRole(Role.CAPTAIN);
+        team.setCaptainId(1L);
+
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(securityContext.getAuthentication().getPrincipal()).thenReturn(1L);
+        SecurityContextHolder.setContext(securityContext);
+
+        team.setCaptain(user);
+        when(teamRepository.findByTeamName("name")).thenReturn(team);
+
+        Assertions.assertThrows(EntityExistsException.class, ()->teamService.createTeam(TeamDto.fromTeam(team)));
     }
 
     @Test
@@ -97,7 +123,7 @@ public class TeamServiceTest {
         Team team = new Team();
         team.setId(1L);
         team.setTeamName("name");
-        team.setCaptainId(1l);
+        team.setCaptainId(1L);
 
         User user = new User();
         user.setId(1L);
@@ -174,6 +200,7 @@ public class TeamServiceTest {
         when(teamRepository.save(expected)).thenReturn(expected);
 
         Team actual = teamService.confirmTeam(expected, true);
+        Assertions.assertTrue(actual.isConfirmed());
         verify(teamRepository, times(1)).save(expected);
     }
 
