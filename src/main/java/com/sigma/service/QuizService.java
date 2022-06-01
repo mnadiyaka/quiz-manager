@@ -26,7 +26,7 @@ public interface QuizService {
     Quiz findQuizById(Long quizId);
 
     /**
-     * Creates new Quiz from entered Data
+     * Creates new Quiz, entered in QuizDto
      *
      * @param quiz New Quiz data
      * @return Created new Quiz
@@ -34,7 +34,7 @@ public interface QuizService {
     Quiz createQuiz(QuizDto quiz);
 
     /**
-     * Allows updating Quiz
+     * Allows updating Quiz with entered new data in QuizDto (quizName, category, description, dateTime, address)
      *
      * @param updatedQuiz New data
      * @param quizId      Possible Quiz Id
@@ -64,7 +64,7 @@ public interface QuizService {
     void applyForQuiz(final Long quizId, final Long teamId);
 
     /**
-     * Changes state for chosen Quiz
+     * Changes state, entered in input, for selected Quiz
      *
      * @param quizId Chosen quiz
      * @param state  New state
@@ -73,7 +73,7 @@ public interface QuizService {
     void changeQuizState(Long quizId, String state);
 
     /**
-     * Adds Location to existing quiz
+     * Adds existing Location to selected quiz
      *
      * @param quizId Quiz's id
      * @param locId  Location's id
