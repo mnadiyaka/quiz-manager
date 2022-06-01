@@ -18,7 +18,7 @@ public interface LocationService {
      * Finds location by entered existing id
      * @param locationId Possible existing location
      * @return Found Location
-     * @throws EntityNotFoundException If entered id is not correct
+     * @throws EntityNotFoundException If entered id does not exist
      */
     Location findLocationById(Long locationId);
 

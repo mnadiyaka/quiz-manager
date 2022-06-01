@@ -20,7 +20,7 @@ public interface ParticipantService {
      * @param teamId Possible existing Team
      * @param participantId Possible existing Participant
      * @return Found Participant
-     * @throws EntityNotFoundException If Participant's id doesn't exist for chosen team
+     * @throws EntityNotFoundException If Participant's id does not exist for chosen team
      */
     Participant findParticipantById(final Long teamId, Long participantId);
 
