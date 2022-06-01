@@ -1,7 +1,6 @@
 # Table of contents
 * [Setup](#setting-up-project)
 * [Domain](#quiz-manager)
-* [Technologies](#technologies)
 
 # Setting-up project
 To successfully run application on local computer you need certain programs installed and run:
@@ -9,7 +8,7 @@ To successfully run application on local computer you need certain programs inst
         * JDK version 17 - https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
         * Lombok - https://projectlombok.org/
         ### Technologies
-            - SpringBoot / SpringRestAPI / SpringDataJPA(Hibernate) / SpringSecurity(Session based auth (JSessionId)).
+            - SpringBoot / SpringRestAPI / SpringDataJPA(Hibernate) / SpringSecurity(Session based auth (JWT)).
             - MySQL - https://maven.apache.org/install.html
             - Maven  - https://www.mysql.com/downloads/
             - JUnit / Mockito.
