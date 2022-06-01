@@ -5,6 +5,7 @@ import com.sigma.model.dto.SignInUserResponseDto;
 import com.sigma.model.dto.SignUpUserDto;
 import com.sigma.model.dto.SignUpUserResponseDto;
 import com.sigma.model.dto.UserDto;
+import com.sigma.model.entity.Role;
 import com.sigma.model.entity.User;
 import org.apache.tomcat.websocket.AuthenticationException;
 
@@ -20,7 +21,7 @@ public interface UserService {
     List<UserDto> getAllUsers();
 
     /**
-     * Finds user by existing id
+     * Finds {@link User} by existing id
      *
      * @param userId User's id
      * @return Found user
@@ -29,7 +30,7 @@ public interface UserService {
     User findUserById(Long userId);
 
     /**
-     * Finds user by username
+     * Finds {@link User} by username
      *
      * @param username User's name
      * @return Found User
@@ -38,7 +39,7 @@ public interface UserService {
     User findUserByUsername(String username);
 
     /**
-     * Creates new User with entered UserDto (username and password), by default role is CAPTAIN
+     * Creates new {@link User} with entered {@link UserDto} (username and password), by default {@link Role} is CAPTAIN
      *
      * @param signUpDto Entered data
      * @return positive SignUpUserResponseDto, if successfully created
@@ -47,7 +48,7 @@ public interface UserService {
     SignUpUserResponseDto createUser(SignUpUserDto signUpDto);
 
     /**
-     * Updates existing user by id with entered UserDto (username, password), you can not change role here
+     * Updates existing {@link User} by id with entered {@link UserDto} (username, password), you can not change {@link Role} here
      *
      * @param updatedUser Updated data
      * @param userId      User's id
@@ -57,7 +58,7 @@ public interface UserService {
     User updateUser(User updatedUser, Long userId);
 
     /**
-     * Deletes user by id
+     * Deletes {@link User} by id
      *
      * @param userId User's id
      * @throws EntityNotFoundException If User's id does not exist
@@ -65,7 +66,7 @@ public interface UserService {
     void deleteUser(Long userId);
 
     /**
-     * Logs into the system with existing user's login and password, entered in SignInUserDto
+     * Logs into the system with existing user's login and password, entered in {@link SignInUserDto}
      *
      * @param signInUserDto data for Logging in
      * @return positive SignInUserResponseDto if successfully logged in
@@ -75,7 +76,7 @@ public interface UserService {
     SignInUserResponseDto login(SignInUserDto signInUserDto);
 
     /**
-     * Updates User from Captain to Admin Role
+     * Updates {@link User} from Captain to Admin {@link Role}
      *
      * @param userId User's id
      * @throws EntityNotFoundException If User's id does not exist
