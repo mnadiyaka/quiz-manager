@@ -11,12 +11,14 @@ public interface QuizService {
 
     /**
      * Finds list of Quizzes
+     *
      * @return List of Quizzes
      */
     List<QuizDto> getAllQuizzes();
 
     /**
      * Finds Quiz by entered existing id
+     *
      * @param quizId Entered id
      * @return Found Quiz
      * @throws EntityNotFoundException If entered id does not exist
@@ -25,6 +27,7 @@ public interface QuizService {
 
     /**
      * Creates new Quiz from entered Data
+     *
      * @param quiz New Quiz data
      * @return Created new Quiz
      */
@@ -32,8 +35,9 @@ public interface QuizService {
 
     /**
      * Allows updating Quiz
+     *
      * @param updatedQuiz New data
-     * @param quizId Possible Quiz Id
+     * @param quizId      Possible Quiz Id
      * @return Updated quiz
      * @throws EntityNotFoundException If Quiz is not found by this id
      */
@@ -41,6 +45,7 @@ public interface QuizService {
 
     /**
      * Deletes Quiz by id
+     *
      * @param quizId Entered id
      * @throws EntityNotFoundException If Result is not found
      */
@@ -48,27 +53,30 @@ public interface QuizService {
 
     /**
      * Works with teamService to assign existing Team for a Quiz
+     *
      * @param quizId Existing Quiz id
      * @param teamId Existing Team id
      * @throws EntityNotFoundException If entered Quiz id does not exist
-     * @throws QuizException If Quiz is not ANNOUNCED yet
-     * @throws QuizException If Max Number of teams is reached
-     * @throws QuizException If Number of Participants doesn't suit criteria
+     * @throws QuizException           If Quiz is not ANNOUNCED yet
+     * @throws QuizException           If Max Number of teams is reached
+     * @throws QuizException           If Number of Participants doesn't suit criteria
      */
     void applyForQuiz(final Long quizId, final Long teamId);
 
     /**
      * Changes state for chosen Quiz
+     *
      * @param quizId Chosen quiz
-     * @param state New state
+     * @param state  New state
      * @throws EntityNotFoundException If entered Quiz id does not exist
      */
     void changeQuizState(Long quizId, String state);
 
     /**
      * Adds Location to existing quiz
+     *
      * @param quizId Quiz's id
-     * @param locId Location's id
+     * @param locId  Location's id
      * @return Updated /location
      * @throws EntityNotFoundException If entered Quiz id does not exist
      * @throws EntityNotFoundException If entered Location id does not exist

@@ -10,6 +10,7 @@ public interface ParticipantService {
 
     /**
      * Finds all Participants for selected Team
+     *
      * @param teamId Team's id to select from
      * @return List of Participants
      */
@@ -17,7 +18,8 @@ public interface ParticipantService {
 
     /**
      * Finds Participant by entered existing id
-     * @param teamId Possible existing Team
+     *
+     * @param teamId        Possible existing Team
      * @param participantId Possible existing Participant
      * @return Found Participant
      * @throws EntityNotFoundException If Participant's id does not exist for chosen team
@@ -26,17 +28,19 @@ public interface ParticipantService {
 
     /**
      * Creates new Participant from entered Data
+     *
      * @param participantDto Entered data
-     * @param teamId Team's id, whose Participant will be created
+     * @param teamId         Team's id, whose Participant will be created
      * @return New Participant
      */
     Participant createParticipant(final ParticipantDto participantDto, final Long teamId);
 
     /**
      * Tries to update existing Participant, if it exists
+     *
      * @param newParticipant Updated data
-     * @param participantId Participant's id
-     * @param teamId Team's id
+     * @param participantId  Participant's id
+     * @param teamId         Team's id
      * @return Updated Participant
      * @throws EntityNotFoundException If Participant's id doesn't exist for chosen team
      */
@@ -44,7 +48,8 @@ public interface ParticipantService {
 
     /**
      * Deletes by Participant's id and Team's id
-     * @param teamId Team's id
+     *
+     * @param teamId        Team's id
      * @param participantId Participant's id
      * @throws EntityNotFoundException If Participant's id doesn't exist for chosen team
      */
