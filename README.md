@@ -11,19 +11,18 @@ To successfully run application on local computer you need certain programs inst
     
 
 # Quiz Manager
-### Quiz manager. DoMain:
-what-> functions
-	1. ADMIN:
-        a) Authorization. Login. Registration.
-        b) Creating or choosing locations.
-        c) Managing quizzes.
-        f) Confirming teams for quizzes
-        e) Setting up table of results, maneging it.
-	2. CAPTAIN:
-        a) Authorization. Login. Registration.
-        b) Managing Team.
-		c) Managing Participants of own team.
-		d) Sending team request for confirmation.
+### DoMain:
+	- ADMIN:
+        * Authorization. Login. Registration.
+        * Creating or choosing locations.
+        * Managing quizzes.
+        * Confirming teams for quizzes
+        * Setting up table of results, maneging it.
+	- CAPTAIN:
+        * Authorization. Login. Registration.
+        * Managing Team.
+		* Managing Participants of own team.
+		* Sending team request for confirmation.
 
 # Technologies
 - SpringBoot / SpringRestAPI / SpringDataJPA(Hibernate) / SpringSecurity(Session based auth (JSessionId)).
