@@ -12,7 +12,7 @@ import java.util.Set;
 public interface QuizResultService {
 
     /**
-     * Creates new Result from entered Data
+     * Creates new Result from entered Data in QuizResultDto
      *
      * @param newQuizResults New Result Data
      * @return Created new Result
@@ -20,7 +20,7 @@ public interface QuizResultService {
     QuizResults createRes(QuizResults newQuizResults);
 
     /**
-     * Allows updating score for existing Result
+     * Allows updating score for existing Result (changing score if needed)
      *
      * @param newQuizResults Updated data
      * @return Updated Quiz Result
