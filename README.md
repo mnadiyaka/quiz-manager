@@ -2,16 +2,16 @@
 * [Setup](#setting-up-project)
 * [Domain](#quiz-manager)
 * [Technologies](#technologies)
-* 
-#setting-up project
+
+# setting-up project
 To successfully run application on local computer you need certain programs installed and run:
     1. IntelliJ Idea or other JDK 
     2. MySQL
     3. Before running application do mvn clean install
     
 
-#Quiz Manager
-###Quiz manager. DoMain:
+# Quiz Manager
+### Quiz manager. DoMain:
 what-> functions
 	1. ADMIN:
         a) Authorization. Login. Registration.
@@ -25,7 +25,7 @@ what-> functions
 		c) Managing Participants of own team.
 		d) Sending team request for confirmation.
 
-#Technologies
+# Technologies
 - SpringBoot / SpringRestAPI / SpringDataJPA(Hibernate) / SpringSecurity(Session based auth (JSessionId)).
 - MySQL.
 - Maven.
