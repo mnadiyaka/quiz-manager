@@ -5,28 +5,24 @@
 
 # Setting-up project
 To successfully run application on local computer you need certain programs installed and run:
-    1. IntelliJ Idea or other JDK 
-    2. MySQL
-    3. Before running application do mvn clean install
-    
+    1. Infrastructure setup    
+        * JDK version 17 - https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+        * Lombok - https://projectlombok.org/
+        ### Technologies
+            - SpringBoot / SpringRestAPI / SpringDataJPA(Hibernate) / SpringSecurity(Session based auth (JSessionId)).
+            - MySQL - https://maven.apache.org/install.html
+            - Maven  - https://www.mysql.com/downloads/
+            - JUnit / Mockito.
+    2.  Project startup instruction
+        * Before running application do:
+            - mvn clean install
+        * Afterwords:
+            - mvn spring-boot:run
 
 # Quiz Manager
 ### DoMain:
-	- ADMIN:
-        * Authorization. Login. Registration.
-        * Creating or choosing locations.
-        * Managing quizzes.
-        * Confirming teams for quizzes
-        * Setting up table of results, maneging it.
-	- CAPTAIN:
-        * Authorization. Login. Registration.
-        * Managing Team.
-		* Managing Participants of own team.
-		* Sending team request for confirmation.
-
-# Technologies
-- SpringBoot / SpringRestAPI / SpringDataJPA(Hibernate) / SpringSecurity(Session based auth (JSessionId)).
-- MySQL.
-- Maven.
-- Unit tests (at least 75%). JUnit / Mockito. 
-- Collect test covarage.
+A project for managing Quiz processes: from creating quizzes (choosing time, assigning locations etc) to applying for quiz as team (managing team members included)
+Currently there included:
+    - Authorization. Login. Registration.
+    - Managing quizzes (choosing location, confirming teams, setting results). 
+    - Managing Team (managing participants, sending team request for confirmation).
