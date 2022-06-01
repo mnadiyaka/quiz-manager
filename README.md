@@ -3,7 +3,7 @@
 * [Domain](#quiz-manager)
 * [Technologies](#technologies)
 
-# setting-up project
+# Setting-up project
 To successfully run application on local computer you need certain programs installed and run:
     1. IntelliJ Idea or other JDK 
     2. MySQL
