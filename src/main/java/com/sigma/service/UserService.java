@@ -8,22 +8,75 @@ import com.sigma.model.dto.UserDto;
 import com.sigma.model.entity.User;
 import org.apache.tomcat.websocket.AuthenticationException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 public interface UserService {
-    public List<UserDto> getAllUsers();
+    /**
+     * Finds all users
+     *
+     * @return List of users
+     */
+    List<UserDto> getAllUsers();
 
-    public User findUserById(Long userId);
+    /**
+     * Finds user by existing id
+     *
+     * @param userId User's id
+     * @return Found user
+     * @throws EntityNotFoundException If User's id does not exist
+     */
+    User findUserById(Long userId);
 
-    public User findUserByUsername(String username);
+    /**
+     * Finds user by username
+     *
+     * @param username User's name
+     * @return Found User
+     * @throws EntityNotFoundException If User's name does not exist
+     */
+    User findUserByUsername(String username);
 
-    public SignUpUserResponseDto createUser(SignUpUserDto signUpDto);
+    /**
+     * Creates new User with entered data
+     *
+     * @param signUpDto Entered data
+     * @return positive SignUpUserResponseDto, if successfully created
+     * @return negative SignUpUserResponseDto, if user already exist with this name
+     */
+    SignUpUserResponseDto createUser(SignUpUserDto signUpDto);
 
-    public User updateUser(User updatedUser, Long userId);
+    /**
+     * Updates existing user by id
+     *
+     * @param updatedUser Updated data
+     * @param userId      User's id
+     * @return Updated user
+     * @throws EntityNotFoundException If User's id does not exist
+     */
+    User updateUser(User updatedUser, Long userId);
 
-    public void deleteUser(Long userId);
+    /**
+     * Deletes user by id
+     *
+     * @param userId User's id
+     * @throws EntityNotFoundException If User's id does not exist
+     */
+    void deleteUser(Long userId);
 
-    public SignInUserResponseDto login(SignInUserDto signInUserDto) throws AuthenticationException;
+    /**
+     * Logs into the system with existing users login and password
+     * @param signInUserDto data for Logging in
+     * @return positive SignInUserResponseDto if successfully logged in
+     * @return negative SignInUserResponseDto if wrong data entered
+     * @throws EntityNotFoundException If User's id does not exist
+     */
+    SignInUserResponseDto login(SignInUserDto signInUserDto);
 
-    public void changeAccRole(final Long userId);
+    /**
+     * Updates User from Captain to Admin Role
+     * @param userId User's id
+     * @throws EntityNotFoundException If User's id does not exist
+     */
+    void changeAccRole(final Long userId);
 }

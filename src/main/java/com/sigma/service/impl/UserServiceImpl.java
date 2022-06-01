@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
         if (!passwordEncoder.matches(signInUserDto.getPassword(), myUser.getPassword())) {
             log.info(FAILURE);
-            return new SignInUserResponseDto(FAILURE, NOT_EXIST); // TODO: custom exception?
+            return new SignInUserResponseDto(FAILURE, NOT_EXIST);
         }
 
         log.info(SUCCESS);
