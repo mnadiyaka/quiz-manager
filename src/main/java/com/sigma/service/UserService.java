@@ -69,8 +69,8 @@ public interface UserService {
      * Logs into the system with existing user's login and password, entered in {@link SignInUserDto}
      *
      * @param signInUserDto data for Logging in
-     * @return positive SignInUserResponseDto if successfully logged in
-     * @return negative SignInUserResponseDto if wrong data entered
+     * @return positive {@link SignInUserResponseDto} if successfully logged in
+     * @return negative {@link SignInUserResponseDto} if wrong data entered
      * @throws EntityNotFoundException If User's id does not exist
      */
     SignInUserResponseDto login(SignInUserDto signInUserDto);
