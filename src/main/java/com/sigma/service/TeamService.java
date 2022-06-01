@@ -3,6 +3,7 @@ package com.sigma.service;
 import com.sigma.exception.QuizException;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
+import com.sigma.model.entity.Participant;
 import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Team;
 import org.springframework.security.access.AuthorizationServiceException;
@@ -21,7 +22,7 @@ public interface TeamService {
     List<TeamDto> getAllTeams();
 
     /**
-     * Finds Team by id
+     * Finds {@link Team} by id
      *
      * @param teamId Team id
      * @return Found team
@@ -30,7 +31,7 @@ public interface TeamService {
     Team findTeamById(Long teamId);
 
     /**
-     * Creates new team with entered teamName in TeamDto, other fields created automatically
+     * Creates new {@link Team} with entered teamName in {@link TeamDto}, other fields created automatically
      *
      * @param teamDto New team data
      * @return New team
@@ -39,7 +40,7 @@ public interface TeamService {
     Team createTeam(TeamDto teamDto);
 
     /**
-     * Updates Team with new data in TeamDto (teamNAme, captainId)
+     * Updates {@link Team} with new data in {@link TeamDto} (teamNAme, captainId)
      *
      * @param updatedTeam Updated data
      * @param teamId      Team id
@@ -50,7 +51,7 @@ public interface TeamService {
     Team updateTeam(TeamDto updatedTeam, Long teamId);
 
     /**
-     * Deletes Team by id
+     * Deletes {@link Team} by id
      *
      * @param teamId
      * @throws EntityNotFoundException       If entered Team id does not exist
@@ -59,7 +60,7 @@ public interface TeamService {
     void deleteTeam(Long teamId);
 
     /**
-     * Confirms team as real one for quiz
+     * Confirms {@link Team} as real one for {@link Quiz}
      *
      * @param team         existing team
      * @param confirmation is Confirmed or not
@@ -68,7 +69,7 @@ public interface TeamService {
     Team confirmTeam(Team team, boolean confirmation);
 
     /**
-     * Updates existing player in team (works in collaboration with participantService)
+     * Updates existing {@link Participant} in {@link Team} (works in collaboration with {@link ParticipantService})
      *
      * @param newParticipant Updated Player
      * @param teamId         Chosen team
@@ -79,7 +80,7 @@ public interface TeamService {
     void updatePl(final ParticipantDto newParticipant, final Long participantId, final Long teamId);
 
     /**
-     * Adds new player, entered in ParticipantDto, to existing team (works in collaboration with participantService)
+     * Adds new {@link Participant}, entered in {@link ParticipantDto}, to existing team (works in collaboration with {@link ParticipantService})
      *
      * @param newParticipant New Player
      * @param teamId         Chosen team
@@ -89,7 +90,7 @@ public interface TeamService {
     void addPl(final ParticipantDto newParticipant, final Long teamId);
 
     /**
-     * Assign existing Team for a Quiz (works in collaboration with quizService)
+     * Assign existing {@link Team} for a {@link Quiz} (works in collaboration with {@link QuizService})
      *
      * @param quiz   Existing Quiz
      * @param teamId Existing Team id
