@@ -12,7 +12,7 @@ import java.util.Set;
 public interface QuizResultService {
 
     /**
-     * Creates new location from entered Data
+     * Creates new Result from entered Data
      * @param newQuizResults New Result Data
      * @return Created new Result
      */
@@ -58,7 +58,7 @@ public interface QuizResultService {
     /**
      * Find all results for entered Quiz id
      * @param quizId Chosen Quiz
-     * @return List of Resuls
+     * @return List of Results
      * @throws EntityNotFoundException If entered Quiz id does not exist
      */
     List<QuizResultsDto> findResultsByQuizId(Long quizId);
