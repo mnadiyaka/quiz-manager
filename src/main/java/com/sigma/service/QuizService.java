@@ -52,7 +52,7 @@ public interface QuizService {
     void deleteQuiz(Long quizId);
 
     /**
-     * Works with teamService to assign existing Team for a Quiz
+     * Assign existing Team for a Quiz (works in collaboration with teamService)
      *
      * @param quizId Existing Quiz id
      * @param teamId Existing Team id
