@@ -2,6 +2,7 @@ package com.sigma.service;
 
 import com.sigma.model.dto.LocationDto;
 import com.sigma.model.entity.Location;
+import com.sigma.model.entity.Quiz;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -9,14 +10,14 @@ import java.util.List;
 public interface LocationService {
 
     /**
-     * Finds all possible Locations for future or current quiz
+     * Finds all possible {@link Location}s for future or current {@link Quiz}
      *
      * @return All Locations
      */
     List<LocationDto> getAllLocations();
 
     /**
-     * Finds location by entered existing id
+     * Finds {@link Location} by entered existing id
      *
      * @param locationId Possible existing location
      * @return Found Location
@@ -25,7 +26,7 @@ public interface LocationService {
     Location findLocationById(Long locationId);
 
     /**
-     * Creates new location from entered Data
+     * Creates new {@link Location} from entered data in {@link LocationDto}
      *
      * @param location Entered data
      * @return Created new Location
@@ -33,7 +34,7 @@ public interface LocationService {
     Location createLocation(LocationDto location);
 
     /**
-     * Tries to update existing Location, if it doesn't exist - creates new one
+     * Tries to update existing {@link Location} from entered data in {@link LocationDto}, if it doesn't exist - creates new one
      *
      * @param updatedLocation Updated data
      * @param locationId      Location's id
@@ -42,7 +43,7 @@ public interface LocationService {
     Location updateLocation(LocationDto updatedLocation, Long locationId);
 
     /**
-     * Deletes Location by id
+     * Deletes {@link Location} by id
      *
      * @param locationId Location's id
      * @throws EntityNotFoundException If Location is not found
