@@ -27,7 +27,7 @@ public interface ParticipantService {
     Participant findParticipantById(final Long teamId, Long participantId);
 
     /**
-     * Creates new Participant from entered Data
+     * Creates new Participant from entered Data in ParticipantDto
      *
      * @param participantDto Entered data
      * @param teamId         Team's id, whose Participant will be created
@@ -36,7 +36,7 @@ public interface ParticipantService {
     Participant createParticipant(final ParticipantDto participantDto, final Long teamId);
 
     /**
-     * Tries to update existing Participant, if it exists
+     * Tries to update existing Participant with data from ParticipantDto, if it exists
      *
      * @param newParticipant Updated data
      * @param participantId  Participant's id
