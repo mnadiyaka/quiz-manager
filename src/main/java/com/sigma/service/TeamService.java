@@ -30,7 +30,7 @@ public interface TeamService {
     Team findTeamById(Long teamId);
 
     /**
-     * Creates new team
+     * Creates new team with entered teamName in TeamDto, other fields created automatically
      *
      * @param teamDto New team data
      * @return New team
@@ -39,7 +39,7 @@ public interface TeamService {
     Team createTeam(TeamDto teamDto);
 
     /**
-     * Updates Team with new data
+     * Updates Team with new data in TeamDto (teamNAme, captainId)
      *
      * @param updatedTeam Updated data
      * @param teamId      Team id
@@ -79,7 +79,7 @@ public interface TeamService {
     void updatePl(final ParticipantDto newParticipant, final Long participantId, final Long teamId);
 
     /**
-     * Adds new player to existing team (works in collaboration with participantService)
+     * Adds new player, entered in ParticipantDto, to existing team (works in collaboration with participantService)
      *
      * @param newParticipant New Player
      * @param teamId         Chosen team
