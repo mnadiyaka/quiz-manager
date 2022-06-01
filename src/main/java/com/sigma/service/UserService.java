@@ -38,7 +38,7 @@ public interface UserService {
     User findUserByUsername(String username);
 
     /**
-     * Creates new User with entered data
+     * Creates new User with entered UserDto (username and password), by default role is CAPTAIN
      *
      * @param signUpDto Entered data
      * @return positive SignUpUserResponseDto, if successfully created
@@ -47,7 +47,7 @@ public interface UserService {
     SignUpUserResponseDto createUser(SignUpUserDto signUpDto);
 
     /**
-     * Updates existing user by id
+     * Updates existing user by id with entered UserDto (username, password), you can not change role here
      *
      * @param updatedUser Updated data
      * @param userId      User's id
@@ -65,7 +65,8 @@ public interface UserService {
     void deleteUser(Long userId);
 
     /**
-     * Logs into the system with existing users login and password
+     * Logs into the system with existing user's login and password, entered in SignInUserDto
+     *
      * @param signInUserDto data for Logging in
      * @return positive SignInUserResponseDto if successfully logged in
      * @return negative SignInUserResponseDto if wrong data entered
@@ -75,6 +76,7 @@ public interface UserService {
 
     /**
      * Updates User from Captain to Admin Role
+     *
      * @param userId User's id
      * @throws EntityNotFoundException If User's id does not exist
      */
