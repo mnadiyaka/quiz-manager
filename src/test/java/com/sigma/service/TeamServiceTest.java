@@ -89,7 +89,9 @@ public class TeamServiceTest {
         Team expected = teamService.createTeam(TeamDto.fromTeam(team));
 
         verify(teamRepository, times(1)).save(captor.capture());
-        Assertions.assertEquals(captor.getValue(), expected);
+        Assertions.assertEquals(captor.getValue().getTeamName(), team.getTeamName());
+        Assertions.assertEquals(captor.getValue().getCaptainId(), team.getCaptainId());
+        Assertions.assertEquals(captor.getValue().getId(), team.getId());
     }
 
     @Test
