@@ -1,5 +1,9 @@
 package com.sigma.service.impl;
 
+import com.sigma.model.dto.LocationDto;
+import com.sigma.model.dto.QuizDto;
+import com.sigma.model.entity.Location;
+import com.sigma.model.entity.Quiz;
 import com.sigma.exception.QuizException;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Location;
@@ -46,8 +50,6 @@ public class QuizServiceImpl implements QuizService {
     @Transactional
     public Quiz createQuiz(final QuizDto quiz) {
         log.info("Creating new quiz {}", quiz.toString());
-        Quiz newQuiz = QuizDto.toQuiz(quiz);
-        newQuiz.setState(State.ANOUNCED);
         return quizRepository.save(QuizDto.toQuiz(quiz));
     }
 
@@ -113,6 +115,5 @@ public class QuizServiceImpl implements QuizService {
         quiz.setAddressId(locId);
 
         return quizRepository.save(quiz);
-
     }
 }
