@@ -26,7 +26,7 @@ public class TeamController {
     private final TeamService teamService;
 
     @GetMapping("/all")
-    public List<TeamDto> getTeams() {
+    public List<TeamDto> getTeams(@PathVariable Long userId) {
         return teamService.getAllTeams();
     }
 

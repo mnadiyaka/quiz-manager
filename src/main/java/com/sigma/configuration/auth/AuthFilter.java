@@ -14,8 +14,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Component
@@ -23,12 +24,12 @@ public class AuthFilter extends OncePerRequestFilter {
 
     private final String AUTH = "Authorization";
 
-    private final List<String> publicUrls = Arrays.asList("login", "signUp");
+    private List<String> publicUrls = Arrays.asList("login", "signUp");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        final String token = Optional.of(request.getHeader(AUTH).substring(7)).orElseThrow(NoSuchElementException::new);
+        final String token = ofNullable(request.getHeader(AUTH).substring(7)).orElseThrow(() -> new NoSuchElementException());
 
         final TokenAuth tokenAuth = new TokenAuth(token);
 

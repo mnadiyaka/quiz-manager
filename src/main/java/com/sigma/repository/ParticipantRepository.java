@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
-    Participant findParticipantByIdAndTeamId(Long id, Long teamId);
+    public Participant findParticipantByIdAndTeamId(Long id, Long teamId);
 
-    List<Participant> findParticipantsByTeamId(Long teamId);
+    public List<Participant> findParticipantsByTeamId(Long teamId);
 }

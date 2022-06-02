@@ -2,13 +2,8 @@ package com.sigma.service.impl;
 
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Quiz;
-import com.sigma.exception.QuizException;
-import com.sigma.model.entity.State;
-import com.sigma.model.entity.Team;
 import com.sigma.repository.QuizRepository;
-import com.sigma.service.LocationService;
 import com.sigma.service.QuizService;
-import com.sigma.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,10 +19,6 @@ import java.util.Optional;
 public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
-
-    private final TeamService teamService;
-
-    private final LocationService locationService;
 
     @Override
     public List<QuizDto> getAllQuizzes() {
@@ -69,46 +60,5 @@ public class QuizServiceImpl implements QuizService {
     public void deleteQuiz(final Long quizId) {
         log.info("Deleting quiz {}", quizId);
         quizRepository.delete(findQuizById(quizId));
-    }
-
-    @Override
-    @Transactional
-    public void applyForQuiz(final Long quizId, final Long teamId) {
-        Quiz quiz = findQuizById(quizId);
-        List<Team> teams = quiz.getTeams();
-
-        if (!quiz.getState().equals(State.ANNOUNCED)) {
-            throw new QuizException("Quiz closed, try another one");
-        }
-
-        if (teams.size() > quiz.getTeamNumberMax()) {
-            quiz.setState(State.CLOSED);
-            updateQuiz(QuizDto.fromQuiz(quiz), quizId);
-            throw new QuizException("Quiz closed, try another one");
-        }
-
-        Team team = teamService.applyForQuiz(quiz, teamId);
-        teams.add(team);
-        quiz.setTeams(teams);
-        quizRepository.save(quiz);
-    }
-
-
-    @Override
-    @Transactional
-    public void changeQuizState(Long quizId, String state) {
-        Quiz quiz = findQuizById(quizId);
-        quiz.setState(State.valueOf(state));
-        quizRepository.save(quiz);
-    }
-
-    @Override
-    @Transactional
-    public Quiz assignLocation(final Long quizId, final Long locId) {
-        Quiz quiz = findQuizById(quizId);
-        locationService.findLocationById(locId);
-        quiz.setAddressId(locId);
-
-        return quizRepository.save(quiz);
     }
 }

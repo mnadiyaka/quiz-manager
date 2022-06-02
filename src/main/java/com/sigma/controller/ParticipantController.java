@@ -25,7 +25,6 @@ import java.util.List;
 public class ParticipantController {
 
     private final TeamService teamService;
-
     private final ParticipantService participantService;
 
     @DeleteMapping("/{playerId}")
