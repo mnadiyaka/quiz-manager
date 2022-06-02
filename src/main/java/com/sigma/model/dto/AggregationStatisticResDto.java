@@ -1,6 +1,5 @@
 package com.sigma.model.dto;
 
-import com.sigma.model.entity.Grouping;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
