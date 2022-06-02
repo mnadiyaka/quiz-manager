@@ -1,5 +1,6 @@
 package com.sigma.repository.impl;
 
+import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.entity.QuizResults;
 import com.sigma.repository.CustomQuizResultsStatisticsRepo;
@@ -36,6 +37,25 @@ public class CustomQuizResultsStatisticsRepoImpl implements CustomQuizResultsSta
         }
         query += params.stream().collect(Collectors.joining(" AND ")) + ";";
         final Query q = entityManager.createNativeQuery(query, QuizResults.class);
+
+        return q.getResultList();
+    }
+
+    @Override
+    public List<Object[]> findQuizResultAggregatedData(AggregationStatisticsDto data) {
+        final String query;
+        if (data.shouldApplyAggregation()) {
+            query = """
+                    SELECT q.%s, %s(r.score) %s
+                    FROM quiz_results r JOIN quizzes q on r.quiz_id = q.quiz_id 
+                    GROUP BY q.%s%s
+                    """;
+        } else {
+            query = "SELECT r.id, r.quiz_id, r.team_id, r.score " +
+                    " FROM quiz_results r JOIN quizzes q on r.quiz_id = q.quiz_id;";
+        }
+        final Query q = entityManager.createNativeQuery(String.format(query, data.getGrouping().getParam(), data.getAggregation(), ((data.isTeam()) ? ",r.team_id" : ""),
+                data.getGrouping().getParam(), ((data.isTeam()) ? " AND r.team_id;" : ";")));
 
         return q.getResultList();
     }
