@@ -7,7 +7,6 @@ import com.sigma.model.dto.SignUpUserResponseDto;
 import com.sigma.model.dto.UserDto;
 import com.sigma.model.entity.Role;
 import com.sigma.model.entity.User;
-import org.apache.tomcat.websocket.AuthenticationException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;

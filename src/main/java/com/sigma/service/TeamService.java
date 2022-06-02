@@ -53,7 +53,7 @@ public interface TeamService {
     /**
      * Deletes {@link Team} by id
      *
-     * @param teamId
+     * @param teamId Team's id
      * @throws EntityNotFoundException       If entered Team id does not exist
      * @throws AuthorizationServiceException If wrong captain is authorized does not exist
      */
