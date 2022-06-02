@@ -1,10 +1,8 @@
 package com.sigma.service.impl;
 
-import com.sigma.exception.QuizException;
 import com.sigma.model.dto.ParticipantDto;
 import com.sigma.model.dto.TeamDto;
 import com.sigma.model.entity.Participant;
-import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.Team;
 import com.sigma.repository.TeamRepository;
 import com.sigma.service.ParticipantService;
@@ -51,12 +49,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     @Transactional
-    public Team updateTeam(final TeamDto updatedTeam, final Long teamId) {
+    public void updateTeam(final TeamDto updatedTeam, final Long teamId) {
         final Team oldTeam = check(teamId);
         log.info("Updating team {}", oldTeam);
         Optional.ofNullable(updatedTeam.getTeamName()).ifPresent(oldTeam::setTeamName);
         Optional.ofNullable(updatedTeam.getCaptainId()).ifPresent(oldTeam::setCaptainId);
-        return teamRepository.save(oldTeam);
+        teamRepository.save(oldTeam);
     }
 
     @Override
@@ -113,20 +111,5 @@ public class TeamServiceImpl implements TeamService {
         people.add(newPl);
         team.setParticipants(people);
         teamRepository.save(team);
-    }
-
-    @Override
-    @Transactional
-    public Team applyForQuiz(final Quiz quiz, final Long teamId) {
-        final Team team = findTeamById(teamId);
-        if (team.getParticipants().size() > quiz.getParticipantInTeamNumberMax() || team.getParticipants().size() < quiz.getParticipantInTeamNumberMin()) {
-            throw new QuizException("Wrong size of the team");
-        }
-
-        final List<Quiz> teamsQ = team.getQuizzes();
-        teamsQ.add(quiz);
-        team.setQuizzes(teamsQ);
-
-        return teamRepository.save(team);
     }
 }

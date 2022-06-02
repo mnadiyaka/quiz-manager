@@ -2,7 +2,6 @@ package com.sigma.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
@@ -44,7 +43,6 @@ public class Team {
             joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns = @JoinColumn(name = "quiz_id"))
     @Column(name = "quiz_id")
-    @ToString.Exclude
     private List<Quiz> quizzes;
 
     @OneToOne
@@ -57,6 +55,5 @@ public class Team {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "team", orphanRemoval = true)
     @Size(max = 9, message = "only 9 people per team")//TODO: npt like this
-    @ToString.Exclude
     private List<Participant> participants;
 }
