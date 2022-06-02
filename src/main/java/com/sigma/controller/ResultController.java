@@ -1,5 +1,7 @@
 package com.sigma.controller;
 
+import com.sigma.model.dto.AggregationStatisticResDto;
+import com.sigma.model.dto.AggregationStatisticsDto;
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.service.QuizResultService;
@@ -44,7 +46,7 @@ public class ResultController {
     }
 
     @PostMapping("/create/{quizId}")
-    public String createResultTable(@PathVariable Long quizId){
+    public String createResultTable(@PathVariable Long quizId) {
         quizResultService.createResultsTable(quizId);
         return "created";
     }
@@ -54,5 +56,11 @@ public class ResultController {
     public @ResponseBody
     List<QuizResultsDto> filterRes(@RequestBody QuizResultsSearchDto data) {
         return quizResultService.getQuizResultsStatistics(data);
+    }
+
+    @GetMapping(value = "aggStat")
+    @PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
+    public List<AggregationStatisticResDto> groupRes(@RequestBody AggregationStatisticsDto data) {
+        return quizResultService.getAggregationStatistics(data);
     }
 }

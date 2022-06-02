@@ -1,6 +1,11 @@
 package com.sigma.service;
 
+
 import com.sigma.exception.QuizException;
+
+import com.sigma.model.dto.AggregationStatisticResDto;
+import com.sigma.model.dto.AggregationStatisticsDto;
+
 import com.sigma.model.dto.QuizResultsSearchDto;
 import com.sigma.model.dto.QuizResultsDto;
 import com.sigma.model.entity.Quiz;
@@ -79,4 +84,6 @@ public interface QuizResultService {
      * @return List of filtered Results
      */
     List<QuizResultsDto> getQuizResultsStatistics(QuizResultsSearchDto data);
+
+    List<AggregationStatisticResDto> getAggregationStatistics(AggregationStatisticsDto data);
 }
