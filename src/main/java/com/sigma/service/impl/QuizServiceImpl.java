@@ -1,13 +1,9 @@
 package com.sigma.service.impl;
 
-import com.sigma.model.dto.LocationDto;
 import com.sigma.model.dto.QuizDto;
 import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Quiz;
 import com.sigma.exception.QuizException;
-import com.sigma.model.dto.QuizDto;
-import com.sigma.model.entity.Location;
-import com.sigma.model.entity.Quiz;
 import com.sigma.model.entity.State;
 import com.sigma.model.entity.Team;
 import com.sigma.repository.QuizRepository;
@@ -82,7 +78,7 @@ public class QuizServiceImpl implements QuizService {
         Quiz quiz = findQuizById(quizId);
         List<Team> teams = quiz.getTeams();
 
-        if (!quiz.getState().equals(State.ANOUNCED)) {
+        if (!quiz.getState().equals(State.ANNOUNCED)) {
             throw new QuizException("Quiz closed, try another one");
         }
 

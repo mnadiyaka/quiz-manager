@@ -8,5 +8,5 @@ import lombok.Getter;
 public enum Grouping {
     PERIOD("period"), CATEGORY_NAME("category"), DATE("datetime"), LOCATION_NAME("address_id");
 
-    String param;
+    final String param;
 }

@@ -9,7 +9,7 @@ public enum Period {
     QUARTER(90),
     YEAR(360);
 
-    private int days;
+    private final int days;
 
     Period(int days) {
         this.days = days;

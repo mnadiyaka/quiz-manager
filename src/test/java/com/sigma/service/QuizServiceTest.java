@@ -119,7 +119,7 @@ public class QuizServiceTest {
     public void applyForQuiz_WithQuizIdAndTeamId_ThenSaveQuiz() {
         Quiz expected = new Quiz();
         expected.setId(1L);
-        expected.setState(State.ANOUNCED);
+        expected.setState(State.ANNOUNCED);
         expected.setTeamNumberMax((short) 5);
         expected.setTeams(new ArrayList<>(Arrays.asList(new Team(), new Team())));
 
@@ -166,7 +166,7 @@ public class QuizServiceTest {
     public void changeQuizState_WithQuizIdAndNewState_ThenSaveQuiz() {
         Quiz expected = new Quiz();
         expected.setId(1L);
-        expected.setState(State.ANOUNCED);
+        expected.setState(State.ANNOUNCED);
 
         when(quizRepository.findById(anyLong())).thenReturn(Optional.of(expected));
         when(quizRepository.save(expected)).thenReturn(expected);
