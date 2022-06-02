@@ -46,7 +46,7 @@ public class LocationServiceImpl implements LocationService {
     public Location updateLocation(LocationDto updatedLocation, Long locationId) {
         final Location oldLocation = findLocationById(locationId);
 
-        if(Objects.equals(oldLocation, null)){
+        if (Objects.equals(oldLocation, null)) {
             createLocation(updatedLocation);
         }
         log.info("Updating location {}", oldLocation);

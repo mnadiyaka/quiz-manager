@@ -34,7 +34,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Team findTeamById(final Long teamId) {
         log.info("Searching for team with id {}", teamId);
-        return teamRepository.findById(teamId).orElseThrow(() -> new EntityNotFoundException());
+        return teamRepository.findById(teamId).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class TeamServiceImpl implements TeamService {
     @Transactional
     public void deleteTeam(final Long teamId) {
 
-        log.info("deleting :", teamId);
+        log.info("deleting :" + teamId);
         teamRepository.delete(check(teamId));
     }
 

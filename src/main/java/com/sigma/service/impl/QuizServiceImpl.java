@@ -1,7 +1,6 @@
 package com.sigma.service.impl;
 
 import com.sigma.model.dto.QuizDto;
-import com.sigma.model.entity.Location;
 import com.sigma.model.entity.Quiz;
 import com.sigma.exception.QuizException;
 import com.sigma.model.entity.State;
@@ -105,9 +104,9 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public Quiz assignLocation(final Long quizId, final Long locId){
+    public Quiz assignLocation(final Long quizId, final Long locId) {
         Quiz quiz = findQuizById(quizId);
-        Location location = locationService.findLocationById(locId);
+        locationService.findLocationById(locId);
         quiz.setAddressId(locId);
 
         return quizRepository.save(quiz);

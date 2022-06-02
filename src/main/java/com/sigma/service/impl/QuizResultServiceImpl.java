@@ -57,7 +57,7 @@ public class QuizResultServiceImpl implements QuizResultService {
         if (!quizResults.getQuiz().getState().equals(State.COMPLETED)) {
             throw new QuizException("Quiz is not COMPLETED yet");
         }
-        Optional.ofNullable(newQuizResults.getScore()).ifPresent(quizResults::setScore);
+        Optional.of(newQuizResults.getScore()).ifPresent(quizResults::setScore);
 
         return quizResultsRepository.save(quizResults);
     }

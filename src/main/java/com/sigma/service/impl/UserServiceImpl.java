@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public User findUserByUsername(final String username) {
         log.info("Searching for user with username {}", username);
 
-        return Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(() -> new EntityNotFoundException());
+        return Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void changeAccRole(final Long userId){
+    public void changeAccRole(final Long userId) {
         final User myUser = findUserById(userId);
         myUser.setRole(Role.ADMIN);
         userRepository.save(myUser);
