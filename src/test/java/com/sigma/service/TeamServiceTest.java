@@ -113,7 +113,7 @@ public class TeamServiceTest {
         team.setCaptain(user);
         when(teamRepository.findByTeamName("name")).thenReturn(team);
 
-        Assertions.assertThrows(EntityExistsException.class, ()->teamService.createTeam(TeamDto.fromTeam(team)));
+        Assertions.assertThrows(EntityExistsException.class, () -> teamService.createTeam(TeamDto.fromTeam(team)));
     }
 
     @Test

@@ -10,7 +10,6 @@ import com.sigma.model.entity.Role;
 import com.sigma.model.entity.User;
 import com.sigma.repository.UserRepository;
 import com.sigma.service.impl.UserServiceImpl;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -131,7 +130,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void login_WithCorrectSignInUserDto_ThenReturnPositiveResponse() throws AuthenticationException {
+    public void login_WithCorrectSignInUserDto_ThenReturnPositiveResponse() {
         User user = new User();
         user.setId(1L);
         user.setUsername("name");
@@ -152,7 +151,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void login_WithInCorrectPassword_ThenReturnNegativeResponse() throws AuthenticationException {
+    public void login_WithInCorrectPassword_ThenReturnNegativeResponse() {
         User user = new User();
         user.setId(1L);
         user.setUsername("name");
@@ -166,7 +165,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void login_WithInCorrectUsername_ThenReturnNegativeResponse() throws AuthenticationException {
+    public void login_WithInCorrectUsername_ThenReturnNegativeResponse() {
         User user = new User();
         user.setId(1L);
         user.setUsername("name1");
