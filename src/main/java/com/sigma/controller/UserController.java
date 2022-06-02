@@ -8,7 +8,6 @@ import com.sigma.model.dto.UserDto;
 import com.sigma.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public SignInUserResponseDto loginUser(@RequestBody SignInUserDto user) throws AuthenticationException {
+    public SignInUserResponseDto loginUser(@RequestBody SignInUserDto user) {
         return userService.login(user);
     }
 
