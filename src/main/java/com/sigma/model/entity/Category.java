@@ -1,5 +1,5 @@
 package com.sigma.model.entity;
 
 public enum Category {
-    SMTH;
+    NATURE, BOOKS, MOVIE, MUSIC, HISTORY, GEOGRAPHY, MIXED
 }

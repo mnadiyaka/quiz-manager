@@ -6,6 +6,7 @@ import com.sigma.model.dto.SignInUserResponseDto;
 import com.sigma.model.dto.SignUpUserDto;
 import com.sigma.model.dto.SignUpUserResponseDto;
 import com.sigma.model.dto.UserDto;
+import com.sigma.model.entity.Role;
 import com.sigma.model.entity.User;
 import com.sigma.repository.UserRepository;
 import com.sigma.service.UserService;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
     public User findUserByUsername(final String username) {
         log.info("Searching for user with username {}", username);
 
-        return Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(() -> new EntityNotFoundException());
+        return Optional.ofNullable(userRepository.findByUsername(username)).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override
@@ -72,29 +73,26 @@ public class UserServiceImpl implements UserService {
             return new SignUpUserResponseDto(FAILURE, EXISTED);
         }
 
-        final User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), signUpDto.getRole());
+        final User user = new User(signUpDto.getUsername(), passwordEncoder.encode(signUpDto.getPassword()), Role.CAPTAIN);
         userRepository.save(user);
         return new SignUpUserResponseDto(SUCCESS, CREATED);
     }
 
     @Override
     @Transactional
-    public void updateUser(final User updatedUser, final Long userId) {
+    public User updateUser(final User updatedUser, final Long userId) {
         final User oldUser = findUserById(userId);
         log.info("Updating user {}", oldUser.getUsername());
         oldUser.setUsername(updatedUser.getUsername());
         oldUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         oldUser.setRole(updatedUser.getRole());
-        userRepository.save(oldUser);
+        return userRepository.save(oldUser);
     }
 
     @Override
     @Transactional
     public void deleteUser(final Long userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new EntityNotFoundException();
-        }
-        log.info("Deleting user {}", userRepository.getById(userId).getUsername());
+        log.info("Deleting user {}", findUserById(userId).getUsername());
         userRepository.deleteById(userId);
     }
 
@@ -107,12 +105,20 @@ public class UserServiceImpl implements UserService {
 
         if (!passwordEncoder.matches(signInUserDto.getPassword(), myUser.getPassword())) {
             log.info(FAILURE);
-            return new SignInUserResponseDto(FAILURE, NOT_EXIST); // TODO: custom exception?
+            return new SignInUserResponseDto(FAILURE, NOT_EXIST);
         }
 
         log.info(SUCCESS);
 
         String token = JWTUtil.generateJWT(myUser, secret, timestamp, issuer);
         return new SignInUserResponseDto("Bearer", token);
+    }
+
+    @Override
+    @Transactional
+    public void changeAccRole(final Long userId) {
+        final User myUser = findUserById(userId);
+        myUser.setRole(Role.ADMIN);
+        userRepository.save(myUser);
     }
 }

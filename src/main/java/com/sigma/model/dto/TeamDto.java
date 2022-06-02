@@ -21,23 +21,19 @@ public class TeamDto {
 
     private Long captainId;
 
-//    private List<ParticipantDto> participants;
-
     public static TeamDto fromTeam(Team team) {
         return new TeamDto()
                 .setId(team.getId())
                 .setTeamName(team.getTeamName())
-                //.setConfirmed(team.getConfirmed())
+                .setConfirmed(team.isConfirmed())
                 .setCaptainId(team.getCaptain().getId());
-        //.setParticipants((team.getParticipants()).stream().map((player)->ParticipantDto.fromParticipant(player)).collect(Collectors.toList()));
     }
 
     public static Team toTeam(TeamDto teamDto) {
         return new Team()
                 .setId(teamDto.getId())
                 .setTeamName(teamDto.getTeamName())
-                //.setConfirmed(teamDto.getConfirmed())
+                .setConfirmed(teamDto.isConfirmed())
                 .setCaptainId(teamDto.getCaptainId());
-        //.setParticipants(teamDto.getParticipants().stream().map((playerDto)->ParticipantDto.toParticipant(playerDto)).collect(Collectors.toList()));
     }
 }

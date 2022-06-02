@@ -17,15 +17,14 @@ public class JWTUtil {
     public static String generateJWT(User user, String secret, int timestamp, String issuer) {
 
         Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
-        final String accessToken = JWT.create()
+
+        return JWT.create()
                 .withSubject(user.getId().toString())
                 .withClaim("role", user.getRole().toString())
                 .withIssuer(issuer)
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .withExpiresAt(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(timestamp)))
                 .sign(algorithm);
-
-        return accessToken;
     }
 
     public static void verify(final String token, String secret, String issuer) {
