@@ -58,7 +58,7 @@ public class QuizController {
     @PatchMapping("/{quizId}/change/{state}")
     public String  closeQuiz(@PathVariable Long quizId, @PathVariable String state) {
         quizService.changeQuizState(quizId, state);
-        return "closed";
+        return state;
     }
 
     @PatchMapping("/{quizId}/location/{locationId}")

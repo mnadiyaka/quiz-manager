@@ -30,11 +30,13 @@ public class ResultController {
     private final QuizResultService quizResultService;
 
     @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
     public Set<QuizResultsDto> getTeams() {
         return quizResultService.getAllRes();
     }
 
     @GetMapping("/{quizId}")
+    @PreAuthorize("hasAnyRole('CAPTAIN', 'ADMIN')")
     public List<QuizResultsDto> getTeamsByQuizId(@PathVariable Long quizId) {
         return quizResultService.findResultsByQuizId(quizId);
     }
